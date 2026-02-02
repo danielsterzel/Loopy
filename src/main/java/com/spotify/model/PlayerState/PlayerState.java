@@ -1,12 +1,13 @@
 package com.spotify.model.PlayerState;
 
-import java.util.Optional;
-import com.spotify.model.SpotifyTrackObjectModel;
+import com.spotify.model.TrackObject.SpotifyTrackObjectModel;
+import com.spotify.model.Device.Device;
 
-public record PlayerState(String deviceType,
+public record PlayerState(SpotifyTrackObjectModel track,
+                          Device device,
                           String repeatState,
-                          boolean shuffleStateOn,
-                          Integer timestamp,
-                          Integer progressInMs,
+                          int timestamp,
+                          int progressInMs,
                           boolean isPlaying,
-                          Optional<SpotifyTrackObjectModel> track) {}
+                          boolean shuffleStateOn
+                          ) {}
