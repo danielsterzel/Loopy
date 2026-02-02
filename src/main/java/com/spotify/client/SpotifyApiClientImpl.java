@@ -1,14 +1,19 @@
 package com.spotify.client;
 
 import com.security.AuthFacade;
+import com.spotify.model.PlayerState.DTO.PlayerResponseDto;
 import com.spotify.model.PlayerState.PlayerState;
+import com.spotify.model.PlayerState.PlayerStateMapper;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Optional;
 
 /**
  * 1. WebClient -> builds and sends Http Request
  * 2. Mono<T> -> promise that I will receive one object of type T
- * 3. bodyToMono(...class) can be used to map object to any class. It map Json fields to class fields.
+ * 3. bodyToMono(...class) can be used to map object to any class. It maps Json fields to class fields.
  * */
 
 @Component
@@ -21,11 +26,24 @@ public class SpotifyApiClientImpl  implements SpotifyApiClient{
         this.auth = auth;
         this.webClient = webClient; // spring uses the SpotifyWebClientConfig for creating WebClient type object
     }
-
     @Override
-    public PlayerState getCurrentPlayer(){
-        return new PlayerState("computer");
+    public Optional<PlayerState> getCurrentPlayer()
+    {
+        var spotifyAccessToken = auth.getAccessTokenValue();
+        PlayerResponseDto dto = webClient
+                .get()
+                .uri("/me/player")
+                .header("Authorization", "Bearer " + spotifyAccessToken)
+                .retrieve()
+                .onStatus( status -> status.value() == 401,
+                        response -> response.bodyToMono(String.class)
+                                .map(body -> new RuntimeException("Spotify 401" + body)))
+                .bodyToMono(PlayerResponseDto.class)
+                .block();
+
+        return PlayerStateMapper.from(dto);
     }
+
     @Override
     public void enqueueTrack(String trackUri)
     {}

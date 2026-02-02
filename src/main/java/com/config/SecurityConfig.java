@@ -40,7 +40,6 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/ping",
                                 "/oauth2/**",
                                 "/login/oauth2/**",
                                 "/error").permitAll()
