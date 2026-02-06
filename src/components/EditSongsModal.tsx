@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import styles from "./styleModules/EditSongsModal.module.css";
 import type { Playlist } from "../types/Playlist";
@@ -37,7 +37,7 @@ function SongBox({
   );
 }
 
-export function ChangeSongsModal({
+export function EditSongsModal({
   show,
   fromSong,
   toSong,
@@ -48,11 +48,19 @@ export function ChangeSongsModal({
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
   const [tracks, setTracks] = useState<SearchResult | null>(null);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCancel]);
+
   if (!show) return null;
 
   return (
-    <div className={styles.shadowBackground}>
-      <div className={styles.mainBox}>
+    <div className={styles.shadowBackground} onClick={onCancel}>
+      <div className={styles.mainBox} onClick={(e) => e.stopPropagation()}>
         <SongBox title={fromSong} onReplace={() => setEditingTarget("from")} />
         <div className={styles.middleColumn}>
           <i className="fa-solid fa-angles-right"></i>

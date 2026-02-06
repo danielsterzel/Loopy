@@ -3,6 +3,7 @@ import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
+import {EditSongsModal} from "./EditSongsModal";
 // function renderPanel(){}
 
 export function MainPage() {
@@ -253,6 +254,9 @@ export function MainPage() {
         }
         onCancel={() => setDeleteConfirm(false)}
       />
+     <EditSongsModal show={showEditSongsPopUp} fromSong={"Song A"} toSong={"Song B"} onCancel={() => {setShowEditSongsPopUp(false)}} onSave={() => {
+      // api !!!!!!
+      setShowEditSongsPopUp(false)}} />
     </div>
   );
 }
