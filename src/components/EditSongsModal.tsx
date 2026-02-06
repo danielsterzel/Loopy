@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import { FocusTrap } from "focus-trap-react";
+
 import styles from "./styleModules/EditSongsModal.module.css";
 import type { Playlist } from "../types/Playlist";
 import type { SearchResult } from "../types/SearchResult";
@@ -60,6 +62,7 @@ export function EditSongsModal({
 
   return (
     <div className={styles.shadowBackground} onClick={onCancel}>
+      <FocusTrap>
       <div className={styles.mainBox} onClick={(e) => e.stopPropagation()}>
         <SongBox title={fromSong} onReplace={() => setEditingTarget("from")} />
         <div className={styles.middleColumn}>
@@ -72,6 +75,7 @@ export function EditSongsModal({
           </p>
         )}
       </div>
+      </FocusTrap>
     </div>
   );
 }

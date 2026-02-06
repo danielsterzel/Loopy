@@ -3,7 +3,7 @@ import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
-import {EditSongsModal} from "./EditSongsModal";
+import { EditSongsModal } from "./EditSongsModal";
 // function renderPanel(){}
 
 export function MainPage() {
@@ -116,6 +116,14 @@ export function MainPage() {
                   <i className="fa-solid fa-image"></i> Position 6
                 </button>
               </li>
+              <li>
+                <button
+                  className={styles.macroItem}
+                  onClick={() => setSelected(7)}
+                >
+                  <i className="fa-solid fa-image"></i> Position 7
+                </button>
+              </li>
             </ul>
           </div>
         </aside>
@@ -130,8 +138,10 @@ export function MainPage() {
                 </div>
                 <div className={styles.songArrowWrapper}>
                   <i className="fa-solid fa-arrow-right-long"></i>
-                  <button className={styles.changeSongButton}
-                    onClick={() => setShowEditSongsPopUp(true)}>
+                  <button
+                    className={styles.changeSongButton}
+                    onClick={() => setShowEditSongsPopUp(true)}
+                  >
                     <i className="fa-regular fa-pen-to-square"></i>
                     Edit Songs
                   </button>
@@ -243,6 +253,21 @@ export function MainPage() {
               </div>
             </div>
           )}
+          {selected === 7 && (
+            <div className={styles.macroDetails}>
+              <h2>Position 7</h2>
+              <div className={styles.songsCard}>
+                <div className={styles.songWrapperObject}>
+                  <i className="fa-regular fa-images"></i> Song F
+                </div>
+                <i className="fa-solid fa-arrow-right-long"></i>
+                <div className={styles.songWrapperObject}>
+                  <i className="fa-regular fa-images"></i> Song G
+                </div>
+                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
       <ConfirmModal
@@ -254,9 +279,18 @@ export function MainPage() {
         }
         onCancel={() => setDeleteConfirm(false)}
       />
-     <EditSongsModal show={showEditSongsPopUp} fromSong={"Song A"} toSong={"Song B"} onCancel={() => {setShowEditSongsPopUp(false)}} onSave={() => {
-      // api !!!!!!
-      setShowEditSongsPopUp(false)}} />
+      <EditSongsModal
+        show={showEditSongsPopUp}
+        fromSong={"Song A"}
+        toSong={"Song B"}
+        onCancel={() => {
+          setShowEditSongsPopUp(false);
+        }}
+        onSave={() => {
+          // api !!!!!!
+          setShowEditSongsPopUp(false);
+        }}
+      />
     </div>
   );
 }

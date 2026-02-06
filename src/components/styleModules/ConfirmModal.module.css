@@ -67,16 +67,18 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: 0.2s ease, color 0.2s ease;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 .button--confirm:focus-visible {
     background: var(--danger);
+    transform: translateY(-4px);
     color:#fff;
     transition: 0.2s ease;
 }
 
 .button--cancel:focus-visible {
     background: var(--bg-hover);
+    transform: translateY(-4px);
     color: #fff;
     transition: 0.2s ease;
 }
@@ -90,11 +92,13 @@ body {
     background: var(--danger);
     color: #fff;
     transition: 0.2s ease;
+    transform: translateY(-4px);
 }
 
 .button--cancel:hover {
     background: var(--bg-hover);
     color: #fff;
     transition: 0.2s ease;
+    transform: translateY(-4px);
 }
 

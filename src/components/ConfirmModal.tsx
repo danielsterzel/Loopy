@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { FocusTrap } from "focus-trap-react";
+
 import styles from "./styleModules/ConfirmModal.module.css";
 
 type ConfirmModalProps = {
@@ -15,11 +18,20 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   if (!show) return null;
 
+    useEffect(() => {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") onCancel();
+      };
+      window.addEventListener("keydown", onKey);
+      return () => window.removeEventListener("keydown", onKey);
+    }, [onCancel]);
+
   const name = macroName ?? "Unnamed";
 
   return (
     <div className={styles.shadowBackground}
     onClick={onCancel}>
+      <FocusTrap>
       <div className={styles.checkbox}
       onClick={(e) => e.stopPropagation()}>
         <i className={`fa-solid fa-triangle-exclamation ${styles.warningIcon}`}></i>
@@ -42,6 +54,7 @@ export function ConfirmModal({
           </button>
         </div>
       </div>
+      </FocusTrap>
     </div>
   );
 }

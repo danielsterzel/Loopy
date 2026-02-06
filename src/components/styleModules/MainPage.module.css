@@ -71,13 +71,17 @@ body {
 .socialLinks{
     color: var(--text-muted);
     text-decoration: none;
+    transition: transform 0.2s ease;
 }
 .socialLinks:hover {
     color: var(--color-brand-primary-hover);
+    transform: translateY(-4px);
 }
 .socialLinks:focus-visible {
     outline: 2px solid var(--accent-main);
     outline-offset: 2px;
+    border-radius: 4px;
+    transform: translateY(-4px);
 }
 .content{
     display: grid;
@@ -101,9 +105,14 @@ body {
     flex: 1;
     overflow-y: auto;
     margin-top: 1rem;
+    padding: 6px;
 
-    scrollbar-width: thin;
+    scrollbar-width: none;
     scrollbar-color: var(--accent-main) transparent;
+}
+.macroListWrapper:hover {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-main) transparent;
 }
 
 .macroList {
@@ -131,6 +140,7 @@ body {
 }
 .macroItem:focus-visible{
     outline: 2px solid var(--accent-main);
+    border-radius: 4px;
 }
 .macroItem i {
     font-size: 3rem;
@@ -196,6 +206,7 @@ body {
 .changeSongButton:focus-visible{
     outline: 2px solid var(--accent-main);
     outline-offset: 2px;
+    border-radius: 4px;
 }
 .macroSettings{
     display: flex;
@@ -234,15 +245,19 @@ body {
     border: 1px solid var(--color-border-subtle);
     border-radius: 10px;
     cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .saveButton:hover{
+    transform: translateY(-4px);
     background: var(--bg-hover);
     transition: 0.3 ease;
 }
 .saveButton:focus-visible{
+    transform: translateY(-4px);
     outline: 2px solid var(--accent-main);
     outline-offset: 2px;
+    border-radius: 4px;
     background: transparent;
 
 }
@@ -257,16 +272,20 @@ body {
     color: var(--danger);
     border-radius: 10px;
     cursor:pointer;
+    transition: transform 0.2s ease;
 }
 .deleteButton:hover {
     background-color: var(--danger);
     color: #fff;
     transition: 0.2s ease;
+    transform: translateY(-4px);
 }
 
 .deleteButton:focus-visible{
+    transform: translateY(-4px);
     outline: 2px solid var(--danger);
     outline-offset: 2px;
+    border-radius: 4px;
     background: transparent;
 }
 
@@ -282,6 +301,13 @@ body {
 
 
 
+.saveButton,
+.deleteButton,
+.macroItem,
+.changeSongButton,
+.socialLinks {
+    will-change: transform;
+}
 
 
 
