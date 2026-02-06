@@ -20,6 +20,15 @@ export function Slider({
   const value = controlledValue ?? internalValue; // if someone steers use his otherwise do yo thing
   const percent = ((value - min) / (max - min)) * 100;
 
+  const setValue = (newValue: number) => {
+    const clamped = Math.min(max, Math.max(min, newValue));
+
+    if(controlledValue === undefined){
+      setInternalValue(clamped);
+    }
+    onChange?.(clamped);
+  };
+
   const updateValue = (clientX: number) => {
     if (!trackRef.current) return;
     const rect = trackRef.current.getBoundingClientRect();
@@ -35,7 +44,7 @@ export function Slider({
     // x / rect.width -- slide proportions.
     // max - min -- range of the slider
 
-    setInternalValue(newValue);
+    setValue(newValue);
     onChange?.(Math.round(newValue));
   };
 
@@ -43,9 +52,15 @@ export function Slider({
     <div
       ref={trackRef}
       className={styles.slider}
+      tabIndex={0}
       onMouseDown={(e) => updateValue(e.clientX)}
-      onMouseMove={(e) => e.buttons === 1 && updateValue(e.clientX)} // if mouse move and left
+      onMouseMove={(e) => e.buttons === 1 && updateValue(e.clientX)} // if mouse move and mouse left
       // button update value
+      onKeyDown={(e) => {
+        if(e.key === "ArrowRight" || e.key==="ArrowUp" || e.key==="ArrowDown" || e.key==="ArrowLeft") e.preventDefault();
+        if(e.key === "ArrowRight" || e.key === "ArrowUp") setValue(value + 1);
+        if(e.key === "ArrowLeft" || e.key === "ArrowDown") setValue(value - 1);
+      }}
     >
       <div className={styles.sliderTrack} />
       <div className={styles.sliderFill} style={{ width: `${percent}%` }} />

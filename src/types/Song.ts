@@ -1,7 +1,9 @@
 
 export type Song = {
+    id: string;
     name: string;
-    cover: string; //url
-    //... other stuff
-
+    artist: string;
+    album?: string;
+    coverUrl: string;
+    durationInMs: number;
 };

@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Slider } from "./Slider";
-// function renderPanel(){
-
-// }
+import { ConfirmModal } from "./ConfirmModal";
+// function renderPanel(){}
 
 export function MainPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [seconds, setSeconds] = useState(0);
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
+  const [showEditSongsPopUp, setShowEditSongsPopUp] = useState(false);
 
   useEffect(() => {
     fetch("/api/crossfade")
@@ -127,17 +127,24 @@ export function MainPage() {
                 <div className={styles.songWrapperObject}>
                   <i className="fa-regular fa-images"></i> Song D
                 </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
+                <div className={styles.songArrowWrapper}>
+                  <i className="fa-solid fa-arrow-right-long"></i>
+                  <button className={styles.changeSongButton}
+                    onClick={() => setShowEditSongsPopUp(true)}>
+                    <i className="fa-regular fa-pen-to-square"></i>
+                    Edit Songs
+                  </button>
+                </div>
                 <div className={styles.songWrapperObject}>
                   <i className="fa-regular fa-images"></i> Song E
-                </div>
-                <div className={styles.crossfadeBadge}>
-                  Crossfade: {seconds}s
                 </div>
               </div>
               <div className={styles.macroSettings}>
                 <h3>Settings</h3>
-                Crossfade duration <br />
+                <span>CrossFade duration</span>
+                <div className={styles.crossfadeBadge}>
+                  Crossfade: {seconds}s
+                </div>
                 <div className={styles.sliderWrapper}>
                   <Slider
                     min={0}
@@ -145,9 +152,12 @@ export function MainPage() {
                     value={seconds}
                     onChange={setSeconds}
                   />
-                  <button onClick={saveSeconds}>Save</button>
                 </div>
-                <p>{seconds} s</p>
+              </div>
+              <div className={styles.actions}>
+                <button className={styles.saveButton} onClick={saveSeconds}>
+                  Save
+                </button>
                 <button
                   className={styles.deleteButton}
                   onClick={() => setDeleteConfirm(true)}
@@ -234,6 +244,15 @@ export function MainPage() {
           )}
         </main>
       </div>
+      <ConfirmModal
+        show={showDeleteConfirm}
+        macroName="Postition1"
+        onConfirm={() =>
+          // delete (API)
+          setDeleteConfirm(false)
+        }
+        onCancel={() => setDeleteConfirm(false)}
+      />
     </div>
   );
 }

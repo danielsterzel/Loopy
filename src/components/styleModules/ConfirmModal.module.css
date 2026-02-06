@@ -1,0 +1,100 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    color: var(--text-main);
+}
+
+.shadowBackground{
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+}
+
+.checkbox{
+    position: relative;
+    z-index: 1000;
+    background: var(--bg-card);
+    border: 2px solid var(--border-default);
+    border-radius: 1rem;
+    width: 40%;
+    max-width: 520px;
+    padding: 2.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+    align-items: center;
+}
+
+.warningIcon {
+    font-size: 3.25rem;
+    color: var(--warning);
+    opacity: 0.85;
+    align-self: center;
+}
+
+.checkbox h4 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+.checkbox p {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    opacity: 0.8;
+    margin-bottom: 1.25rem;
+}
+
+
+.options {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1.5rem;
+    font-size: 1.25rem;
+}
+.button {
+    all: unset;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid var(--bg-hover);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease, color 0.2s ease;
+}
+.button--confirm:focus-visible {
+    background: var(--danger);
+    color:#fff;
+    transition: 0.2s ease;
+}
+
+.button--cancel:focus-visible {
+    background: var(--bg-hover);
+    color: #fff;
+    transition: 0.2s ease;
+}
+
+.button--confirm {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.button--confirm:hover {
+    background: var(--danger);
+    color: #fff;
+    transition: 0.2s ease;
+}
+
+.button--cancel:hover {
+    background: var(--bg-hover);
+    color: #fff;
+    transition: 0.2s ease;
+}
+
