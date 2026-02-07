@@ -4,6 +4,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
 import { EditSongsModal } from "./EditSongsModal";
+import { ChangeNameModal } from "./ChangeNameModal";
+import type { Macro } from "../types/Macro";
 // function renderPanel(){}
 
 export function MainPage() {
@@ -11,6 +13,10 @@ export function MainPage() {
   const [seconds, setSeconds] = useState(0);
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
   const [showEditSongsPopUp, setShowEditSongsPopUp] = useState(false);
+  const [showChangeName, setChangeName] = useState(false);
+  const [showChangeImage, setChangeImage] = useState(false);
+  const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
+  const [macroList, setMacroList] = useState<Macro | null>(null);
 
   useEffect(() => {
     fetch("/api/crossfade")
@@ -30,6 +36,15 @@ export function MainPage() {
         crossfadeVal: seconds,
       }),
     });
+  };
+  const toggleSelected = (id: number) => {
+    setSelected((prev) => (prev === id ? null : id));
+  };
+  const handleRename = (macroId: number, newName: string) => {
+    console.log("rename macro", macroId, newName);
+
+    // TODO: later -> API call
+    setChangeName(false);
   };
 
   return (
@@ -68,18 +83,54 @@ export function MainPage() {
           <p>Defined Macros</p>
           <div className={styles.macroListWrapper}>
             <ul className={styles.macroList}>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => setSelected(1)}
-                >
+              <li
+                className={styles.macroRow}
+                tabIndex={0}
+                role="button"
+                aria-label="Select macro"
+                onClick={() => toggleSelected(1)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    toggleSelected(1);
+                  }
+                }}
+              >
+                <div className={styles.macroItem}>
                   <i className="fa-solid fa-image"></i> Position 1
-                </button>
+                </div>
+                <div className={styles.macroActions}>
+                  <button
+                    aria-label="Edit name"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingMacroId(1); // CHANGE TO BACKEDN??? ????? ???? ???
+                      setChangeName(true);
+                    }}
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <i className="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button
+                    aria-label="Change icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // change image logic
+                    }}
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <i className="fa-regular fa-images"></i>
+                  </button>
+                </div>
               </li>
               <li>
                 <button
                   className={styles.macroItem}
-                  onClick={() => setSelected(2)}
+                  onClick={() => toggleSelected(2)}
                 >
                   <i className="fa-solid fa-image"></i> Position 2
                 </button>
@@ -87,7 +138,7 @@ export function MainPage() {
               <li>
                 <button
                   className={styles.macroItem}
-                  onClick={() => setSelected(3)}
+                  onClick={() => toggleSelected(3)}
                 >
                   <i className="fa-solid fa-image"></i> Position 3
                 </button>
@@ -95,7 +146,7 @@ export function MainPage() {
               <li>
                 <button
                   className={styles.macroItem}
-                  onClick={() => setSelected(4)}
+                  onClick={() => toggleSelected(4)}
                 >
                   <i className="fa-solid fa-image"></i> Position 4
                 </button>
@@ -103,7 +154,7 @@ export function MainPage() {
               <li>
                 <button
                   className={styles.macroItem}
-                  onClick={() => setSelected(5)}
+                  onClick={() => toggleSelected(5)}
                 >
                   <i className="fa-solid fa-image"></i> Position 5
                 </button>
@@ -111,7 +162,7 @@ export function MainPage() {
               <li>
                 <button
                   className={styles.macroItem}
-                  onClick={() => setSelected(6)}
+                  onClick={() => toggleSelected(6)}
                 >
                   <i className="fa-solid fa-image"></i> Position 6
                 </button>
@@ -119,7 +170,7 @@ export function MainPage() {
               <li>
                 <button
                   className={styles.macroItem}
-                  onClick={() => setSelected(7)}
+                  onClick={() => toggleSelected(7)}
                 >
                   <i className="fa-solid fa-image"></i> Position 7
                 </button>
@@ -129,6 +180,23 @@ export function MainPage() {
         </aside>
         <main className={styles.panel}>
           {/* THIS NEEDS TO BE REFACTORED WHEN BACKEND IS DONE!!!*/}
+          {selected === null && (
+            <div className={styles.overview}>
+              <h2>Spotify Macros</h2>
+              <p>
+                Spotify Macros is a way to introduce song to song specific
+                crossfade transitions. In order to create one click the button
+                below and try out for yourself!
+              </p>
+              <button
+                className={styles.tryOutButton}
+                onClick={() => toggleSelected(1)}
+              >
+                <i className="fa-solid fa-pen-to-square"></i>Try Out Spotify
+                Macros
+              </button>
+            </div>
+          )}
           {selected === 1 && (
             <div className={styles.macroDetails}>
               <h2>Position 1</h2>
@@ -291,6 +359,15 @@ export function MainPage() {
           setShowEditSongsPopUp(false);
         }}
       />
+      {showChangeName && editingMacroId !== null && (
+        <ChangeNameModal
+          show={showChangeName}
+          macroId={editingMacroId}
+          currentName={"Position1"} // MACRO LIST ITEM
+          onCancel={() => setChangeName(false)}
+          onSave={handleRename}
+        />
+      )}
     </div>
   );
 }

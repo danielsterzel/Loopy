@@ -18,43 +18,43 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   if (!show) return null;
 
-    useEffect(() => {
-      const onKey = (e: KeyboardEvent) => {
-        if (e.key === "Escape") onCancel();
-      };
-      window.addEventListener("keydown", onKey);
-      return () => window.removeEventListener("keydown", onKey);
-    }, [onCancel]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCancel]);
 
   const name = macroName ?? "Unnamed";
 
   return (
-    <div className={styles.shadowBackground}
-    onClick={onCancel}>
-      <FocusTrap>
-      <div className={styles.checkbox}
-      onClick={(e) => e.stopPropagation()}>
-        <i className={`fa-solid fa-triangle-exclamation ${styles.warningIcon}`}></i>
-        <h4>Delete {name} SpotifyMacro?</h4>
-        <p>
-          <em>This action is permanent and cannot be undone.</em>
-        </p>
-        <div className={styles.options}>
-          <button
-            className={`${styles.button} ${styles["button--cancel"]}`}
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
-          <button
-            className={`${styles.button} ${styles["button--confirm"]}`}
-            onClick={onConfirm}
-          >
-            Yes
-          </button>
+    <FocusTrap active={show}>
+      <div className={styles.shadowBackground} onClick={onCancel}>
+        <div className={styles.checkbox} onClick={(e) => e.stopPropagation()}>
+          <i
+            className={`fa-solid fa-triangle-exclamation ${styles.warningIcon}`}
+          ></i>
+          <h4>Delete {name} SpotifyMacro?</h4>
+          <p>
+            <em>This action is permanent and cannot be undone.</em>
+          </p>
+          <div className={styles.options}>
+            <button
+              className={`${styles.button} ${styles["button--cancel"]}`}
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+            <button
+              className={`${styles.button} ${styles["button--confirm"]}`}
+              onClick={onConfirm}
+            >
+              Yes
+            </button>
+          </div>
         </div>
       </div>
-      </FocusTrap>
-    </div>
+    </FocusTrap>
   );
 }

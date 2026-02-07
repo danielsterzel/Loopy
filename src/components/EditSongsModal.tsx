@@ -61,21 +61,24 @@ export function EditSongsModal({
   if (!show) return null;
 
   return (
-    <div className={styles.shadowBackground} onClick={onCancel}>
-      <FocusTrap>
-      <div className={styles.mainBox} onClick={(e) => e.stopPropagation()}>
-        <SongBox title={fromSong} onReplace={() => setEditingTarget("from")} />
-        <div className={styles.middleColumn}>
-          <i className="fa-solid fa-angles-right"></i>
+    <FocusTrap active={show}>
+      <div className={styles.shadowBackground} onClick={onCancel}>
+        <div className={styles.mainBox} onClick={(e) => e.stopPropagation()}>
+          <SongBox
+            title={fromSong}
+            onReplace={() => setEditingTarget("from")}
+          />
+          <div className={styles.middleColumn}>
+            <i className="fa-solid fa-angles-right"></i>
+          </div>
+          <SongBox title={toSong} onReplace={() => setEditingTarget("to")} />
+          {editingTarget && (
+            <p style={{ color: "gray", marginTop: "1rem" }}>
+              Editing: {editingTarget === "from" ? fromSong : toSong}
+            </p>
+          )}
         </div>
-        <SongBox title={toSong} onReplace={() => setEditingTarget("to")} />
-        {editingTarget && (
-          <p style={{ color: "gray", marginTop: "1rem" }}>
-            Editing: {editingTarget === "from" ? fromSong : toSong}
-          </p>
-        )}
       </div>
-      </FocusTrap>
-    </div>
+    </FocusTrap>
   );
 }

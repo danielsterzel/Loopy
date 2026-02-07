@@ -18,8 +18,11 @@ export function Slider({
   const [internalValue, setInternalValue] = useState(min);
 
   const value = controlledValue ?? internalValue; // if someone steers use his otherwise do yo thing
+  // const thumbOffset = 8;
   const percent = ((value - min) / (max - min)) * 100;
 
+  // const thumbLeft = `calc(${percent}% - ${thumbOffset}px)`; 
+  
   const setValue = (newValue: number) => {
     const clamped = Math.min(max, Math.max(min, newValue));
 
@@ -45,17 +48,27 @@ export function Slider({
     // max - min -- range of the slider
 
     setValue(newValue);
-    onChange?.(Math.round(newValue));
   };
+
+  const onMouseDown = (e: React.MouseEvent) => 
+    {
+      updateValue(e.clientX);
+      const onMove = (e: MouseEvent) => updateValue(e.clientX);
+      const onUp = () => {
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseup", onUp);
+      };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    };
 
   return (
     <div
       ref={trackRef}
       className={styles.slider}
       tabIndex={0}
-      onMouseDown={(e) => updateValue(e.clientX)}
-      onMouseMove={(e) => e.buttons === 1 && updateValue(e.clientX)} // if mouse move and mouse left
-      // button update value
+      onMouseDown={onMouseDown} 
       onKeyDown={(e) => {
         if(e.key === "ArrowRight" || e.key==="ArrowUp" || e.key==="ArrowDown" || e.key==="ArrowLeft") e.preventDefault();
         if(e.key === "ArrowRight" || e.key === "ArrowUp") setValue(value + 1);
@@ -65,6 +78,7 @@ export function Slider({
       <div className={styles.sliderTrack} />
       <div className={styles.sliderFill} style={{ width: `${percent}%` }} />
       <div className={styles.sliderThumb} style={{ left: `${percent}%` }} />
+      {/* <div className={styles.sliderTicks}>{Array.from({length: max - min + 1}).map((_, i) => (<span key={i} />))}</div> */}
     </div>
   );
 }

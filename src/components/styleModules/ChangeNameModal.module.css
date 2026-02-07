@@ -24,40 +24,53 @@ body {
     padding: 2.5rem 3rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
     text-align: center;
     align-items: center;
 }
 
-.warningIcon {
-    font-size: 3.25rem;
-    color: var(--warning);
-    opacity: 0.85;
-    align-self: center;
+.checkbox form {
+  width: 100%;
 }
 
-.checkbox h4 {
+h4 {
     font-size: 1.5rem;
-    margin-bottom: 0.25rem;
 }
-.checkbox p {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--text-muted);
-    opacity: 0.8;
-    margin-bottom: 1.25rem;
+input {
+  all: unset;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 0.75rem 1rem;
+
+  font-size: 1.1rem;
+  font-family: inherit;
+  color: var(--text-main);
+
+  background: var(--bg-card);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 10px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
+input:focus {
+  border-color: var(--accent-main);
+  box-shadow: 0 0 0 3px rgba(120, 160, 255, 0.25);
+  transform: translateY(-1px);
+}
 
-.options {
-    margin-top: 2rem;
+.actions {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    width: 100%;
-    gap: 1.5rem;
-    font-size: 1.25rem;
+    padding: 1rem;
 }
-.button {
+.actions button {
     all: unset;
     cursor: pointer;
     user-select: none;
@@ -69,33 +82,27 @@ body {
     justify-content: center;
     transition: transform 0.2s ease, color 0.2s ease;
 }
-.button--confirm:focus-visible {
+.actions .discard {
+    color: var(--danger);
+}
+.discard:hover{
     background: var(--danger);
     transform: translateY(-4px);
     color:#fff;
     transition: 0.2s ease;
 }
-
-.button--confirm {
-    border-color: var(--danger);
-    color: var(--danger);
-}
-
-.button--confirm:hover {
-    background: var(--danger);
+.discard:focus-visible{
+    outline: 2px solid var(--danger);
+    background: var(--bg-hover);
     color: #fff;
-    transition: 0.2s ease;
-    transform: translateY(-4px);
 }
-
-.button--cancel:hover {
+.confirm:hover {
     background: var(--bg-hover);
     color: #fff;
     transition: 0.2s ease;
     transform: translateY(-4px);
 }
-
-.button--cancel:focus-visible {
+.confirm:focus-visible {
     background: var(--bg-hover);
     transform: translateY(-4px);
     color: #fff;
