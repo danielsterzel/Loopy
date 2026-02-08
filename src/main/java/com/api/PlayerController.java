@@ -6,17 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 @RequestMapping("/api/player") // prefix for all mappings in controller
 public class PlayerController {
     private final SpotifyApiClient spotifyApiClient;
-    private final ResponseEntityExceptionHandler responseEntityExceptionHandler;
 
-    public PlayerController(SpotifyApiClient spotifyApiClient, ResponseEntityExceptionHandler responseEntityExceptionHandler){
+    public PlayerController(SpotifyApiClient spotifyApiClient){
         this.spotifyApiClient = spotifyApiClient;
-        this.responseEntityExceptionHandler = responseEntityExceptionHandler;
     }
     @GetMapping("/raw")
     public String rawPlayerJson(){
