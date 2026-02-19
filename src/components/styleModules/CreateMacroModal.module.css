@@ -1,0 +1,30 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    color: var(--text-main);
+}
+
+.shadowBackground{
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+}
+
+.checkbox{
+    position: relative;
+    z-index: 1000;
+    background: var(--bg-card);
+    border: 2px solid var(--border-default);
+    border-radius: 1rem;
+    width: 40%;
+    max-width: 520px;
+    padding: 2.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+    align-items: center;
+}

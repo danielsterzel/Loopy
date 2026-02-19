@@ -1,51 +1,67 @@
 import { useState, useEffect } from "react";
+
 import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+
+import { getUserMacros } from "../api/MacroApi";
+import { BASE_URL } from "../common/APIBase";
+
 import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
 import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
+
 import type { Macro } from "../types/Macro";
 // function renderPanel(){}
 
 export function MainPage() {
   const [selected, setSelected] = useState<number | null>(null);
-  const [seconds, setSeconds] = useState(0);
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
   const [showEditSongsPopUp, setShowEditSongsPopUp] = useState(false);
   const [showChangeName, setChangeName] = useState(false);
   const [showChangeImage, setChangeImage] = useState(false);
   const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
-  const [macroList, setMacroList] = useState<Macro | null>(null);
+  const [macroList, setMacroList] = useState<Macro[]>([]);
 
   useEffect(() => {
-    fetch("/api/crossfade")
+    fetch(`${BASE_URL}/api/me`, {
+      credentials: "include",
+    })
       .then((res) => {
-        if (!res.ok) throw new Error("fetch failed");
-        return res.json();
+        console.log("STATUS", res.status);
+        if (res.status === 401) {
+          window.location.href = `${BASE_URL}/oauth2/authorization/spotify`;
+          return null;
+        }
+        return getUserMacros();
       })
-      .then((data) => setSeconds(data.crossfadeVal))
+      .then((data) => {
+        if (data) setMacroList(data);
+      })
       .catch((err) => console.error(err));
   }, []);
 
-  const saveSeconds = async () => {
-    await fetch("soon to be api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        crossfadeVal: seconds,
-      }),
-    });
-  };
   const toggleSelected = (id: number) => {
     setSelected((prev) => (prev === id ? null : id));
   };
   const handleRename = (macroId: number, newName: string) => {
-    console.log("rename macro", macroId, newName);
+    setMacroList((prev) =>
+      prev.map((m) => (m.id === macroId ? { ...m, name: newName } : m)),
+    );
+    const handleMacroCreation = (
+      macroName: string,
+      fromSong: string,
+      toSong: string,
+      crossfadeDuration: number
+    ) => {
+      // macro creation logic
+    };
 
     // TODO: later -> API call
     setChangeName(false);
   };
+
+  const selectedMacro = macroList.find((m) => m.id === selected) ?? null;
 
   return (
     <div className={styles.mainPage}>
@@ -80,106 +96,68 @@ export function MainPage() {
       </div>
       <div className={styles.content}>
         <aside className={styles.sidebar}>
-          <p>Defined Macros</p>
+          <h4 className={styles.listTitle}>Defined Macros</h4>
+          {/* PUT / POST ??? definetly redirect to Create Macro Modal*/}
+          <button
+            className={styles.createMacroButton}
+            onClick={() => console.log("creating macro...")}
+          >
+            Create new Macro
+          </button>
           <div className={styles.macroListWrapper}>
             <ul className={styles.macroList}>
-              <li
-                className={styles.macroRow}
-                tabIndex={0}
-                role="button"
-                aria-label="Select macro"
-                onClick={() => toggleSelected(1)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    toggleSelected(1);
-                  }
-                }}
-              >
-                <div className={styles.macroItem}>
-                  <i className="fa-solid fa-image"></i> Position 1
-                </div>
-                <div className={styles.macroActions}>
-                  <button
-                    aria-label="Edit name"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditingMacroId(1); // CHANGE TO BACKEDN??? ????? ???? ???
-                      setChangeName(true);
-                    }}
-                    onKeyDown={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button
-                    aria-label="Change icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // change image logic
-                    }}
-                    onKeyDown={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <i className="fa-regular fa-images"></i>
-                  </button>
-                </div>
-              </li>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => toggleSelected(2)}
+              {macroList.map((macro) => (
+                <li
+                  className={styles.macroRow}
+                  key={macro.id}
+                  tabIndex={0}
+                  role="button"
+                  aria-label="Select macro"
+                  onClick={() => toggleSelected(macro.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleSelected(macro.id);
+                    }
+                  }}
                 >
-                  <i className="fa-solid fa-image"></i> Position 2
-                </button>
-              </li>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => toggleSelected(3)}
-                >
-                  <i className="fa-solid fa-image"></i> Position 3
-                </button>
-              </li>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => toggleSelected(4)}
-                >
-                  <i className="fa-solid fa-image"></i> Position 4
-                </button>
-              </li>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => toggleSelected(5)}
-                >
-                  <i className="fa-solid fa-image"></i> Position 5
-                </button>
-              </li>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => toggleSelected(6)}
-                >
-                  <i className="fa-solid fa-image"></i> Position 6
-                </button>
-              </li>
-              <li>
-                <button
-                  className={styles.macroItem}
-                  onClick={() => toggleSelected(7)}
-                >
-                  <i className="fa-solid fa-image"></i> Position 7
-                </button>
-              </li>
+                  <div className={styles.macroItem}>
+                    <i className="fa-solid fa-image"></i>
+                    {macro.name}
+                  </div>
+                  <div className={styles.macroActions}>
+                    <button
+                      aria-label="Edit name"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingMacroId(macro.id);
+                        setChangeName(true);
+                      }}
+                      onKeyDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <i className="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button
+                      aria-label="Change icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // change image logic
+                      }}
+                      onKeyDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <i className="fa-regular fa-images"></i>
+                    </button>
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </aside>
         <main className={styles.panel}>
-          {/* THIS NEEDS TO BE REFACTORED WHEN BACKEND IS DONE!!!*/}
           {selected === null && (
             <div className={styles.overview}>
               <h2>Spotify Macros</h2>
@@ -190,19 +168,20 @@ export function MainPage() {
               </p>
               <button
                 className={styles.tryOutButton}
-                onClick={() => toggleSelected(1)}
+                onClick={() => toggleSelected(macroList[0].id)}
               >
                 <i className="fa-solid fa-pen-to-square"></i>Try Out Spotify
                 Macros
               </button>
             </div>
           )}
-          {selected === 1 && (
+          {selectedMacro && (
             <div className={styles.macroDetails}>
-              <h2>Position 1</h2>
+              <h2>{selectedMacro.name}</h2>
               <div className={styles.songsCard}>
                 <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song D
+                  <i className="fa-regular fa-images"></i>{" "}
+                  {selectedMacro.fromSong}
                 </div>
                 <div className={styles.songArrowWrapper}>
                   <i className="fa-solid fa-arrow-right-long"></i>
@@ -215,26 +194,39 @@ export function MainPage() {
                   </button>
                 </div>
                 <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song E
+                  <i className="fa-regular fa-images"></i>{" "}
+                  {selectedMacro.toSong}
                 </div>
               </div>
               <div className={styles.macroSettings}>
                 <h3>Settings</h3>
                 <span>CrossFade duration</span>
                 <div className={styles.crossfadeBadge}>
-                  Crossfade: {seconds}s
+                  Crossfade: {selectedMacro.crossfadeDuration}s
                 </div>
                 <div className={styles.sliderWrapper}>
                   <Slider
                     min={0}
                     max={12}
-                    value={seconds}
-                    onChange={setSeconds}
+                    value={selectedMacro.crossfadeDuration}
+                    onChange={(val) => {
+                      if (!selectedMacro) return;
+                      setMacroList((prev) =>
+                        prev.map((m) =>
+                          m.id === selectedMacro.id
+                            ? { ...m, crossfadeDuration: val }
+                            : m,
+                        ),
+                      );
+                    }}
                   />
                 </div>
               </div>
               <div className={styles.actions}>
-                <button className={styles.saveButton} onClick={saveSeconds}>
+                <button
+                  className={styles.saveButton}
+                  onClick={() => console.log("save", selectedMacro)}
+                >
                   Save
                 </button>
                 <button
@@ -246,101 +238,11 @@ export function MainPage() {
               </div>
             </div>
           )}
-          {selected === 2 && (
-            <div className={styles.macroDetails}>
-              <h2>Position 2</h2>
-              <div className={styles.songsCard}>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song A
-                </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song E
-                </div>
-                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
-              </div>
-            </div>
-          )}
-          {selected === 3 && (
-            <div className={styles.macroDetails}>
-              <h2>Position 3</h2>
-              <div className={styles.songsCard}>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song C
-                </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song B
-                </div>
-                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
-              </div>
-            </div>
-          )}
-          {selected === 4 && (
-            <div className={styles.macroDetails}>
-              <h2>Position 4</h2>
-              <div className={styles.songsCard}>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song Y
-                </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song T
-                </div>
-                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
-              </div>
-            </div>
-          )}
-          {selected === 5 && (
-            <div className={styles.macroDetails}>
-              <h2>Position 5</h2>
-              <div className={styles.songsCard}>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song K
-                </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song M
-                </div>
-                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
-              </div>
-            </div>
-          )}
-          {selected === 6 && (
-            <div className={styles.macroDetails}>
-              <h2>Position 6</h2>
-              <div className={styles.songsCard}>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song F
-                </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song G
-                </div>
-                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
-              </div>
-            </div>
-          )}
-          {selected === 7 && (
-            <div className={styles.macroDetails}>
-              <h2>Position 7</h2>
-              <div className={styles.songsCard}>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song F
-                </div>
-                <i className="fa-solid fa-arrow-right-long"></i>
-                <div className={styles.songWrapperObject}>
-                  <i className="fa-regular fa-images"></i> Song G
-                </div>
-                <div className={styles.crossfadeBadge}>Crossfade: xxx</div>
-              </div>
-            </div>
-          )}
         </main>
       </div>
       <ConfirmModal
         show={showDeleteConfirm}
-        macroName="Postition1"
+        macroName={selectedMacro?.name ?? ""}
         onConfirm={() =>
           // delete (API)
           setDeleteConfirm(false)
@@ -349,8 +251,8 @@ export function MainPage() {
       />
       <EditSongsModal
         show={showEditSongsPopUp}
-        fromSong={"Song A"}
-        toSong={"Song B"}
+        fromSong={selectedMacro?.fromSong}
+        toSong={selectedMacro?.toSong}
         onCancel={() => {
           setShowEditSongsPopUp(false);
         }}
@@ -363,7 +265,9 @@ export function MainPage() {
         <ChangeNameModal
           show={showChangeName}
           macroId={editingMacroId}
-          currentName={"Position1"} // MACRO LIST ITEM
+          currentName={
+            macroList.find((m) => m.id === editingMacroId)?.name ?? ""
+          } // MACRO LIST ITEM
           onCancel={() => setChangeName(false)}
           onSave={handleRename}
         />

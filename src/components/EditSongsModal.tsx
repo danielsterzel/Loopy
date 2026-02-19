@@ -12,8 +12,8 @@ type Step = "idle" | "choose-source" | "choose-playlist" | "choose-track";
 
 type ChangeSongsModalProps = {
   show: boolean;
-  fromSong: string; // temp type TODO: refactor this to Song type object
-  toSong: string; // temp type
+  fromSong?: string; // temp type TODO: refactor this to Song type object
+  toSong?: string; // temp type
   onCancel: () => void;
   onSave: (fromSong: string, toSong: string) => void;
 };
@@ -22,7 +22,7 @@ function SongBox({
   title,
   onReplace,
 }: {
-  title: string;
+  title?: string;
   onReplace: () => void;
 }) {
   return (
@@ -65,13 +65,13 @@ export function EditSongsModal({
       <div className={styles.shadowBackground} onClick={onCancel}>
         <div className={styles.mainBox} onClick={(e) => e.stopPropagation()}>
           <SongBox
-            title={fromSong}
+            title={fromSong ?? ""}
             onReplace={() => setEditingTarget("from")}
           />
           <div className={styles.middleColumn}>
             <i className="fa-solid fa-angles-right"></i>
           </div>
-          <SongBox title={toSong} onReplace={() => setEditingTarget("to")} />
+          <SongBox title={toSong ?? ""} onReplace={() => setEditingTarget("to")} />
           {editingTarget && (
             <p style={{ color: "gray", marginTop: "1rem" }}>
               Editing: {editingTarget === "from" ? fromSong : toSong}

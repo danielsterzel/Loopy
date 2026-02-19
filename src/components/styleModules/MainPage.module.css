@@ -100,7 +100,39 @@ body {
     height: 100%;
     min-height: 0;
 }
+.listTitle {
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+.createMacroButton {
+    all: unset;
+    box-sizing: border-box;
+    padding: 1rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 0;
+    user-select: none;
+    cursor: pointer;
+    padding: 1rem;
+    background: var(--bg-card);
+    border: 2px solid var(--bg-hover);
+    border-radius: 10px;
+    transition: transform 0.2s ease;    
+}
 
+.createMacroButton:hover {
+    background: var(--bg-hover);
+    transform: translateY(-4px);
+    border-color: var(--accent-main);
+}
+.createMacroButton:focus-visible{
+    outline: 2px solid var(--accent-main);
+    outline-offset: 2px;
+    transform: translateY(-4px);
+}
 .macroListWrapper {
     flex: 1;
     overflow-y: auto;
@@ -120,7 +152,7 @@ body {
     flex-direction: column;
     gap: 2rem;
     list-style: none;
-    align-items: flex-start;
+    align-items: stretch;
     padding: 0;
 }
 .macroRow {
@@ -141,7 +173,10 @@ body {
 }
 
 .macroItem {
-    all: unset;
+    border: none;
+    background: none;
+    outline: none;
+    box-sizing: border-box;
     flex: 1;
     display: flex;
     align-items: center;

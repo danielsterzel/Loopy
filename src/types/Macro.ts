@@ -1,7 +1,8 @@
 export type Macro = {
-    id? : string;
+    id : number;
     name? : string;
     fromSong: string;
     toSong: string;
-    crossFadeSeconds: number;
+    crossfadeDuration: number;
+    position: number;
 };
