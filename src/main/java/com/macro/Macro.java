@@ -41,6 +41,16 @@ public class Macro {
         this.toSong = toSong;
         this.crossfadeDuration = crossfadeDuration;
     }
+    public Macro(User user, Long id, String name, int position, String fromSong, String toSong, Integer crossfadeDuration)
+    {
+        this.user = user;
+        this.id = id;
+        this.name = name;
+        this.position = position;
+        this.fromSong = fromSong;
+        this.toSong = toSong;
+        this.crossfadeDuration = crossfadeDuration;
+    }
 
     public Long getId(){return id;}
     public String getName(){return name;}
