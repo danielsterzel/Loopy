@@ -5,6 +5,7 @@ import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { getUserMacros } from "../api/MacroApi";
+import { postMacroNameChange } from "../api/MacroApi";
 import { BASE_URL } from "../common/APIBase";
 
 import { Slider } from "./Slider";
@@ -21,11 +22,11 @@ export function MainPage() {
 
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
   const [showEditSongsPopUp, setShowEditSongsPopUp] = useState(false);
-  const [showChangeName, setChangeName] = useState(false);
-  const [showChangeImage, setChangeImage] = useState(false);
-  const [showCreateMacro, setCreateMacro] = useState(false);
+  const [isChangeMacroNameModalOpen, setIsChangeMacroNameModalOpen] = useState(false);
+  const [isChangeMacroImageModalOpen, setIsChangeMacroImageModalOpen] = useState(false);
+  const [isCreateMacroModalOpen, setIsCreateMacroModalOpen] = useState(false);
   const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
-  const [macroList, setMacroList] = useState<Macro[]>([]);
+  const [userMacrosList, setUserMacrosList] = useState<Macro[]>([]);
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -40,7 +41,7 @@ export function MainPage() {
         return getUserMacros();
       })
       .then((data) => {
-        if (data) setMacroList(data);
+        if (data) setUserMacrosList(data);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -50,19 +51,31 @@ export function MainPage() {
   }, []);
 
   // should post to backend!!!!!
-  const handleRename = (macroId: number, newName: string) => {
-    setMacroList((prev) =>
-      prev.map((m) => (m.id === macroId ? { ...m, name: newName } : m)),
+  const handleRename = async (id: number, name: string) => {
+    setUserMacrosList((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, name: name } : m)),
     );
-    // TODO: later -> API call
-    setChangeName(false);
+    try
+    {
+      const updatedMacro = await postMacroNameChange({id, name});
+      if(updatedMacro)
+      {
+        setUserMacrosList(prev => prev.map(m => m.id === id ? updatedMacro: m));
+      }
+  
+      setIsChangeMacroNameModalOpen(false);
+      
+    }catch(err)
+    {
+      console.log("Rename error:", err);
+    }
   };
 
   const addCreatedMacroToList = (macro: Macro) => {
-    setMacroList((prev) => [...prev, macro]);
+    setUserMacrosList((prev) => [...prev, macro]);
   };
 
-  const selectedMacro = macroList.find((m) => m.id === selected) ?? null;
+  const selectedMacro = userMacrosList.find((m) => m.id === selected) ?? null;
 
   return (
     <div className={styles.mainPage}>
@@ -101,13 +114,13 @@ export function MainPage() {
           {/* PUT / POST ??? definetly redirect to Create Macro Modal*/}
           <button
             className={styles.createMacroButton}
-            onClick={() => setCreateMacro(true)}
+            onClick={() => setIsCreateMacroModalOpen(true)}
           >
             Create new Macro
           </button>
           <div className={styles.macroListWrapper}>
             <ul className={styles.macroList}>
-              {macroList.map((macro) => (
+              {userMacrosList.map((macro) => (
                 <li
                   className={styles.macroRow}
                   key={macro.id}
@@ -132,7 +145,7 @@ export function MainPage() {
                       onClick={(e) => {
                         e.stopPropagation();
                         setEditingMacroId(macro.id);
-                        setChangeName(true);
+                        setIsChangeMacroNameModalOpen(true);
                       }}
                       onKeyDown={(e) => {
                         e.stopPropagation();
@@ -169,7 +182,15 @@ export function MainPage() {
               </p>
               <button
                 className={styles.tryOutButton}
-                onClick={() => toggleSelected(macroList[0].id)}
+                onClick={() => {
+                  if(userMacrosList.length === 0)
+                    {
+                      setIsCreateMacroModalOpen(true)
+                    }
+                    else{
+                    toggleSelected(userMacrosList[0].id)
+                    }
+                }}
               >
                 <i className="fa-solid fa-pen-to-square"></i>Try Out Spotify
                 Macros
@@ -212,7 +233,7 @@ export function MainPage() {
                     value={selectedMacro.crossfadeDuration}
                     onChange={(val) => {
                       if (!selectedMacro) return;
-                      setMacroList((prev) =>
+                      setUserMacrosList((prev) =>
                         prev.map((m) =>
                           m.id === selectedMacro.id
                             ? { ...m, crossfadeDuration: val }
@@ -262,21 +283,21 @@ export function MainPage() {
           setShowEditSongsPopUp(false);
         }}
       />
-      {showChangeName && editingMacroId !== null && (
+      {isChangeMacroNameModalOpen && editingMacroId !== null && (
         <ChangeNameModal
-          show={showChangeName}
+          show={isChangeMacroNameModalOpen}
           macroId={editingMacroId}
           currentName={
-            macroList.find((m) => m.id === editingMacroId)?.name ?? ""
+            userMacrosList.find((m) => m.id === editingMacroId)?.name ?? ""
           } // MACRO LIST ITEM
-          onCancel={() => setChangeName(false)}
-          onSave={handleRename}
+          onCancel={() => setIsChangeMacroNameModalOpen(false)}
+          onSave={(handleRename)}
         />
       )}
       <CreateMacroModal
-        show={showCreateMacro}
+        show={isCreateMacroModalOpen}
         onSave={addCreatedMacroToList}
-        onCancel={() => setCreateMacro(false)}
+        onCancel={() => setIsCreateMacroModalOpen(false)}
       />
     </div>
   );
