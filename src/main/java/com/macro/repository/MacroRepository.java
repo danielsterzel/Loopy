@@ -3,6 +3,8 @@ package com.macro.repository;
 import com.User.User;
 import com.macro.Macro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +18,8 @@ public interface MacroRepository extends JpaRepository<Macro, Long> {
     List<Macro> findAllByUser(User user);
 
     Optional<Macro> findByIdAndUser(Long id, User user);
+
+    @Query("SELECT COALESCE(MAX(m.position), 0) FROM Macro m WHERE m.user = :user")
+    int findMaxPositionbyUser(@Param("user") User user);
+    // :user is a placeholder
 }
