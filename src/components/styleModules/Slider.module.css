@@ -11,7 +11,7 @@
 
 .sliderTrack {
     position: absolute;
-    background: var(--bg-card);
+    background: #000;
     top: 50%;
     transform: translateY(-50%);
     height: 6px;

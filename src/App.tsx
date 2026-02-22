@@ -8,7 +8,7 @@ function App() {
   //   <CreateMacroModal
   //     show={true}
   //     onCancel={() => {}}
-  //     onConfirm={() => {}}
+  //     onSave={() => {}}
   //   />
   // );
 }

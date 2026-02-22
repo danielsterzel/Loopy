@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useCallback } from "react";
 
 import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -10,16 +11,19 @@ import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
 import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
+import { CreateMacroModal } from "./CreateMacroModal";
 
 import type { Macro } from "../types/Macro";
 // function renderPanel(){}
 
 export function MainPage() {
   const [selected, setSelected] = useState<number | null>(null);
+
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
   const [showEditSongsPopUp, setShowEditSongsPopUp] = useState(false);
   const [showChangeName, setChangeName] = useState(false);
   const [showChangeImage, setChangeImage] = useState(false);
+  const [showCreateMacro, setCreateMacro] = useState(false);
   const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
   const [macroList, setMacroList] = useState<Macro[]>([]);
 
@@ -41,24 +45,21 @@ export function MainPage() {
       .catch((err) => console.error(err));
   }, []);
 
-  const toggleSelected = (id: number) => {
+  const toggleSelected = useCallback((id: number) => {
     setSelected((prev) => (prev === id ? null : id));
-  };
+  }, []);
+
+  // should post to backend!!!!!
   const handleRename = (macroId: number, newName: string) => {
     setMacroList((prev) =>
       prev.map((m) => (m.id === macroId ? { ...m, name: newName } : m)),
     );
-    const handleMacroCreation = (
-      macroName: string,
-      fromSong: string,
-      toSong: string,
-      crossfadeDuration: number
-    ) => {
-      // macro creation logic
-    };
-
     // TODO: later -> API call
     setChangeName(false);
+  };
+
+  const addCreatedMacroToList = (macro: Macro) => {
+    setMacroList((prev) => [...prev, macro]);
   };
 
   const selectedMacro = macroList.find((m) => m.id === selected) ?? null;
@@ -100,7 +101,7 @@ export function MainPage() {
           {/* PUT / POST ??? definetly redirect to Create Macro Modal*/}
           <button
             className={styles.createMacroButton}
-            onClick={() => console.log("creating macro...")}
+            onClick={() => setCreateMacro(true)}
           >
             Create new Macro
           </button>
@@ -272,6 +273,11 @@ export function MainPage() {
           onSave={handleRename}
         />
       )}
+      <CreateMacroModal
+        show={showCreateMacro}
+        onSave={addCreatedMacroToList}
+        onCancel={() => setCreateMacro(false)}
+      />
     </div>
   );
 }

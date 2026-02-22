@@ -27,6 +27,16 @@ export async function apiGet<T>(path: string): Promise<T | null> {
   return apiFetch<T>(path);
 }
 
+export async function apiPost<T>(path: string, body: unknown): Promise<T | null> {
+  return apiFetch<T>(path, {
+    method: "POST",
+    body: JSON.stringify(body)  
+  })
+}
+export async function apiDelete<T>(path: string) {
+  return apiFetch<T>(path, {method: "DELETE"});
+}
+
 export function getPlaylists(playlistId: string) {
   const playlistTracks = `${PLAYLIST_API}/${playlistId}/tracks`;
   return apiGet<Playlist[]>(playlistTracks);
