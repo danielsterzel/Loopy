@@ -1,7 +1,11 @@
 package com.macro;
 
 import com.User.User;
+import com.macro.DTO.MacroDTO;
+import com.macro.DTO.MacroMapper;
+import com.macro.DTO.RenameMacro;
 import com.macro.repository.MacroRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,5 +48,15 @@ public class MacroService {
     }
     public int getNextPosition(User user){
         return macroRepository.findMaxPositionbyUser(user)+ 1;
+    }
+
+    @Transactional // changes in database in this method are one operation.
+    public MacroDTO renameMacro(User user, RenameMacro renameMacro)
+    {
+        System.out.println("Rename request id=" + renameMacro.id() + " name=" + renameMacro.name());
+        Macro macro = getByIdForUser(user, renameMacro.id());
+
+        macro.setName(renameMacro.name());
+        return MacroMapper.macroToDTO(macro);
     }
 }

@@ -28,4 +28,18 @@ public class MacroMapper {
 
         );
     }
+    public static Macro dtoToEntity(User user, MacroDTO macroDTO)
+    {
+
+        return new Macro(
+                user,
+                macroDTO.id(),
+                macroDTO.name(),
+                macroDTO.position(),
+                macroDTO.fromSong(),
+                macroDTO.toSong(),
+                macroDTO.crossfadeDuration()
+
+        );
+    }
 }

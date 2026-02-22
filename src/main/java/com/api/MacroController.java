@@ -6,6 +6,7 @@ import com.User.UserService;
 import com.macro.DTO.CreateMacroDTO;
 import com.macro.DTO.MacroDTO;
 import com.macro.DTO.MacroMapper;
+import com.macro.DTO.RenameMacro;
 import com.macro.Macro;
 import com.macro.MacroService;
 
@@ -44,5 +45,13 @@ public class MacroController {
         Macro saved = macroService.save(macro);
 
         return MacroMapper.macroToDTO(saved);
+    }
+    @PostMapping("/rename")
+    public MacroDTO renameMacro(@AuthenticationPrincipal OAuth2User oaUth2User,
+                                @RequestBody RenameMacro renameMacro)
+    {
+        User user = userService.getOrCreate(oaUth2User);
+
+        return macroService.renameMacro(user, renameMacro);
     }
 }
