@@ -11,19 +11,19 @@ public class Macro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 25)
     private String name;
 
     @Column(nullable = false)
-    private int position;
+    private int position; // ???? Is it really necessary?
 
     @Column(nullable = true)
     private Integer crossfadeDuration;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String fromSong;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String toSong;
 
     @ManyToOne(optional = false)

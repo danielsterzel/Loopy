@@ -38,4 +38,11 @@ public class MacroService {
         Macro macro = new Macro(user, name, position,fromSong, toSong, crossfadeDuration);
         return macroRepository.save(macro);
     }
+    public Macro save(Macro macro)
+    {
+        return macroRepository.save(macro);
+    }
+    public int getNextPosition(User user){
+        return macroRepository.findMaxPositionbyUser(user)+ 1;
+    }
 }

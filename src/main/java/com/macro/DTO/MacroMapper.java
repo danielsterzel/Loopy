@@ -1,10 +1,11 @@
 package com.macro.DTO;
 
 
+import com.User.User;
 import com.macro.Macro;
 
 public class MacroMapper {
-    public static MacroDTO toDto(Macro macro)
+    public static MacroDTO macroToDTO(Macro macro)
     {
         return new MacroDTO(
                 macro.getId(),
@@ -13,6 +14,18 @@ public class MacroMapper {
                 macro.getToSong(),
                 macro.getCrossfadeDuration(),
                 macro.getMacroPosition()
+        );
+    }
+    public static Macro dtoToEntity(User user, CreateMacroDTO dto, int position)
+    {
+        return new Macro(
+                user,
+                dto.name(),
+                position,
+                dto.fromSong(),
+                dto.toSong(),
+                dto.crossfadeDuration()
+
         );
     }
 }

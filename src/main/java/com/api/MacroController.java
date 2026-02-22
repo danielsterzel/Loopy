@@ -3,6 +3,7 @@ package com.api;
 
 import com.User.User;
 import com.User.UserService;
+import com.macro.DTO.CreateMacroDTO;
 import com.macro.DTO.MacroDTO;
 import com.macro.DTO.MacroMapper;
 import com.macro.Macro;
@@ -25,9 +26,23 @@ public class MacroController {
     }
 
     @GetMapping
-    public List<MacroDTO> getMacros(@AuthenticationPrincipal OAuth2User oAuthUser)
+    public List<MacroDTO> getMacros(@AuthenticationPrincipal OAuth2User oAuth2User)
     {
-        User user = userService.getOrCreate(oAuthUser);
-        return macroService.getAllForUser(user).stream().map(MacroMapper::toDto).toList();
+        User user = userService.getOrCreate(oAuth2User);
+        return macroService.getAllForUser(user).stream().map(MacroMapper::macroToDTO).toList();
+    }
+
+    @PostMapping("/create")
+    public MacroDTO createMacro(@AuthenticationPrincipal OAuth2User oAuth2User,
+                                @RequestBody CreateMacroDTO createMacroDTO)
+    {
+        User user = userService.getOrCreate(oAuth2User);
+
+        int position = macroService.getNextPosition(user);
+
+        Macro macro = MacroMapper.dtoToEntity(user, createMacroDTO, position);
+        Macro saved = macroService.save(macro);
+
+        return MacroMapper.macroToDTO(saved);
     }
 }
