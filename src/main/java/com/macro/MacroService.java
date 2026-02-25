@@ -96,4 +96,17 @@ public class MacroService {
         macro.setFromSong(macroReconfiguration.fromSong());
         macro.setToSong(macroReconfiguration.toSong());
     }
+    @Transactional
+    public void deleteMacro(User user, Long id)
+    {
+        Macro macro = getByIdForUser(user, id);
+        macroRepository.delete(macro);
+
+        List<Macro> macros = macroRepository.findAllByUserOrderByPositionAsc(user);
+        int pos = 1;
+        for (var m: macros)
+        {
+            m.setMacroPositionInList(pos++);
+        }
+    }
 }

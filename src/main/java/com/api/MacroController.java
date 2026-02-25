@@ -10,6 +10,7 @@ import com.macro.DTO.RenameMacro;
 import com.macro.Macro;
 import com.macro.MacroService;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
@@ -66,5 +67,15 @@ public class MacroController {
         macroService.handleMacroReconfiguration(macro, reconfiguredMacro);
 
         return MacroMapper.entityToDto(macro);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteMacro(
+            @AuthenticationPrincipal OAuth2User oAuth2User,
+            @PathVariable Long id)
+    {
+        User user = userService.getOrCreate(oAuth2User);
+
+        macroService.deleteMacro(user, id);
+        return ResponseEntity.noContent().build();
     }
 }
