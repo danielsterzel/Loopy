@@ -1,5 +1,5 @@
 import type { Macro } from "../types/Macro";
-import { apiGet, apiPost } from "./SpotifyApi";
+import { apiDelete, apiGet, apiPost } from "./SpotifyApi";
 import { BASE_URL } from "../common/APIBase";
 
 const MACRO_API_ENDPOINT_BASE_URL = BASE_URL + "/api/macros";
@@ -42,4 +42,9 @@ export async function postMacroNameChange({id, name}: MacroRenameProps)
 export async function postMacroReconfiguration(macro: Macro)
 {
   return apiPost<Macro>(`${MACRO_API_ENDPOINT_BASE_URL}/save/configuration`, macro);
+}
+
+export async function deleteMacro(id: number)
+{
+  return apiDelete<void>(`${MACRO_API_ENDPOINT_BASE_URL}/delete/${id}`);
 }

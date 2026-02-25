@@ -7,6 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { getUserMacros } from "../api/MacroApi";
 import { postMacroNameChange } from "../api/MacroApi";
 import { postMacroReconfiguration } from "../api/MacroApi";
+import { deleteMacro } from "../api/MacroApi";
 import { isMacroEqual } from "../common/MacroUtils";
 import { BASE_URL } from "../common/APIBase";
 
@@ -20,6 +21,12 @@ import { InfoModal } from "./InfoModal";
 import type { Macro } from "../types/Macro";
 
 
+type ToastState = {
+  show: boolean;
+  type: 'success' | 'warning' | 'error' | 'info';
+  message: string;
+};
+
 export function MainPage() {
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -30,11 +37,12 @@ export function MainPage() {
   const [isChangeMacroImageModalOpen, setIsChangeMacroImageModalOpen] =
     useState(false);
   const [isCreateMacroModalOpen, setIsCreateMacroModalOpen] = useState(false);
+
   const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
   const [userMacrosList, setUserMacrosList] = useState<Macro[]>([]);
   const [uneditedMacro, setUneditedMacro ] = useState<Macro | null> (null);
-  const [showSuccessModal, setShowSuccesModal] = useState(false);
-  const [showReconfigNotNeeded, setShowReconfigNotNeeded] = useState(false);
+
+  const [toast, setToast] = useState<ToastState>({show: false, type: 'info', message: ""});
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -73,7 +81,22 @@ export function MainPage() {
 
   }, [userMacrosList]);
 
-  // should post to backend!!!!!
+  const handleDelete = async(id: number) =>
+    {
+      try{
+        await deleteMacro(id);
+        
+        setUserMacrosList(prev => (
+          prev.filter(m => m.id !== id)));
+        setToast({show: true, type: 'success', message:'Macro has been deleted successfully'})
+        setSelected(null);
+      }
+      catch(err)
+      {
+        setToast({show: true, type: 'error', message: 'Something went wrong when deleting macro. Aborting...'});
+      }
+    }
+
   const handleRename = async (id: number, name: string) => {
     setUserMacrosList((prev) =>
       prev.map((m) => (m.id === id ? { ...m, name: name } : m)),
@@ -101,7 +124,7 @@ export function MainPage() {
 
     if (isMacroEqual(macro, uneditedMacro)) 
     {
-      setShowReconfigNotNeeded(true);
+      setToast({show: true, type: 'info', message: 'Macro reconfiguration not needed. Skiping...'})
       return;
     }
 
@@ -117,9 +140,12 @@ export function MainPage() {
         setUserMacrosList((prev) => {
           return prev.map((m) => (m.id === macro.id ? reconfiguredMacro : m));
         });
+        
+        setToast({show: true, type: 'success', message: 'Macro has been successfully reconfigured!'});
+
       }
     } catch (err) {
-      console.error("Failed macro reconfiguration", err);
+      setToast({show: true, type: 'error', message: 'Failed to reconfigure macro'});
     }
   };
 
@@ -297,12 +323,7 @@ export function MainPage() {
               <div className={styles.actions}>
                 <button
                   className={styles.saveButton}
-                  onClick={() => {
-                    console.log("save", selectedMacro);
-                    setShowSuccesModal(true);
-
-                    handleSave(selectedMacro);
-                  }}
+                  onClick={() => handleSave(selectedMacro)}
                 >
                   Save
                 </button>
@@ -320,10 +341,14 @@ export function MainPage() {
       <ConfirmModal
         show={showDeleteConfirm}
         macroName={selectedMacro?.name ?? ""}
-        onConfirm={() =>
-          // delete (API)
+        onConfirm={() =>{
+          if(selectedMacro)
+          {
+            handleDelete(selectedMacro.id);
+          }
+
           setDeleteConfirm(false)
-        }
+        }}
         onCancel={() => setDeleteConfirm(false)}
       />
       <EditSongsModal
@@ -356,16 +381,10 @@ export function MainPage() {
       />
       {/* do zmiany bo nakłada się jeden na drugi */}
       <InfoModal
-        show={showSuccessModal}
-        type={"success"}
-        message={"Macro has been successfully reconfigured!"}
-        onCancel={() => setShowSuccesModal(false)}
-      />
-      <InfoModal 
-        show={showReconfigNotNeeded}
-        type={"info"}
-        message={"No changes detected. Skiping reconfig..."}
-        onCancel={() => setShowReconfigNotNeeded(false)}
+        show={toast.show}
+        type={toast.type}
+        message={toast.message}
+        onCancel={() => setToast(prev => ({...prev, show: false}))}
       />
     </div>
   );
