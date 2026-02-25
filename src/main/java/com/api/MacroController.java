@@ -30,7 +30,8 @@ public class MacroController {
     public List<MacroDTO> getMacros(@AuthenticationPrincipal OAuth2User oAuth2User)
     {
         User user = userService.getOrCreate(oAuth2User);
-        return macroService.getAllForUser(user).stream().map(MacroMapper::macroToDTO).toList();
+//        return macroService.getAllForUser(user).stream().map(MacroMapper::entityToDto).toList();
+        return macroService.gettAllForUserOrderByPositionAsc(user).stream().map(MacroMapper::entityToDto).toList();
     }
 
     @PostMapping("/create")
@@ -44,7 +45,7 @@ public class MacroController {
         Macro macro = MacroMapper.dtoToEntity(user, createMacroDTO, position);
         Macro saved = macroService.save(macro);
 
-        return MacroMapper.macroToDTO(saved);
+        return MacroMapper.entityToDto(saved);
     }
     @PostMapping("/rename")
     public MacroDTO renameMacro(@AuthenticationPrincipal OAuth2User oaUth2User,
@@ -53,5 +54,17 @@ public class MacroController {
         User user = userService.getOrCreate(oaUth2User);
 
         return macroService.renameMacro(user, renameMacro);
+    }
+
+    @PostMapping("/save/configuration")
+    public MacroDTO saveMacroConfiguration(@AuthenticationPrincipal OAuth2User oAuth2User,
+                                                 @RequestBody MacroDTO reconfiguredMacro)
+    {
+        User user = userService.getOrCreate(oAuth2User);
+
+        Macro macro = macroService.getByIdForUser(user, reconfiguredMacro.id());
+        macroService.handleMacroReconfiguration(macro, reconfiguredMacro);
+
+        return MacroMapper.entityToDto(macro);
     }
 }

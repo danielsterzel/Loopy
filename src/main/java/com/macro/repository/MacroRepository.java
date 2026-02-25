@@ -16,8 +16,10 @@ public interface MacroRepository extends JpaRepository<Macro, Long> {
     Optional<Macro> findByUserAndNameIgnoreCase(User user, String name);
 
     List<Macro> findAllByUser(User user);
+    List<Macro> findAllByUserOrderByPositionAsc(User user);
 
     Optional<Macro> findByIdAndUser(Long id, User user);
+    Optional<Macro> findByUserAndPosition(User user, int position);
 
     @Query("SELECT COALESCE(MAX(m.position), 0) FROM Macro m WHERE m.user = :user")
     int findMaxPositionbyUser(@Param("user") User user);
