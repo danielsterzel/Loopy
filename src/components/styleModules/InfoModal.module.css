@@ -1,0 +1,73 @@
+.shadowBackground {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 10000;
+
+    pointer-events: none;
+}
+
+.popUp {
+    background: var(--bg-card);
+    pointer-events: auto;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+
+    border: 2px solid transparent;
+}
+
+.success {
+    border-color: var(--accent-main);
+}
+
+.success i {
+    color: var(--accent-main);
+}
+
+.warning {
+    border-color: var(--warning);
+}
+
+.warning i {
+    color: var(--warning);
+}
+
+.error {
+    border-color: var(--danger);
+}
+
+.error i {
+    color: var(--danger);
+}
+
+.info {
+    border-color: var(--color-text-primary);
+}
+
+.info i {
+    color: var(--color-text-primary);
+}
+.popUp em {
+    color: var(--color-text-primary);
+}
+
+@keyframes popUp{
+    from {
+        transform: translate(-50%, -20px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}

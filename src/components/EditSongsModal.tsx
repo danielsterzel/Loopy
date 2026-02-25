@@ -6,6 +6,8 @@ import styles from "./styleModules/EditSongsModal.module.css";
 import type { Playlist } from "../types/Playlist";
 import type { SearchResult } from "../types/SearchResult";
 
+import {useModalExitViaEscape} from "../common/UXUtils";
+
 type EditingTarget = "from" | "to" | null;
 
 type Step = "idle" | "choose-source" | "choose-playlist" | "choose-track";
@@ -50,13 +52,7 @@ export function EditSongsModal({
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
   const [tracks, setTracks] = useState<SearchResult | null>(null);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCancel();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onCancel]);
+  useModalExitViaEscape(onCancel);
 
   if (!show) return null;
 

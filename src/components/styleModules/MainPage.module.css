@@ -139,12 +139,12 @@ body {
     margin-top: 1rem;
     padding: 6px;
 
-    scrollbar-width: none;
-    scrollbar-color: var(--accent-main) transparent;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    scrollbar-color: transparent transparent;
 }
-.macroListWrapper:hover {
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-main) transparent;
+.macroListWrapper:hover, .macroItem:focus-within{
+    scrollbar-color: var(--accent-main) transparent; 
 }
 
 .macroList {

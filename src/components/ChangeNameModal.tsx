@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { FocusTrap } from "focus-trap-react";
+import { isValidMacroName } from "../common/StringUtils";
+import { InfoModal } from "./InfoModal";
+
+import { useModalExitViaEscape } from "../common/UXUtils";
 
 import styles from "./styleModules/ChangeNameModal.module.css";
 
@@ -19,18 +23,13 @@ export function ChangeNameModal({
   onSave,
 }: ChangeNameModalProps) {
   const [name, setName] = useState(currentName);
+  const [showInvalidMacroNamePopUp, setInavlidMacroNamePopUp] = useState(false);
 
   useEffect(() => {
     setName(currentName);
   }, [currentName]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCancel();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onCancel]);
+  
+  useModalExitViaEscape(onCancel);
 
   if (!show) return null;
 
@@ -47,22 +46,43 @@ export function ChangeNameModal({
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              if(!isValidMacroName(name)) 
+                {
+                  setInavlidMacroNamePopUp(true);
+                  return;
+                }
               onSave(macroId, name);
             }}
           >
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                  setName(e.target.value)
+              }}
               autoFocus
             />
             <div className={styles.actions}>
-              <button className={styles.discard} type="button" onClick={onCancel}>Discard</button>
-              <button className={styles.confirm} type="submit" >Confirm</button>
+              <button
+                className={styles.discard}
+                type="button"
+                onClick={onCancel}
+              >
+                Discard
+              </button>
+              <button className={styles.confirm} type="submit">
+                Confirm
+              </button>
             </div>
           </form>
         </div>
+
+      <InfoModal show={showInvalidMacroNamePopUp}
+      type={"warning"}
+      message="Unfortunately this name is not valid for a macro"
+      onCancel={() => setInavlidMacroNamePopUp(false)}/>
       </div>
+
     </FocusTrap>
   );
 }

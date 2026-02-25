@@ -6,6 +6,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { getUserMacros } from "../api/MacroApi";
 import { postMacroNameChange } from "../api/MacroApi";
+import { postMacroReconfiguration } from "../api/MacroApi";
+import { isMacroEqual } from "../common/MacroUtils";
 import { BASE_URL } from "../common/APIBase";
 
 import { Slider } from "./Slider";
@@ -13,20 +15,26 @@ import { ConfirmModal } from "./ConfirmModal";
 import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
 import { CreateMacroModal } from "./CreateMacroModal";
+import { InfoModal } from "./InfoModal";
 
 import type { Macro } from "../types/Macro";
-// function renderPanel(){}
+
 
 export function MainPage() {
   const [selected, setSelected] = useState<number | null>(null);
 
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
   const [showEditSongsPopUp, setShowEditSongsPopUp] = useState(false);
-  const [isChangeMacroNameModalOpen, setIsChangeMacroNameModalOpen] = useState(false);
-  const [isChangeMacroImageModalOpen, setIsChangeMacroImageModalOpen] = useState(false);
+  const [isChangeMacroNameModalOpen, setIsChangeMacroNameModalOpen] =
+    useState(false);
+  const [isChangeMacroImageModalOpen, setIsChangeMacroImageModalOpen] =
+    useState(false);
   const [isCreateMacroModalOpen, setIsCreateMacroModalOpen] = useState(false);
   const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
   const [userMacrosList, setUserMacrosList] = useState<Macro[]>([]);
+  const [uneditedMacro, setUneditedMacro ] = useState<Macro | null> (null);
+  const [showSuccessModal, setShowSuccesModal] = useState(false);
+  const [showReconfigNotNeeded, setShowReconfigNotNeeded] = useState(false);
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -47,27 +55,71 @@ export function MainPage() {
   }, []);
 
   const toggleSelected = useCallback((id: number) => {
-    setSelected((prev) => (prev === id ? null : id));
-  }, []);
+    // setSelected((prev) => (prev === id ? null : id));
+    setSelected(prev => {
+      const newSelected = prev === id? null : id;
+
+      if(newSelected !== null)
+        {
+          const macro = userMacrosList.find(m => m.id === newSelected) ?? null;
+          setUneditedMacro(macro);
+        }
+        else 
+          {
+            setUneditedMacro(null);
+          }
+          return newSelected;
+    })
+
+  }, [userMacrosList]);
 
   // should post to backend!!!!!
   const handleRename = async (id: number, name: string) => {
     setUserMacrosList((prev) =>
       prev.map((m) => (m.id === id ? { ...m, name: name } : m)),
     );
-    try
-    {
-      const updatedMacro = await postMacroNameChange({id, name});
-      if(updatedMacro)
-      {
-        setUserMacrosList(prev => prev.map(m => m.id === id ? updatedMacro: m));
+    try {
+      const updatedMacro = await postMacroNameChange({ id, name });
+      if (updatedMacro) {
+        setUserMacrosList((prev) =>
+          prev.map((m) => (m.id === id ? updatedMacro : m)),
+        );
       }
-  
+
       setIsChangeMacroNameModalOpen(false);
-      
-    }catch(err)
-    {
+    } catch (err) {
       console.log("Rename error:", err);
+    }
+  };
+
+  const handleSave = async (macro: Macro) => {
+
+    if(!uneditedMacro)
+    {
+      return;
+    }
+
+    if (isMacroEqual(macro, uneditedMacro)) 
+    {
+      setShowReconfigNotNeeded(true);
+      return;
+    }
+
+    setUserMacrosList((prev) => {
+      return prev.map((m) => (m.id === macro.id ? { ...m, ...macro } : m));
+    });
+
+
+    try {
+      const reconfiguredMacro = await postMacroReconfiguration(macro);
+
+      if (reconfiguredMacro) {
+        setUserMacrosList((prev) => {
+          return prev.map((m) => (m.id === macro.id ? reconfiguredMacro : m));
+        });
+      }
+    } catch (err) {
+      console.error("Failed macro reconfiguration", err);
     }
   };
 
@@ -183,13 +235,11 @@ export function MainPage() {
               <button
                 className={styles.tryOutButton}
                 onClick={() => {
-                  if(userMacrosList.length === 0)
-                    {
-                      setIsCreateMacroModalOpen(true)
-                    }
-                    else{
-                    toggleSelected(userMacrosList[0].id)
-                    }
+                  if (userMacrosList.length === 0) {
+                    setIsCreateMacroModalOpen(true);
+                  } else {
+                    toggleSelected(userMacrosList[0].id);
+                  }
                 }}
               >
                 <i className="fa-solid fa-pen-to-square"></i>Try Out Spotify
@@ -247,7 +297,12 @@ export function MainPage() {
               <div className={styles.actions}>
                 <button
                   className={styles.saveButton}
-                  onClick={() => console.log("save", selectedMacro)}
+                  onClick={() => {
+                    console.log("save", selectedMacro);
+                    setShowSuccesModal(true);
+
+                    handleSave(selectedMacro);
+                  }}
                 >
                   Save
                 </button>
@@ -291,13 +346,26 @@ export function MainPage() {
             userMacrosList.find((m) => m.id === editingMacroId)?.name ?? ""
           } // MACRO LIST ITEM
           onCancel={() => setIsChangeMacroNameModalOpen(false)}
-          onSave={(handleRename)}
+          onSave={handleRename}
         />
       )}
       <CreateMacroModal
         show={isCreateMacroModalOpen}
         onSave={addCreatedMacroToList}
         onCancel={() => setIsCreateMacroModalOpen(false)}
+      />
+      {/* do zmiany bo nakłada się jeden na drugi */}
+      <InfoModal
+        show={showSuccessModal}
+        type={"success"}
+        message={"Macro has been successfully reconfigured!"}
+        onCancel={() => setShowSuccesModal(false)}
+      />
+      <InfoModal 
+        show={showReconfigNotNeeded}
+        type={"info"}
+        message={"No changes detected. Skiping reconfig..."}
+        onCancel={() => setShowReconfigNotNeeded(false)}
       />
     </div>
   );

@@ -38,3 +38,8 @@ export async function postMacroNameChange({id, name}: MacroRenameProps)
 {
   return apiPost<Macro>(`${MACRO_API_ENDPOINT_BASE_URL}/rename`, {id, name});
 }
+
+export async function postMacroReconfiguration(macro: Macro)
+{
+  return apiPost<Macro>(`${MACRO_API_ENDPOINT_BASE_URL}/save/configuration`, macro);
+}
