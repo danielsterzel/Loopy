@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MacroService {
@@ -22,10 +23,16 @@ public class MacroService {
     public List<Macro> getAllForUser(User user) {
         return macroRepository.findAllByUser(user);
     }
+    public List<Macro> gettAllForUserOrderByPositionAsc(User user){return macroRepository.findAllByUserOrderByPositionAsc(user);}
 
     public Macro getByIdForUser(User user, Long id) {
         return macroRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new IllegalArgumentException("Macro not found"));
+    }
+    public Macro getByPositionAndUser(User user, int position)
+    {
+        return macroRepository.findByUserAndPosition(user, position)
+                .orElseThrow(() -> new IllegalArgumentException("Macro with given postition not found"));
     }
     public Macro getMacroByName(User user, String name)
     {
@@ -50,13 +57,43 @@ public class MacroService {
         return macroRepository.findMaxPositionbyUser(user)+ 1;
     }
 
-    @Transactional // changes in database in this method are one operation.
+    @Transactional // changes in database in this method are one operation. Eliminates race conditions
     public MacroDTO renameMacro(User user, RenameMacro renameMacro)
     {
         System.out.println("Rename request id=" + renameMacro.id() + " name=" + renameMacro.name());
         Macro macro = getByIdForUser(user, renameMacro.id());
 
         macro.setName(renameMacro.name());
-        return MacroMapper.macroToDTO(macro);
+        return MacroMapper.entityToDto(macro);
+    }
+
+    @Transactional
+    public void handlePositionChange(User user, Macro other, int newPosition)
+    {
+        if(other.getMacroPosition() == newPosition)
+        {
+            return;
+        }
+        Optional<Macro> macro = macroRepository.findByUserAndPosition(user, newPosition);
+        macro.ifPresentOrElse((unpackedMacro) -> {
+            int tempPosition = other.getMacroPosition();
+            other.setMacroPositionInList(newPosition);
+            unpackedMacro.setMacroPositionInList(tempPosition);
+        }, () -> {
+            other.setMacroPositionInList(newPosition);
+        });
+    }
+
+    @Transactional
+    public void handleMacroReconfiguration(Macro macro, MacroDTO macroReconfiguration)
+    {
+        if(MacroMapper.isSameContent(macro, macroReconfiguration))
+        {
+            System.out.println("NO RECONFIG -> NOT NEEDED");
+            return;
+        }
+        macro.setCrossfadeDuration(macroReconfiguration.crossfadeDuration());
+        macro.setFromSong(macroReconfiguration.fromSong());
+        macro.setToSong(macroReconfiguration.toSong());
     }
 }

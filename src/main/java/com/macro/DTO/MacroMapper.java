@@ -4,8 +4,10 @@ package com.macro.DTO;
 import com.User.User;
 import com.macro.Macro;
 
+import java.util.Objects;
+
 public class MacroMapper {
-    public static MacroDTO macroToDTO(Macro macro)
+    public static MacroDTO entityToDto(Macro macro)
     {
         return new MacroDTO(
                 macro.getId(),
@@ -41,5 +43,17 @@ public class MacroMapper {
                 macroDTO.crossfadeDuration()
 
         );
+    }
+    public static boolean isSameContent( Macro macro, MacroDTO macroDTO)
+    {
+        if( macro == null || macroDTO == null)
+        {
+            return false;
+        }
+        return Objects.equals(macro.getName(), macroDTO.name())
+                && macro.getMacroPosition() == macroDTO.position()
+                && macro.getFromSong().equals(macroDTO.fromSong())
+                && macro.getToSong().equals(macroDTO.toSong())
+                && macro.getCrossfadeDuration() == macroDTO.crossfadeDuration();
     }
 }

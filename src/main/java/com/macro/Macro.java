@@ -1,6 +1,7 @@
 package com.macro;
 
 import com.User.User;
+import com.macro.DTO.MacroDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -52,6 +53,11 @@ public class Macro {
         this.crossfadeDuration = crossfadeDuration;
     }
 
+    void reconfigureMacro(MacroDTO reconfiguredMacro)
+    {
+
+    }
+
     public Long getId(){return id;}
     public String getName(){return name;}
     public String getFromSong() { return fromSong; }
@@ -60,4 +66,8 @@ public class Macro {
     public Integer getCrossfadeDuration(){return crossfadeDuration;}
 
     public void setName(String name){this.name = name;}
+    public void setFromSong(String name){this.fromSong = fromSong;}
+    public void setToSong(String toSong) {this.toSong = toSong;}
+    public void setMacroPositionInList(int position){this.position = position;}
+    public void setCrossfadeDuration(Integer crossfadeDuration){this.crossfadeDuration = crossfadeDuration;}
 }
