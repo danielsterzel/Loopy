@@ -1,14 +1,14 @@
 package com.api;
 
 
-import com.User.User;
-import com.User.UserService;
-import com.macro.DTO.CreateMacroDTO;
-import com.macro.DTO.MacroDTO;
-import com.macro.DTO.MacroMapper;
-import com.macro.DTO.RenameMacro;
-import com.macro.Macro;
-import com.macro.MacroService;
+import com.domain.model.User.User;
+import com.domain.model.User.UserService;
+import com.domain.model.macro.DTO.CreateMacroDTO;
+import com.domain.model.macro.DTO.MacroDTO;
+import com.domain.model.macro.DTO.MacroMapper;
+import com.domain.model.macro.DTO.RenameMacro;
+import com.domain.model.macro.Macro;
+import com.domain.model.macro.MacroService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

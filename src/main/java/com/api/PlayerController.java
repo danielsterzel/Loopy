@@ -1,7 +1,7 @@
 package com.api;
 
 import com.spotify.client.SpotifyApiClient;
-import com.spotify.model.PlayerState.PlayerState;
+import com.domain.model.PlayerState.PlayerState;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

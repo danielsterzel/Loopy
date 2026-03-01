@@ -47,6 +47,7 @@ public class UserController {
 
     @GetMapping("/api/me")
     public Map<String, Object> me(@AuthenticationPrincipal OAuth2User user){
+
         return user.getAttributes();
     }
 
