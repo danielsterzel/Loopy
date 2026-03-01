@@ -1,8 +1,8 @@
 package com.spotify.client;
 
-import com.spotify.model.PlayerState.PlayerState;
-import com.spotify.model.Playlist.PlaylistResponse;
-import com.spotify.model.TrackObject.SpotifyTrackObjectModel;
+import com.domain.model.PlayerState.PlayerState;
+import com.domain.model.Playlist.Playlist;
+import com.domain.model.Track.TrackModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +11,7 @@ public interface SpotifyApiClient {
     Optional<PlayerState> getCurrentPlayer();
     void enqueueTrack(String trackUri);
     void skipToNext();
-    PlaylistResponse getUserPlaylists();
-    List<SpotifyTrackObjectModel> getPlaylistTracks(String playlistId);
+    List<Playlist> getUserPlaylists();
+    List<TrackModel> getPlaylistTracks(String playlistId);
     String getCurrentPlayerRawJson();
 }
