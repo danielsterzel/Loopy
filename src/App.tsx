@@ -1,5 +1,5 @@
 import { MainPage } from "./components/MainPage";
-import { PlaylistModal } from "./components/PlaylistModal";
+import { ChoosePlaylistPage } from "./components/ChoosePlaylistPage";
 
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
@@ -13,6 +13,7 @@ function App() {
         <Route path={"/"} element={<Navigate to="/mainpage" replace/>}/>
         <Route path={"/macros/create"} element={<CreateMacroPage />} />
         <Route path={"/mainpage"} element={<MainPage />} />
+        <Route path={"/macros/create/playlists"} element={<ChoosePlaylistPage />}/>
       </Routes>
     </BrowserRouter>
   );

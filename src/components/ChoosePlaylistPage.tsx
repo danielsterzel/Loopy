@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { getPlaylists } from "../api/PlaylistApi";
 import type { Playlist } from "../types/Playlist";
 
-import styles from "./styleModules/PlaylistModal.module.css";
+import styles from "./styleModules/ChoosePlaylistPage.module.css";
 import { FocusTrap } from "focus-trap-react";
 
-export function PlaylistModal() {
+export function ChoosePlaylistPage() {
   const [playlists, setPlaylists] = useState<Playlist[] | null>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,7 @@ export function PlaylistModal() {
     fetchPlaylists();
   }, []);
   if (loading) {
-    return <div> loading ...</div>;
+    return <div className={styles.loading}> loading ...</div>;
   }
 
   if (playlists == null) {

@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
-import { FocusTrap } from "focus-trap-react";
 
 import { useNavigate } from "react-router-dom";
 
 import styles from "./styleModules/CreateMacroModal.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-import { useModalExitViaEscape } from "../common/UXUtils";
 import { postMacro } from "../api/MacroApi";
-import type { Macro } from "../types/Macro";
 
 import { Slider } from "./Slider";
 
@@ -25,7 +22,6 @@ export function CreateMacroPage() {
   const [fromSong, setFromSong] = useState("");
   const [toSong, setToSong] = useState("");
   const [showInvalidMacroNamePopUp, setInavlidMacroNamePopUp] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -63,82 +59,122 @@ export function CreateMacroPage() {
       setFromSong("");
       setToSong("");
       setCrossfadeDuration(0);
-      setShowSuccess(true);
-      navigate("/mainpage");
-      
+      navigate("/mainpage", { state: { macroCreated: true } });
     } catch (e) {
       console.error("error: ", e);
     }
   };
 
   return (
-      <div className={styles.shadowBackground}>
-        <div className={styles.checkbox} onClick={(e) => e.stopPropagation()}>
-          <h2>Macro Creation</h2>
-          {/* formWrapper -> flex + flex-direction: column */}
-          <div className={styles.formWrapper}>
-            <form>
+    <>
+      <div className={styles.title}>
+        <p>Macro Creation</p>
+      </div>
+      <div className={styles.createMacroPageWrapper}>
+        <div className={styles.formWrapper}>
+          <form>
+            <div className={styles.macroNameInput}>
               <label>Macro name</label>
               <input
+                className={styles.input}
                 type="text"
                 value={name}
-                maxLength={25}
+                maxLength={30}
                 onChange={(e) => setName(e.target.value)}
                 autoFocus
               ></input>
-              <div className={styles.songInputForm}>
-                {/* need to implement searching from playlist or using spotify search bar */}
-                <div className={styles.songCard}>
-                  <label>From Song</label>
-                  <i className="fa-regular fa-images"></i>
-                  <input
-                    type="text"
-                    value={fromSong}
-                    maxLength={50}
-                    onChange={(e) => setFromSong(e.target.value)}
-                  ></input>
-                </div>
-                <div className={styles.songCard}>
-                  <label>To Song</label>
-                  <i className="fa-regular fa-images"></i>
-                  <input
-                    type="text"
-                    value={toSong}
-                    maxLength={50}
-                    onChange={(e) => setToSong(e.target.value)}
-                  ></input>
-                </div>
-              </div>
-              {/* crossfadeDuration form */}
-              <div className={styles.sliderWrapper}>
-                <em>CrossFade duration: {crossfadeDuration}s</em>
-                <Slider
-                  min={0}
-                  max={12}
-                  value={crossfadeDuration}
-                  onChange={setCrossfadeDuration}
-                ></Slider>
-              </div>
-
-              <div className={styles.options}>
-                <button
-                  type="button"
-                  className={styles.cancel}
+            </div>
+            <div className={styles.songCard}>
+              <p className={styles.optionLabel}>From Song</p>
+              <div className={styles.inputForm}>
+                <i className="fa-regular fa-images"></i>
+                <div className={styles.buttons}>
+                  <button type="button" className={styles.button}
                   onClick={() => {
-                    navigate("/mainpage");
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  className={styles.create}
-                  onClick={handleCreate}
-                >
-                  Create
-                </button>
+                    navigate("/macros/create/playlists")
+                  }}>
+                    Select from Playlist
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.button}
+                    onClick={() => {}}
+                  >
+                    Search
+                  </button>
+                </div>
               </div>
-            </form>
+            </div>
+            <div className={styles.songCard}>
+              <p className={styles.optionLabel}>To Song</p>
+              <div className={styles.inputForm}>
+                <i className="fa-regular fa-images"></i>
+                <div className={styles.buttons}>
+                  <button type="button" className={styles.button}>
+                    Select from Playlist
+                  </button>
+                  <button type="button" className={styles.button}>
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={styles.sliderWrapper}>
+              <em>CrossFade duration: {crossfadeDuration}s</em>
+              <Slider
+                min={0}
+                max={12}
+                value={crossfadeDuration}
+                onChange={setCrossfadeDuration}
+              ></Slider>
+            </div>
+
+            <div className={styles.options}>
+              <button
+                type="button"
+                className={styles.cancel}
+                onClick={() => {
+                  navigate("/mainpage");
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.create}
+                onClick={handleCreate}
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className={styles.livePreview}>
+          <div className={styles.livePreviewCard}>
+            <div className={styles.livePreviewImage}>
+              <i className="fa-solid fa-music"></i>
+            </div>
+            <p className={styles.macroNameProperty}>{name}</p>
+            <div className={styles.songsWrapper}>
+              <div className={styles.songContainer}>
+                <i className="fa-solid fa-music"></i>
+                <p className={styles.propertyValue}>
+                  FromSong
+                  {/* {fromSong} */}
+                </p>
+              </div>
+              <i className="fa-solid fa-angles-right" id={styles.songChangeIcon}></i>
+              <div className={styles.songContainer}>
+                <i className="fa-solid fa-music"></i>
+                <p className={styles.propertyValue}>
+                  toSong
+                  {/* {toSong} */}
+                </p>
+              </div>
+            </div>
+            <em className={styles.crossfadeBadge}>
+              {crossfadeDuration}s crossfade
+            </em>
           </div>
         </div>
         <InfoModal
@@ -148,5 +184,6 @@ export function CreateMacroPage() {
           onCancel={() => setInavlidMacroNamePopUp(false)}
         />
       </div>
+    </>
   );
 }

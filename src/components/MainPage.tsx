@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -17,7 +18,6 @@ import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
 import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
-import { CreateMacroPage } from "./CreateMacroPage";
 import { InfoModal } from "./InfoModal";
 
 import type { Macro } from "../types/Macro";
@@ -46,6 +46,7 @@ export function MainPage() {
   const [toast, setToast] = useState<ToastState>({show: false, type: 'info', message: ""});
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -66,7 +67,6 @@ export function MainPage() {
   }, []);
 
   const toggleSelected = useCallback((id: number) => {
-    // setSelected((prev) => (prev === id ? null : id));
     setSelected(prev => {
       const newSelected = prev === id? null : id;
 
@@ -83,6 +83,17 @@ export function MainPage() {
     })
 
   }, [userMacrosList]);
+
+
+  useEffect(() => {
+    if(location.state?.macroCreated)
+      {
+        setToast({show: true, type: 'success', message:'Macro has been created successfully!'});
+
+        window.history.replaceState({}, document.title);
+      }
+
+  }, [location.state]) 
 
   const handleDelete = async(id: number) =>
     {
