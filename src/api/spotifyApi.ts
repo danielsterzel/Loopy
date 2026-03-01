@@ -3,8 +3,6 @@ import type { Playlist } from "../types/Playlist";
 import type { SearchResult } from "../types/SearchResult";
 import { BASE_URL } from "../common/APIBase";
 
-const PLAYLIST_API = "/api/spotify/playlists";
-
 export async function apiFetch<T>(
   path: string,
   options?: RequestInit,
@@ -35,11 +33,6 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T | null>
 }
 export async function apiDelete<T>(path: string) {
   return apiFetch<T>(path, {method: "DELETE"});
-}
-
-export function getPlaylists(playlistId: string) {
-  const playlistTracks = `${PLAYLIST_API}/${playlistId}/tracks`;
-  return apiGet<Playlist[]>(playlistTracks);
 }
 
 export function searchTrack(query: string) {

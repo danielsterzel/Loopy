@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useCallback } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -15,7 +17,7 @@ import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
 import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
-import { CreateMacroModal } from "./CreateMacroModal";
+import { CreateMacroPage } from "./CreateMacroPage";
 import { InfoModal } from "./InfoModal";
 
 import type { Macro } from "../types/Macro";
@@ -36,13 +38,14 @@ export function MainPage() {
     useState(false);
   const [isChangeMacroImageModalOpen, setIsChangeMacroImageModalOpen] =
     useState(false);
-  const [isCreateMacroModalOpen, setIsCreateMacroModalOpen] = useState(false);
 
   const [editingMacroId, setEditingMacroId] = useState<number | null>(null);
   const [userMacrosList, setUserMacrosList] = useState<Macro[]>([]);
   const [uneditedMacro, setUneditedMacro ] = useState<Macro | null> (null);
 
   const [toast, setToast] = useState<ToastState>({show: false, type: 'info', message: ""});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -192,7 +195,9 @@ export function MainPage() {
           {/* PUT / POST ??? definetly redirect to Create Macro Modal*/}
           <button
             className={styles.createMacroButton}
-            onClick={() => setIsCreateMacroModalOpen(true)}
+            onClick={() => {
+              navigate("/macros/create");
+            }}
           >
             Create new Macro
           </button>
@@ -262,7 +267,6 @@ export function MainPage() {
                 className={styles.tryOutButton}
                 onClick={() => {
                   if (userMacrosList.length === 0) {
-                    setIsCreateMacroModalOpen(true);
                   } else {
                     toggleSelected(userMacrosList[0].id);
                   }
@@ -374,11 +378,6 @@ export function MainPage() {
           onSave={handleRename}
         />
       )}
-      <CreateMacroModal
-        show={isCreateMacroModalOpen}
-        onSave={addCreatedMacroToList}
-        onCancel={() => setIsCreateMacroModalOpen(false)}
-      />
       {/* do zmiany bo nakłada się jeden na drugi */}
       <InfoModal
         show={toast.show}

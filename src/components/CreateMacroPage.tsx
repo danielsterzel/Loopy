@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { FocusTrap } from "focus-trap-react";
 
+import { useNavigate } from "react-router-dom";
+
 import styles from "./styleModules/CreateMacroModal.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -15,25 +17,17 @@ import { isValidMacroName } from "../common/StringUtils";
 
 import { InfoModal } from "./InfoModal";
 
-type CreateMacroModalProps = {
-  show: boolean;
-  onSave: (macro: Macro) => void;
-  onCancel: () => void;
-};
 // id and postition needs to be dynamically allocated.
 
-export function CreateMacroModal({
-  show,
-  onSave,
-  onCancel,
-}: CreateMacroModalProps) {
+export function CreateMacroPage() {
   const [name, setName] = useState("");
   const [crossfadeDuration, setCrossfadeDuration] = useState(0);
   const [fromSong, setFromSong] = useState("");
   const [toSong, setToSong] = useState("");
   const [showInvalidMacroNamePopUp, setInavlidMacroNamePopUp] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  useModalExitViaEscape(onCancel);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -48,12 +42,6 @@ export function CreateMacroModal({
       })
       .catch((err) => console.error(err));
   }, []);
-
-  useEffect(() => {
-    if (show) {
-      setInavlidMacroNamePopUp(false);
-    }
-  }, [show]);
 
   const handleCreate = async () => {
     if (!isValidMacroName(name)) {
@@ -71,22 +59,20 @@ export function CreateMacroModal({
 
       if (!macro) return;
 
-      onSave(macro);
-      onCancel();
-
       setName("");
       setFromSong("");
       setToSong("");
       setCrossfadeDuration(0);
+      setShowSuccess(true);
+      navigate("/mainpage");
+      
     } catch (e) {
       console.error("error: ", e);
     }
   };
-  if (!show) return null;
 
   return (
-    <FocusTrap active={show}>
-      <div className={styles.shadowBackground} onClick={onCancel}>
+      <div className={styles.shadowBackground}>
         <div className={styles.checkbox} onClick={(e) => e.stopPropagation()}>
           <h2>Macro Creation</h2>
           {/* formWrapper -> flex + flex-direction: column */}
@@ -137,8 +123,10 @@ export function CreateMacroModal({
               <div className={styles.options}>
                 <button
                   type="button"
-                  onClick={onCancel}
                   className={styles.cancel}
+                  onClick={() => {
+                    navigate("/mainpage");
+                  }}
                 >
                   Cancel
                 </button>
@@ -160,6 +148,5 @@ export function CreateMacroModal({
           onCancel={() => setInavlidMacroNamePopUp(false)}
         />
       </div>
-    </FocusTrap>
   );
 }
