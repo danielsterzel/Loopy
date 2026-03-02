@@ -1,5 +1,7 @@
 package com.domain.model.Track;
 
+import com.domain.model.Album.Album;
+import com.domain.model.Album.AlbumMapper;
 import com.domain.model.Artist.Artist;
 import com.domain.model.Artist.ArtistModelMapper;
 import com.domain.model.ExternalUrl.ExternalUrl;
@@ -14,25 +16,27 @@ public class TrackModelMapper {
 
     private static final Logger log = LoggerFactory.getLogger(TrackModelMapper.class);
 
-    public static TrackModel from(TrackDTO item)
-    {
+    public static TrackModel from(TrackDTO item) {
         if (item == null) {
             log.warn("Track DTO is null returning null");
             return null;
         }
-        List<Artist> artists = ArtistModelMapper.fromList(item.artistNames());
-        ExternalUrl url = ExternalUrlMapper.from(item.spotifyTrackUrl());
+
+        List<Artist> artists = ArtistModelMapper.fromList(item.artists());
+        ExternalUrl url = ExternalUrlMapper.from(item.external_urls());
+        Album album = AlbumMapper.from(item.album());
 
         return new TrackModel(
-                item.spotifyTrackId(),
-                item.trackName(),
-                item.trackUri(),
+                item.id(),
+                item.name(),
+                item.uri(),
                 artists,
                 url,
-                item.spotifyWebApiEndpoint(),
-                item.durationInMs(),
-                item.trackHasExplicitLyrics(),
-                item.isLocalFile()
+                item.href(),
+                item.duration_ms(),
+                item.explicit(),
+                item.is_local(),
+                album
         );
     }
 }
