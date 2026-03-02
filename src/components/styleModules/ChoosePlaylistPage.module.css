@@ -6,6 +6,23 @@
     min-height: 100vh;
 }
 
+.goBack {
+    all: unset;
+    cursor: pointer;
+    user-select: none;
+
+    padding: 1rem;
+}
+
+.goBack:hover {
+    color: var(--text-muted);
+}
+.goBack:focus-visible {
+    color: var(--accent-main);
+    outline: 2px solid var(--accent-main);
+    border-radius: 6px;
+}
+
 .loading {
     display: flex;
     justify-content: center;

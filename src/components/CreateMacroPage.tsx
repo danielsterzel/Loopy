@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./styleModules/CreateMacroModal.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -24,6 +24,7 @@ export function CreateMacroPage() {
   const [showInvalidMacroNamePopUp, setInavlidMacroNamePopUp] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/me`, {
@@ -38,6 +39,10 @@ export function CreateMacroPage() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    // set ... 
+  })
 
   const handleCreate = async () => {
     if (!isValidMacroName(name)) {
@@ -91,7 +96,7 @@ export function CreateMacroPage() {
                 <div className={styles.buttons}>
                   <button type="button" className={styles.button}
                   onClick={() => {
-                    navigate("/macros/create/playlists")
+                    navigate("/macros/create/playlists");
                   }}>
                     Select from Playlist
                   </button>

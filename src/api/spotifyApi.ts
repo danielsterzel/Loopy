@@ -1,7 +1,4 @@
-import type { Song } from "../types/Song";
-import type { Playlist } from "../types/Playlist";
 import type { SearchResult } from "../types/SearchResult";
-import { BASE_URL } from "../common/APIBase";
 
 export async function apiFetch<T>(
   path: string,

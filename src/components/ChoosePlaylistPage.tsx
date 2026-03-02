@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { getPlaylists } from "../api/PlaylistApi";
 import type { Playlist } from "../types/Playlist";
 
+import { TrackListModal } from "./TrackListModal";
+
 import styles from "./styleModules/ChoosePlaylistPage.module.css";
-import { FocusTrap } from "focus-trap-react";
 
 export function ChoosePlaylistPage() {
   const [playlists, setPlaylists] = useState<Playlist[] | null>([]);
+  const [currentPlaylist, setCurrentPlaylist] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showTrackList, setShowTrackList] = useState(false);
 
   const [showTotalTracks, setShowTotalTracks] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -33,7 +39,15 @@ export function ChoosePlaylistPage() {
     return null;
   }
   return (
-    <FocusTrap>
+    <>
+      <button className={styles.goBack}
+      onClick={() => {
+        navigate("/macros/create");
+      }}
+      >
+        <i className="fa-solid fa-arrow-left"></i>
+      </button>
+
       <div className={styles.playlistWrapper}>
         <div className={styles.playlists}>
           {playlists.map((p) => (
@@ -46,6 +60,13 @@ export function ChoosePlaylistPage() {
               }}
               onFocus={() => {
                 setShowTotalTracks(p.id);
+              }}
+              onClick={() => {
+                setShowTrackList(true);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                }
               }}
             >
               {p.imageUrl && (
@@ -68,10 +89,11 @@ export function ChoosePlaylistPage() {
                   Total tracks: {p.totalTracks}
                 </p>
               </div>
+              <TrackListModal show={showTrackList} id={p.id} currentPlaylistNumberId={0} songType="fromSong"/>
             </div>
           ))}
         </div>
       </div>
-    </FocusTrap>
+    </>
   );
 }
