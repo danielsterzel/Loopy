@@ -1,5 +1,6 @@
 package com.domain.model.Track;
 
+import com.domain.model.Album.Album;
 import com.domain.model.Artist.Artist;
 import com.domain.model.ExternalUrl.ExternalUrl;
 
@@ -11,11 +12,11 @@ public record TrackModel(
         String name,
         String uri,
         List<Artist> artists,
-        ExternalUrl external_urls,
+        ExternalUrl externalUrls,
         String href,
-        int duration_ms,
+        int durationMs,
         boolean explicit,
-        boolean is_local
-//        ,Album album
+        boolean isLocal,
+        Album album
 
 ) {}
