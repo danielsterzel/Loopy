@@ -5,8 +5,11 @@ import { getPlaylists } from "../api/PlaylistApi";
 import type { Playlist } from "../types/Playlist";
 
 import { TrackListModal } from "./TrackListModal";
+import type { Track } from "../types/Track";
 
 import styles from "./styleModules/ChoosePlaylistPage.module.css";
+
+// need to refactor
 
 export function ChoosePlaylistPage() {
   const [playlists, setPlaylists] = useState<Playlist[] | null>([]);
@@ -16,7 +19,18 @@ export function ChoosePlaylistPage() {
 
   const [showTotalTracks, setShowTotalTracks] = useState<string | null>(null);
 
+  const [fromSong, setFromSong] = useState<Track | null>(null);
+  const [toSong, setToSong] = useState<Track | null>(null);
+
   const navigate = useNavigate();
+  const handleFromSong = (track: Track) => {
+    setFromSong(track);
+    setShowTrackList(false);
+  };
+  const handleToSongChoice = (track: Track) => {
+    setToSong(track);
+    setShowTrackList(false);
+  };
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -40,10 +54,11 @@ export function ChoosePlaylistPage() {
   }
   return (
     <>
-      <button className={styles.goBack}
-      onClick={() => {
-        navigate("/macros/create");
-      }}
+      <button
+        className={styles.goBack}
+        onClick={() => {
+          navigate("/macros/create");
+        }}
       >
         <i className="fa-solid fa-arrow-left"></i>
       </button>
@@ -89,7 +104,15 @@ export function ChoosePlaylistPage() {
                   Total tracks: {p.totalTracks}
                 </p>
               </div>
-              <TrackListModal show={showTrackList} id={p.id} currentPlaylistNumberId={0} songType="fromSong"/>
+              <TrackListModal
+                show={showTrackList}
+                id={p.id}
+                currentPlaylistNumberId={0}
+                songType="fromSong"
+                onConfirmSong={() => {
+                  handleFromSong;
+                }}
+              />
             </div>
           ))}
         </div>

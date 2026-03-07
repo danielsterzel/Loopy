@@ -26,19 +26,19 @@ export function CreateMacroPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    fetch(`${BASE_URL}/api/me`, {
-      credentials: "include",
-    })
-      .then((res) => {
-        console.log("STATUS", res.status);
-        if (res.status === 401) {
-          window.location.href = `${BASE_URL}/oauth2/authorization/spotify`;
-          return null;
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${BASE_URL}/api/me`, {
+  //     credentials: "include",
+  //   })
+  //     .then((res) => {
+  //       console.log("STATUS", res.status);
+  //       if (res.status === 401) {
+  //         window.location.href = `${BASE_URL}/oauth2/authorization/spotify`;
+  //         return null;
+  //       }
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   useEffect(() => {
     // set ... 

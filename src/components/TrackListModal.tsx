@@ -12,6 +12,7 @@ type TrackListModalProps = {
   id: string;
   currentPlaylistNumberId: number;
   songType: string;
+  onConfirmSong: () => void;
 };
 
 export function TrackListModal({
