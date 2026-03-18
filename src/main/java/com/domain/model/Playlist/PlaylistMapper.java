@@ -21,9 +21,11 @@ public class PlaylistMapper {
         if (playlistDTO.images() != null && !playlistDTO.images().isEmpty()) {
             imageUrl = playlistDTO.images().getFirst().url();
         }
-        int totalTracks = playlistDTO.tracks() != null
-                ? playlistDTO.tracks().total()
+        System.out.println("TRACKS DTO: " + playlistDTO.items());
+        int totalTracks = playlistDTO.items() != null
+                ? playlistDTO.items().total()
                 : 0;
+
         return new Playlist(
                 playlistDTO.id(),
                 playlistDTO.name(),

@@ -14,4 +14,5 @@ public interface SpotifyApiClient {
     List<Playlist> getUserPlaylists();
     List<TrackModel> getPlaylistTracks(String playlistId);
     String getCurrentPlayerRawJson();
+
 }

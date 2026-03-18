@@ -14,6 +14,7 @@ import com.spotify.model.PlaylistTrackItem.DTO.PlaylistTrackItem;
 import com.spotify.model.PlaylistTrackResponse.DTO.PlaylistTracksResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
 import java.util.Objects;
@@ -108,28 +109,35 @@ public class SpotifyApiClientImpl implements SpotifyApiClient {
     public List<TrackModel> getPlaylistTracks(String playlistId) {
         var spotifyAPIToken = auth.getAccessTokenValue();
 
-        PlaylistTracksResponse spotifyResponse = webClient
-                .get()
-                .uri("/playlists/{playlist_id}/tracks", playlistId)
-                .header("Authorization", "Bearer " + spotifyAPIToken)
-                .retrieve()
-                .onStatus(status -> status.value() == 401,
-                        clientResponse -> clientResponse.bodyToMono(String.class)
-                                .map(body -> new RuntimeException("Couldn't get Playlist TRACKS" + body)))
-                .bodyToMono(PlaylistTracksResponse.class)
-                .block();
+        try {
+            PlaylistTracksResponse spotifyResponse = webClient
+                    .get()
+                    .uri("/playlists/{playlist_id}/items", playlistId)
+                    .header("Authorization", "Bearer " + spotifyAPIToken)
+                    .retrieve()
+                    .onStatus(status -> status.value() == 401,
+                            clientResponse -> clientResponse.bodyToMono(String.class)
+                                    .map(body -> new RuntimeException("Couldn't get Playlist TRACKS" + body)))
+                    .bodyToMono(PlaylistTracksResponse.class)
+                    .block();
 
+            if (spotifyResponse == null || spotifyResponse.items() == null) {
+                System.err.println("Either communication failed or the list of tracks is NULL");
+                return List.of();
+            }
 
-        if (spotifyResponse == null || spotifyResponse.items() == null) {
-            System.err.println("Either communication failed or the list of tracks is NULL");
+            System.out.println("Spotify tracks response: " + spotifyResponse);
+            List<PlaylistTrackItem> playlistTrackItems = spotifyResponse.items();
+
+            return playlistTrackItems.stream()
+                    .map(item -> item.item())
+                    .filter(Objects::nonNull)
+                    .map(item -> TrackModelMapper.from(item))
+                    .toList();
+        } catch (WebClientResponseException e)
+        {
+            System.err.println("Spotify denied access to playlist " + playlistId);
             return List.of();
         }
-        List<PlaylistTrackItem> playlistTrackItems = spotifyResponse.items();
-
-        return playlistTrackItems.stream()
-                .map(item -> item.track())
-                .filter(Objects::nonNull)
-                .map(item -> TrackModelMapper.from(item))
-                .toList();
     }
 }

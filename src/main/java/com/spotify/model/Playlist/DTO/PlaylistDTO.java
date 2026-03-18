@@ -5,4 +5,4 @@ import com.spotify.model.Tracks.DTO.TracksDTO;
 
 import java.util.List;
 
-public record PlaylistDTO(String id, String name, List<ImageDTO> images, TracksDTO tracks) {}
+public record PlaylistDTO(String id, String name, List<ImageDTO> images, TracksDTO items) {}

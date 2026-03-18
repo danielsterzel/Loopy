@@ -27,10 +27,11 @@ public class PlaylistController
         return ResponseEntity.ok(playlists);
     }
 
-    @GetMapping("/playlists/{id}/tracks")
+    @GetMapping("/playlists/{id}/items")
     public ResponseEntity<List<TrackModel>> getPlaylistTracks(@PathVariable String id)
     {
         List<TrackModel> tracks = spotifyApiClient.getPlaylistTracks(id);
+
 
         return ResponseEntity.ok(tracks);
     }

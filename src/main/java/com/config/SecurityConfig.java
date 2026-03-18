@@ -3,13 +3,17 @@ package com.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 1. @Bean -> call method marked with it on startup and save the return as a bean
@@ -33,12 +37,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
-
+    private final static Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
@@ -51,17 +55,26 @@ public class SecurityConfig {
                                 "/login/oauth2/**",
                                 "/error").permitAll()
                         .anyRequest().authenticated())
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(
-                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
-                        )
-                )
-
 
                 .requestCache(cache -> cache
                         .requestCache(new org.springframework.security.web.savedrequest.HttpSessionRequestCache()))
-                .oauth2Login(login ->
-                        login.defaultSuccessUrl("http://127.0.0.1:5173", true));
+                .oauth2Login(login ->{
+                    login.failureHandler((request, response, exception) ->
+                    {
+                        log.error("OAuth login failed");
+                        if(exception instanceof OAuth2AuthenticationException oauthEx){
+                            OAuth2Error error = oauthEx.getError();
+
+                            log.error("OAuth error code: {}", error.getErrorCode());
+                            log.error("OAuth error description: {}", error.getDescription());
+                        }else {
+                            log.error("Other Exception found with message: {}", exception.getMessage());
+                        }
+                        response.sendRedirect("/oauth2/authorization/spotify");
+                    });
+
+                        login.defaultSuccessUrl("http://127.0.0.1:5173", true);
+                });
 
         return http.build();
     }

@@ -1,11 +1,14 @@
 package com.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.stereotype.Component;
 
 import java.lang.IllegalStateException;
@@ -38,9 +41,11 @@ public class AuthFacade {
     ///
     ///
     private final OAuth2AuthorizedClientService clientService;
+    private final OAuth2AuthorizedClientRepository clientRepository;
 
-    public AuthFacade( OAuth2AuthorizedClientService clientService ){
+    public AuthFacade( OAuth2AuthorizedClientService clientService, OAuth2AuthorizedClientRepository clientRepository){
         this.clientService = clientService;
+        this.clientRepository = clientRepository;
     }
     public Authentication currentAuthentication() throws RuntimeException
     {
@@ -70,14 +75,22 @@ public class AuthFacade {
         String principalName = oauthToken.getPrincipal().getName();
         String registrationId = oauthToken.getAuthorizedClientRegistrationId();
 
+
         System.out.println("\nPRINCIPAL NAME: " + principalName + "\n");
         System.out.println("\n REGISTRATION ID: " + registrationId + "\n");
 
+        System.out.println("Auth: " + SecurityContextHolder.getContext().getAuthentication());
+        System.out.println("IS AUTHENTICATED: " + isUserAuthenticated());
+
         OAuth2AuthorizedClient oauthClient = clientService.loadAuthorizedClient(registrationId, principalName);
-        if(oauthClient == null || oauthClient.getAccessToken() == null)
+
+        System.out.println("CLIENT: " + oauthClient);
+
+        if (oauthClient == null || oauthClient.getAccessToken() == null)
         {
             throw new IllegalStateException("No authorized client found (OAuth login possibly failed");
         }
+
         /* For future maybe:
         *  ClientRegistration clientRegistrationInfo = oauthClient.getClientRegistration();
         * */
