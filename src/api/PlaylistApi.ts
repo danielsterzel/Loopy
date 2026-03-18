@@ -14,6 +14,6 @@ export async function getPlaylists()
 
 export async function getTracksForPlaylistId(id : string)
 {
-    console.log("ID ", id);
-    return apiGet<Track[]>(`${PLAYLIST_BASE_URL}/playlists/${id}/tracks`);
+    console.log("PLAYLIST ID:", id);
+    return apiGet<Track[]>(`${PLAYLIST_BASE_URL}/playlists/${id}/items`);
 }

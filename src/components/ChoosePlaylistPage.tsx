@@ -37,6 +37,10 @@ export function ChoosePlaylistPage() {
       try {
         const data = await getPlaylists();
         setPlaylists(data);
+        if(!data){throw Error("data null");}
+        data.map(el => {
+          console.log("PlaylistId", el.id)
+       });
       } catch (err) {
         console.error(err);
       } finally {
@@ -52,6 +56,9 @@ export function ChoosePlaylistPage() {
   if (playlists == null) {
     return null;
   }
+
+  playlists.forEach(playlist => console.log(playlist.totalTracks));
+
   return (
     <>
       <button

@@ -13,8 +13,8 @@ export async function apiFetch<T>(
     ...options,
   });
   if (res.status === 204) return null;
-
   if (!res.ok) throw new Error(`API error ${res.status}`);
+
   return res.json();
 }
 

@@ -23,7 +23,6 @@ export function TrackListModal({
 }: TrackListModalProps) {
   const [tracks, setTracks] = useState<Track[]>([]);
 
-  if (!show) return null;
 
 
   useEffect(() => {
@@ -38,6 +37,7 @@ export function TrackListModal({
     fetchTracks();
   }, [show, id]);
 
+  if (!show) return null;
 
   return (
       <div className={styles.shadowBackground}>
