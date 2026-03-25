@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { FocusTrap } from "focus-trap-react";
 
 import styles from "./styleModules/EditSongsModal.module.css";
-import type { Playlist } from "../types/Playlist";
-import type { SearchResult } from "../types/SearchResult";
+import type { Playlist } from "../../types/Playlist";
+import type { SearchResult } from "../../types/SearchResult";
 
-import {useModalExitViaEscape} from "../common/UXUtils";
+import {useModalExitViaEscape} from "../../common/UXUtils";
 
 type EditingTarget = "from" | "to" | null;
 

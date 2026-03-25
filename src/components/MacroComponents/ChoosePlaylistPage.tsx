@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getPlaylists } from "../api/PlaylistApi";
-import type { Playlist } from "../types/Playlist";
+import { getPlaylists } from "../../api/PlaylistApi";
+import type { Playlist } from "../../types/Playlist";
 
 import { TrackListModal } from "./TrackListModal";
-import type { Track } from "../types/Track";
+import type { Track } from "../../types/Track";
 
 import styles from "./styleModules/ChoosePlaylistPage.module.css";
 

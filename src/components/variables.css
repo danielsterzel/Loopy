@@ -2,8 +2,7 @@
 
 :root {
     /* Brand */
-    --color-brand-primary: #1DB954;
-    --color-brand-primary-hover: #1ED760;
+    --color-brand-primary: #1ED760;
 
     /* Backgrounds */
     --color-bg-main: #121212;
@@ -30,9 +29,9 @@
 
     --text-main: var(--color-text-primary);
     --text-muted: var(--color-text-secondary);
+    --text-disabled: var(--color-text-disabled);
 
     --accent-main: var(--color-brand-primary);
-    --accent-hover: var(--color-brand-primary-hover);
 
     --border-default: var(--color-border-subtle);
 

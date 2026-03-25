@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Macro } from "../types/Macro";
+import type { Macro } from "../../types/Macro";
 
 export function MacroDebug()
 {

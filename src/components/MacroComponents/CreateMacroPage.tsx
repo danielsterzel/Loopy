@@ -5,12 +5,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./styleModules/CreateMacroModal.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-import { postMacro } from "../api/MacroApi";
+import { postMacro } from "../../api/MacroApi";
 
 import { Slider } from "./Slider";
 
-import { BASE_URL } from "../common/APIBase";
-import { isValidMacroName } from "../common/StringUtils";
+import { BASE_URL } from "../../common/APIBase";
+import { isValidMacroName } from "../../common/StringUtils";
 
 import { InfoModal } from "./InfoModal";
 

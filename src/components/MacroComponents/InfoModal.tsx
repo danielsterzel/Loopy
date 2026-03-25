@@ -1,4 +1,4 @@
-import { useModalExitViaEscape } from "../common/UXUtils";
+import { useModalExitViaEscape } from "../../common/UXUtils";
 
 import styles from "./styleModules/InfoModal.module.css";
 import { useEffect } from "react";

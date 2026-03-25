@@ -7,12 +7,14 @@ import { useLocation } from "react-router-dom";
 import styles from "./styleModules/MainPage.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-import { getUserMacros } from "../api/MacroApi";
-import { postMacroNameChange } from "../api/MacroApi";
-import { postMacroReconfiguration } from "../api/MacroApi";
-import { deleteMacro } from "../api/MacroApi";
-import { isMacroEqual } from "../common/MacroUtils";
-import { BASE_URL } from "../common/APIBase";
+import { fetchUserProfile } from "../../api/AuthApi";
+import { logout } from "../../api/AuthApi";
+import { getUserMacros } from "../../api/MacroApi";
+import { postMacroNameChange } from "../../api/MacroApi";
+import { postMacroReconfiguration } from "../../api/MacroApi";
+import { deleteMacro } from "../../api/MacroApi";
+import { isMacroEqual } from "../../common/MacroUtils";
+import { BASE_URL } from "../../common/APIBase";
 
 import { Slider } from "./Slider";
 import { ConfirmModal } from "./ConfirmModal";
@@ -20,7 +22,11 @@ import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
 import { InfoModal } from "./InfoModal";
 
-import type { Macro } from "../types/Macro";
+import type { User } from "../../api/AuthApi";
+import type { Macro } from "../../types/Macro";
+
+import { SpotifyLogo } from "../UtilComponents/SpotifyLogo";
+
 
 
 type ToastState = {
@@ -29,7 +35,8 @@ type ToastState = {
   message: string;
 };
 
-export function MainPage() {
+export function MacroMainPage() {
+  const [user, setUser] = useState<User | null>();
   const [selected, setSelected] = useState<number | null>(null);
 
   const [showDeleteConfirm, setDeleteConfirm] = useState(false);
@@ -65,6 +72,22 @@ export function MainPage() {
       })
       .catch((err) => console.error(err));
   }, []);
+
+  useEffect(() => {
+    fetchUserProfile()
+    .then(data => {
+      setUser(data ?? {name: "INVALID NAME"});
+    })
+    .catch(e => {
+      console.error(e);
+    })
+  }, []);
+
+  // TODO: CSRF TOKEN fetch and send it idk
+
+  const handleLogout = ( async() => {
+    logout();
+  });
 
   const toggleSelected = useCallback((id: number) => {
     setSelected(prev => {
@@ -172,32 +195,12 @@ export function MainPage() {
   return (
     <div className={styles.mainPage}>
       <div className={styles.titleShelf}>
-        <div className={styles.title}>Spotify Macros</div>
+        <div className={styles.title}>{<SpotifyLogo width={40} />} Macros</div>
 
         <div className={styles.titleRight}>
-          <p>Author: Daniel Sterzel</p>
-          <div className={styles.iconWrapper}>
-            <div className={styles.titleIcons}>
-              <a
-                href="https://www.linkedin.com/in/daniel-sterzel-2006a63a3/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn profile"
-                className={styles.socialLinks}
-              >
-                <i className="fa-brands fa-square-linkedin"></i>
-              </a>
-              <a
-                href="https://www.facebook.com/profile.php?id=100015435408068"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook profile"
-                className={styles.socialLinks}
-              >
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-            </div>
-          </div>
+          <p>Logged in as {user?.name}</p>
+          <button className={styles.logoutButton}
+          onClick={() => {}}>Logout</button>
         </div>
       </div>
       <div className={styles.content}>
@@ -351,7 +354,33 @@ export function MainPage() {
               </div>
             </div>
           )}
+          <div className={styles.footer}>
+          <p>Author: Daniel Sterzel</p>
+          <div className={styles.iconWrapper}>
+            <div className={styles.titleIcons}>
+              <a
+                href="https://www.linkedin.com/in/daniel-sterzel-2006a63a3/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn profile"
+                className={styles.socialLinks}
+              >
+                <i className="fa-brands fa-square-linkedin"></i>
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100015435408068"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook profile"
+                className={styles.socialLinks}
+              >
+                <i className="fa-brands fa-facebook"></i>
+              </a>
+            </div>
+          </div>
+        </div>
         </main>
+
       </div>
       <ConfirmModal
         show={showDeleteConfirm}

@@ -1,11 +1,15 @@
 import { BASE_URL } from "../common/APIBase";
+import { apiGet, apiPost } from "./spotifyApi";
 
-export function loginWithSpotify() : void
-{
-    window.location.href = `${BASE_URL}/oauth2/authorization/spotify`;
+export type User = {name: string};
+
+export async function fetchUserProfile(): Promise<User | null>{
+    return apiGet<User>(`${BASE_URL}/user`);
 }
+export async function logout(){
+    await fetch(`${BASE_URL}/logout`, {
+        method: "POST",
+        credentials: "include"
+    });
 
-export function logout() : void 
-{
-    window.location.href = `${BASE_URL}/logout`;
 }

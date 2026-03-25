@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { FocusTrap } from "focus-trap-react";
-import { isValidMacroName } from "../common/StringUtils";
+import { isValidMacroName } from "../../common/StringUtils";
 import { InfoModal } from "./InfoModal";
 
-import { useModalExitViaEscape } from "../common/UXUtils";
+import { useModalExitViaEscape } from "../../common/UXUtils";
 
 import styles from "./styleModules/ChangeNameModal.module.css";
 

@@ -42,7 +42,7 @@
     padding: 0.5rem;
 }
 .listItem img {
-    border-radius: 50%;
+    border-radius: 4px;
 }
 .listItem p{
     padding-left: 1rem;

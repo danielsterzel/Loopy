@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { getTracksForPlaylistId } from "../api/PlaylistApi";
+import { getTracksForPlaylistId } from "../../api/PlaylistApi";
 
 // import { FocusTrap } from "focus-trap-react"; //????? 
 
-import type { Track } from "../types/Track";
+import type { Track } from "../../types/Track";
 
 import styles from "./styleModules/TrackListModal.module.css";
 
