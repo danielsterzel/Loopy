@@ -168,42 +168,6 @@ export function MainPage() {
               onMouseEnter={toogleCardDots}
               onMouseLeave={toogleCardDots}
             >
-              <div
-                className={`absolute top-0 left-0 m-4 bg-white/50 rounded-full h-2 w-2
-                        transition-all duration-500 
-                        ${
-                          showCardDots
-                            ? "translate-x-4 translate-y-4 opacity-100"
-                            : "translate-x-0 translate-y-0 opacity-0"
-                        }`}
-              />
-              <div
-                className={`absolute top-0 right-0 m-4 bg-white/50 rounded-full h-2 w-2
-                        transition-all duration-500 
-                        ${
-                          showCardDots
-                            ? "-translate-x-4 translate-y-4 opacity-100"
-                            : "translate-x-0 translate-y-0 opacity-0"
-                        }`}
-              />
-              <div
-                className={`absolute bottom-0 left-0 m-4 bg-white/50 rounded-full h-2 w-2
-                        transition-all duration-500 
-                        ${
-                          showCardDots
-                            ? "translate-x-4 -translate-y-4 opacity-100"
-                            : "translate-x-0 translate-y-0 opacity-0"
-                        }`}
-              />
-              <div
-                className={`absolute bottom-0 right-0 m-4 bg-white/50 rounded-full h-2 w-2
-                        transition-all duration-500 
-                        ${
-                          showCardDots
-                            ? "-translate-x-4 -translate-y-4 opacity-100"
-                            : "translate-x-0 translate-y-0 opacity-0"
-                        }`}
-              />
               <div className="flex items-center justify-center gap-4">
                 <div className="mr-6 h-[200px] border border-r border-white" />
                 <div className="relative w-[250px] h-[350px] rounded-md overflow-hidden border-2 border-white">
@@ -231,14 +195,7 @@ export function MainPage() {
                 <AudioWave />
               </div>
               <div className="mt-2">
-                <div className="w-[250px] h-2 bg-borderSubtle rounded-full relative">
-                  <div
-                    className="absolute left-[20%] w-[40%]
-                        h-full bg-spotifyGreen rounded-full"
-                  />
-                  <div className="absolute rounded-full left-[20%] -translate-y-[2px] h-3 w-3 bg-white"></div>
-                  <div className="absolute rounded-full right-[40%] -translate-y-[2px] h-3 w-3 bg-white" />
-                </div>
+                <ProgressingBar beginning={20} end={60} width={300}/>
                 <div className="mt-4 flex justify-center gap-2 items-center">
                   <div className="flex flex-col justify-center items-center gap-1">
                     <div
