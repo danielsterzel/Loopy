@@ -1,7 +1,5 @@
-package com.security;
+package com.security.auth;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,15 +29,9 @@ import java.lang.IllegalStateException;
  * =======================================================
  **/
 
-@Component // this class needs to be created, stored and
-           // shared by Spring container.
+@Component
 public class AuthFacade {
 
-    ///-------- class fields --------
-    ///  OAuth2AuthorizedClientService -> maps (user, provider) -> (accessToken, refreshToken)
-    ///  it's basically a container for information that is mapped.
-    ///
-    ///
     private final OAuth2AuthorizedClientService clientService;
     private final OAuth2AuthorizedClientRepository clientRepository;
 
@@ -58,7 +50,7 @@ public class AuthFacade {
         }
         return auth;
     }
-    public OAuth2AuthenticationToken getOauth2AuthenticationToken() throws RuntimeException
+    private OAuth2AuthenticationToken getOauth2AuthenticationToken() throws RuntimeException
     {
         Authentication authentication = currentAuthentication();
 
@@ -75,25 +67,12 @@ public class AuthFacade {
         String principalName = oauthToken.getPrincipal().getName();
         String registrationId = oauthToken.getAuthorizedClientRegistrationId();
 
-
-        System.out.println("\nPRINCIPAL NAME: " + principalName + "\n");
-        System.out.println("\n REGISTRATION ID: " + registrationId + "\n");
-
-        System.out.println("Auth: " + SecurityContextHolder.getContext().getAuthentication());
-        System.out.println("IS AUTHENTICATED: " + isUserAuthenticated());
-
         OAuth2AuthorizedClient oauthClient = clientService.loadAuthorizedClient(registrationId, principalName);
-
-        System.out.println("CLIENT: " + oauthClient);
 
         if (oauthClient == null || oauthClient.getAccessToken() == null)
         {
             throw new IllegalStateException("No authorized client found (OAuth login possibly failed");
         }
-
-        /* For future maybe:
-        *  ClientRegistration clientRegistrationInfo = oauthClient.getClientRegistration();
-        * */
 
         return oauthClient.getAccessToken().getTokenValue();
     }

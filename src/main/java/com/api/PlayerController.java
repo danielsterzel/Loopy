@@ -3,12 +3,14 @@ package com.api;
 import com.spotify.client.SpotifyApiClient;
 import com.domain.model.PlayerState.PlayerState;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/player") // prefix for all mappings in controller
+@RequestMapping("/api/player")
 public class PlayerController {
     private final SpotifyApiClient spotifyApiClient;
 
@@ -20,14 +22,12 @@ public class PlayerController {
         return spotifyApiClient.getCurrentPlayerRawJson();
     }
 
-
-    // ResponseEntity == full HTTP response with error code body and headers
-    @GetMapping
-    public ResponseEntity<PlayerState> getPlayer()
+    @PostMapping("/repeat/start")
+    public ResponseEntity<Map<String, Boolean>> startRepeat(@RequestBody ResponseEntity<String> request)
     {
-        return spotifyApiClient.getCurrentPlayer().map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+        return ResponseEntity.ok(Map.of("repeat", true));
     }
+
 }
 
 

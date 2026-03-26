@@ -31,7 +31,6 @@ public class MacroController {
     public List<MacroDTO> getMacros(@AuthenticationPrincipal OAuth2User oAuth2User)
     {
         User user = userService.getOrCreate(oAuth2User);
-//        return macroService.getAllForUser(user).stream().map(MacroMapper::entityToDto).toList();
         return macroService.gettAllForUserOrderByPositionAsc(user).stream().map(MacroMapper::entityToDto).toList();
     }
 

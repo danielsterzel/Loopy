@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpotifyApiClient {
-    Optional<PlayerState> getCurrentPlayer();
     void enqueueTrack(String trackUri);
     void skipToNext();
     List<Playlist> getUserPlaylists();

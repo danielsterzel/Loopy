@@ -3,7 +3,6 @@ package com.spotify.client;
 import com.domain.model.Playlist.Playlist;
 import com.domain.model.Playlist.PlaylistMapper;
 import com.domain.model.Track.TrackModelMapper;
-import com.security.AuthFacade;
 import com.spotify.model.PlayerState.DTO.PlayerResponseDto;
 import com.domain.model.PlayerState.PlayerState;
 import com.domain.model.PlayerState.PlayerStateMapper;
@@ -20,41 +19,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * 1. WebClient -> builds and sends Http Request
- * 2. Mono<T> -> promise that I will receive one object of type T
- * 3. bodyToMono(...class) can be used to map object to any class. It maps Json fields to class fields.
- *
- */
-
 @Component
 public class SpotifyApiClientImpl implements SpotifyApiClient {
 
-    private final AuthFacade auth;
     private final WebClient webClient;
 
-    public SpotifyApiClientImpl(AuthFacade auth, WebClient webClient) {
-        this.auth = auth;
-        this.webClient = webClient; // spring uses the SpotifyWebClientConfig for creating WebClient type object
+    public SpotifyApiClientImpl(WebClient webClient) {
+        this.webClient = webClient;
     }
 
-    @Override
-    public Optional<PlayerState> getCurrentPlayer() {
-        var spotifyAccessToken = auth.getAccessTokenValue();
 
-        PlayerResponseDto dto = webClient
-                .get()
-                .uri("/me/player")
-                .header("Authorization", "Bearer " + spotifyAccessToken)
-                .retrieve()
-                .onStatus(status -> status.value() == 401,
-                        response -> response.bodyToMono(String.class)
-                                .map(body -> new RuntimeException("Spotify 401" + body)))
-                .bodyToMono(PlayerResponseDto.class)
-                .block();
-
-        return PlayerStateMapper.from(dto);
-    }
 
     @Override
     public void enqueueTrack(String trackUri) {
@@ -66,28 +40,24 @@ public class SpotifyApiClientImpl implements SpotifyApiClient {
 
     @Override
     public String getCurrentPlayerRawJson() throws RuntimeException {
-        var spotifyAccessToken = auth.getAccessTokenValue();
 
         return webClient
                 .get()
                 .uri("/me/player")
-                .header("Authorization", "Bearer " + spotifyAccessToken)
-                .retrieve()// execute
+                .retrieve()
                 .onStatus(status -> status.value() == 401,
                         clientResponse -> clientResponse.bodyToMono(String.class)
                                 .map(body -> new RuntimeException("Spotify 401" + body)))
                 .bodyToMono(String.class)
-                .block(); // block thread and give me the result -> sync communication
+                .block();
     }
 
     @Override
     public List<Playlist> getUserPlaylists() {
-        var spotifyAccessToken = auth.getAccessTokenValue();
 
         PlaylistResponse response = webClient
                 .get()
                 .uri("/me/playlists")
-                .header("Authorization", "Bearer " + spotifyAccessToken)
                 .retrieve()
                 .onStatus(status -> status.value() == 401,
                         clientResponse -> clientResponse.bodyToMono(String.class)
@@ -101,19 +71,16 @@ public class SpotifyApiClientImpl implements SpotifyApiClient {
         }
         return response.items().stream()
                 .filter(Objects::nonNull)
-                .map(item -> PlaylistMapper.from(item))
+                .map(PlaylistMapper::from)
                 .toList();
     }
 
     @Override
     public List<TrackModel> getPlaylistTracks(String playlistId) {
-        var spotifyAPIToken = auth.getAccessTokenValue();
-
         try {
             PlaylistTracksResponse spotifyResponse = webClient
                     .get()
                     .uri("/playlists/{playlist_id}/items", playlistId)
-                    .header("Authorization", "Bearer " + spotifyAPIToken)
                     .retrieve()
                     .onStatus(status -> status.value() == 401,
                             clientResponse -> clientResponse.bodyToMono(String.class)
@@ -130,9 +97,9 @@ public class SpotifyApiClientImpl implements SpotifyApiClient {
             List<PlaylistTrackItem> playlistTrackItems = spotifyResponse.items();
 
             return playlistTrackItems.stream()
-                    .map(item -> item.item())
+                    .map(PlaylistTrackItem::item)
                     .filter(Objects::nonNull)
-                    .map(item -> TrackModelMapper.from(item))
+                    .map(TrackModelMapper::from)
                     .toList();
         } catch (WebClientResponseException e)
         {
