@@ -7,18 +7,22 @@ import { ChoosePlaylistPage } from "./components/MacroComponents/ChoosePlaylistP
 
 import { TrackListModal } from "./components/MacroComponents/TrackListModal";
 import { CreateMacroPage } from "./components/MacroComponents/CreateMacroPage";
-import { ProgressingBar } from "./components/UtilComponents/ProgressingBar";
+
+
+import { TestLoop } from "./components/LoopComponents/TestLoop";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={"/test"} element={<TestLoop/>}/>
         <Route path={"/"} element={<MainPage />}/>
         <Route path={"/macros/create"} element={<CreateMacroPage />} />
         <Route path={"/macros"} element={<MacroMainPage />} />
         <Route path={"/macros/create/playlists"} element={<ChoosePlaylistPage />}/>
       </Routes>
     </BrowserRouter>
+
     // <TrackListModal show={true} id={"2HjasDHXgoTEHYiB7nxL8C"} currentPlaylistNumberId={0} songType="fromSong"
     // onConfirmSong={() => {}}/>
   );
