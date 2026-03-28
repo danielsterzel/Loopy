@@ -1,6 +1,5 @@
 package com.config;
 
-import com.security.TokenProvider.SpotifyTokenProviderImpl;
 import com.security.TokenStore.TokenStore;
 import com.spotify.client.filter.SpotifyAuthInterceptor;
 import org.springframework.context.annotation.Bean;

@@ -20,18 +20,18 @@ public final class PlayerStateMapper {
             return Optional.empty();
         }
 
-        TrackModel trackObject = TrackModelMapper.from(dto.track());
-        Device device = DeviceMapper.from(dto.deviceDto());
+        TrackModel trackObject = TrackModelMapper.from(dto.item());
+        Device device = DeviceMapper.from(dto.device());
 
         return Optional.of(
                 new PlayerState(
                         trackObject,
                         device,
-                        dto.repeatState(),
+                        dto.repeat_state(),
                         dto.timestamp(),
-                        dto.progressInMs(),
-                        dto.isPlaying(),
-                        dto.shuffleStateOn()
+                        dto.progress_ms(),
+                        dto.is_playing(),
+                        dto.shuffle_state()
                 )
         );
     }

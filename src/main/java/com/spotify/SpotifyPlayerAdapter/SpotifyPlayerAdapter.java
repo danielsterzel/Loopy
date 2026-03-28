@@ -32,6 +32,7 @@ public class SpotifyPlayerAdapter implements PlayerControlPort{
                 .bodyToMono(PlayerResponseDto.class)
                 .block();
 
+        log.info("PlayerResponseDto received: {}", dto);
         return PlayerStateMapper.from(dto);
     }
     @Override
@@ -70,7 +71,7 @@ public class SpotifyPlayerAdapter implements PlayerControlPort{
                 .put()
                 .uri(uriBuilder -> uriBuilder
                                 .path("/me/player/seek")
-                                .queryParam("postition_ms", positionMs)
+                                .queryParam("position_ms", positionMs)
                                 .build()
                         )
                 .retrieve()

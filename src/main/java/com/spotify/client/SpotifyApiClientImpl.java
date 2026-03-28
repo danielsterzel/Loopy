@@ -29,7 +29,6 @@ public class SpotifyApiClientImpl implements SpotifyApiClient {
     }
 
 
-
     @Override
     public void enqueueTrack(String trackUri) {
     }
