@@ -1,5 +1,5 @@
 import type {PlayerState} from "../types/PlayerState";
-import { apiGet } from "./SpotifyApi";
+import { apiGet } from "./spotifyApi";
 
 export function rawJson(path: string)
 {

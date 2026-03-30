@@ -1,4 +1,4 @@
-import { apiGet } from "./SpotifyApi";
+import { apiGet } from "./spotifyApi";
 
 import type { Playlist } from "../types/Playlist";
 

@@ -1,5 +1,5 @@
 import type { Macro } from "../types/Macro";
-import { apiDelete, apiGet, apiPost } from "./SpotifyApi";
+import { apiDelete, apiGet, apiPost } from "./spotifyApi";
 import { BASE_URL } from "../common/APIBase";
 
 const MACRO_API_ENDPOINT_BASE_URL = BASE_URL + "/api/macros";

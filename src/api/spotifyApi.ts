@@ -1,13 +1,25 @@
 import type { SearchResult } from "../types/SearchResult";
 
+import Cookies from "js-cookie";
+
+function getCsrfToken()
+{
+  return Cookies.get("XSRF-TOKEN");
+}
+
+
+// curently sending csrf token on GET - refactor later
 export async function apiFetch<T>(
   path: string,
   options?: RequestInit,
 ): Promise<T | null> {
+  const csrfToken = getCsrfToken();
+
   const res = await fetch(path, {
-    credentials: "include", // send cookies with request
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      ...(csrfToken && {"X-XSRF-TOKEN": csrfToken}),
       ...options?.headers, // if some additional headers add them
     },
     ...options,

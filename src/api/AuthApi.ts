@@ -1,15 +1,28 @@
 import { BASE_URL } from "../common/APIBase";
 import { apiGet, apiPost } from "./spotifyApi";
 
-export type User = {name: string};
+import type { User } from "../types/User";
 
 export async function fetchUserProfile(): Promise<User | null>{
-    return apiGet<User>(`${BASE_URL}/user`);
+    return apiGet<User>(`${BASE_URL}/api/me`);
 }
+
+export async function getUser()
+{
+    const data = await fetchUserProfile();
+
+    if(!data) return;
+    
+    return {
+        display_name: data.display_name,
+        id: data.id,
+        images: data.images 
+    } as User
+}
+
 export async function logout(){
     await fetch(`${BASE_URL}/logout`, {
         method: "POST",
         credentials: "include"
     });
-
 }

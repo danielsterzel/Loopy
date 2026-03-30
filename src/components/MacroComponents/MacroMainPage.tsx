@@ -22,7 +22,7 @@ import { EditSongsModal } from "./EditSongsModal";
 import { ChangeNameModal } from "./ChangeNameModal";
 import { InfoModal } from "./InfoModal";
 
-import type { User } from "../../api/AuthApi";
+import type { User } from "../../types/User";
 import type { Macro } from "../../types/Macro";
 
 import { SpotifyLogo } from "../UtilComponents/SpotifyLogo";
@@ -76,7 +76,7 @@ export function MacroMainPage() {
   useEffect(() => {
     fetchUserProfile()
     .then(data => {
-      setUser(data ?? {name: "INVALID NAME"});
+      setUser(data);
     })
     .catch(e => {
       console.error(e);
@@ -198,7 +198,7 @@ export function MacroMainPage() {
         <div className={styles.title}>{<SpotifyLogo width={40} />} Macros</div>
 
         <div className={styles.titleRight}>
-          <p>Logged in as {user?.name}</p>
+          <p>Logged in as {user?.display_name}</p>
           <button className={styles.logoutButton}
           onClick={() => {}}>Logout</button>
         </div>

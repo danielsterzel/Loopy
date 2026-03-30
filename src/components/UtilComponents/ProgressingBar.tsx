@@ -15,6 +15,7 @@ function formatTime(percent: number) {
 }
 
 export function ProgressingBar({ beginning, end, width }: Props) {
+  
   const [start, setStart] = useState(beginning);
   const [finish, setFinish] = useState(end);
   const [dragging, setDragging] = useState<"start" | "end" | null>(null);
@@ -28,6 +29,7 @@ export function ProgressingBar({ beginning, end, width }: Props) {
   const endDrag = useCallback(() => {
     setDragging("end");
   }, []);
+
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
