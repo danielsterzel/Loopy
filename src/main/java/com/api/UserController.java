@@ -24,14 +24,17 @@
 
 package com.api;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -54,4 +57,13 @@ public class UserController {
     {
         return ResponseEntity.ok(Map.of("name", (String) user.getAttributes().get("display_name")));
     }
+
+    @GetMapping("/api/csrf")
+    public Map<String, String> csrf(CsrfToken token)
+    {
+        return Map.of("header name ", token.getHeaderName(),
+                "param name" , token.getParameterName(),
+                "token", token.getToken());
+    }
+
 }
