@@ -83,8 +83,6 @@ export function MacroMainPage() {
     })
   }, []);
 
-  // TODO: CSRF TOKEN fetch and send it idk
-
   const handleLogout = ( async() => {
     logout();
   });

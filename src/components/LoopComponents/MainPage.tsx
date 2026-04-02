@@ -1,7 +1,8 @@
 import { Navbar } from "./Navbar";
 import { DashboardCard } from "./DashboardCard";
 import { Loopy } from "./Loopy";
-
+import { License } from "./License";
+import { ProfileSection } from "./ProfileSection";
 export function MainPage() {
   
   return (
@@ -10,6 +11,8 @@ export function MainPage() {
         <Navbar />
         <DashboardCard />
         <Loopy />
+        <ProfileSection />
+        <License />
       </div>
     </div>
   );

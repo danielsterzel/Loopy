@@ -11,13 +11,16 @@ import { Loopy } from "./components/LoopComponents/Loopy";
 import { TestLoop } from "./components/LoopComponents/TestLoop";
 import { ProtectedRoute } from "./route/ProtectedRoute";
 
+import { ProfilePage } from "./components/LoopComponents/ProfilePage";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={"/"} element={<MainPage />}/>
         <Route element={<ProtectedRoute />}>
-          <Route path={"/"} element={<MainPage />}/>
           <Route path={"/login"} element={<Login />} />
+          <Route path={"/profile"} element={<ProfilePage />}/>
           <Route path={"/Loopy"} element={<Loopy />} />
           <Route path={"/test"} element={<TestLoop/>}/>
           <Route path={"/macros/create"} element={<CreateMacroPage />} />
@@ -27,8 +30,6 @@ function App() {
       </Routes>
     </BrowserRouter>
 
-    // <TrackListModal show={true} id={"2HjasDHXgoTEHYiB7nxL8C"} currentPlaylistNumberId={0} songType="fromSong"
-    // onConfirmSong={() => {}}/>
   );
 }
 

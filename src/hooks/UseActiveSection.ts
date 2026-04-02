@@ -1,30 +1,29 @@
 import { useState, useEffect } from "react";
 
-export function useActiveSection(ids: string[]){
-    const [active, setActive] = useState<string | null>(null);
+// watches element instead of watching everything
+export function useActiveSection(id: string) {
+  const [inView, setInView] = useState(false);
 
-    useEffect(() => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActive(entry.target.id);
-            }
-          });
-        },
-        {
-          rootMargin: "-100px 0px -70% 0px",
-          threshold: 0,
-        },
-      );
+  useEffect(() => {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-      ids.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) observer.observe(el);
-      });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+      },
+      {
+        rootMargin: "-20% 0px -20% 0px",
+        threshold: 0.6,
+      }
+    );
 
-      return () => observer.disconnect();
-    }, [ids]);
+    observer.observe(el);
 
-    return active;
-  };
+    return () => {
+      observer.disconnect();
+    };
+  }, [id]);
+
+  return inView;
+}
