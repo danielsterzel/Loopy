@@ -40,6 +40,8 @@ import java.util.stream.Collectors;
 public class UserController {
 
 
+    public UserController() {
+    }
 
     @GetMapping("/ping")
     public String ping()
@@ -57,13 +59,7 @@ public class UserController {
     {
         return ResponseEntity.ok(Map.of("name", (String) user.getAttributes().get("display_name")));
     }
-
-    @GetMapping("/api/csrf")
-    public Map<String, String> csrf(CsrfToken token)
-    {
-        return Map.of("header name ", token.getHeaderName(),
-                "param name" , token.getParameterName(),
-                "token", token.getToken());
-    }
-
+//    @PostMapping("/logout")
+//    public ResponseEntity<Map<String, String>> logout(){
+//    }
 }

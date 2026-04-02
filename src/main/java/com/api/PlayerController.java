@@ -2,9 +2,10 @@ package com.api;
 
 import com.domain.model.RepeatSession.RepeatSession;
 import com.domain.model.Track.TrackModel;
-import com.spotify.client.SpotifyApiClient;
 import com.domain.RepeatSessionService.RepeatSessionService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import com.domain.model.RepeatSession.StartRepeatRequest.StartRepeatRequest;
 import java.util.Map;
@@ -14,20 +15,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/player")
 public class PlayerController {
-    private final SpotifyApiClient spotifyApiClient;
     private final RepeatSessionService repeatSessionService;
 
-    public PlayerController(SpotifyApiClient spotifyApiClient, RepeatSessionService repeatSessionService){
-        this.spotifyApiClient = spotifyApiClient;
+    public PlayerController(RepeatSessionService repeatSessionService){
         this.repeatSessionService = repeatSessionService;
-    }
-    @GetMapping("/raw")
-    public String rawPlayerJson(){
-        return spotifyApiClient.getCurrentPlayerRawJson();
     }
 
     @PostMapping("/repeat/start")
-    public ResponseEntity<Map<String, Boolean>> startRepeat(@RequestBody StartRepeatRequest request)
+    public ResponseEntity<Map<String, Boolean>> startRepeat(
+            @AuthenticationPrincipal OAuth2User user,
+            @RequestBody StartRepeatRequest request)
     {
         Optional<TrackModel> currentlyPlaying = repeatSessionService.pullCurrentlyPlaying();
         if(currentlyPlaying.isEmpty()){
@@ -37,8 +34,9 @@ public class PlayerController {
         int startMs = request.startMs();
         int endMs = request.endMs();
 
+        String userId = user.getAttributes().get("user_id").toString();
         RepeatSession newSession = new RepeatSession(currentlyPlaying.get().id(),
-                currentlyPlaying.get().name(), startMs, endMs);
+                currentlyPlaying.get().name(), startMs, endMs, userId);
 
         repeatSessionService.startRepeat(newSession);
 
@@ -46,9 +44,10 @@ public class PlayerController {
     }
 
     @PostMapping("/repeat/end")
-    public ResponseEntity<Map<String, Boolean>> endRepeat()
+    public ResponseEntity<Map<String, Boolean>> endRepeat(@AuthenticationPrincipal OAuth2User user)
     {
-        repeatSessionService.stopRepeat();
+        String userId = user.getAttributes().get("user_id").toString();
+        repeatSessionService.stopRepeat(userId);
         return ResponseEntity.ok(Map.of("repeat", false));
     }
 

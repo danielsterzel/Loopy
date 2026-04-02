@@ -1,5 +1,6 @@
 package com.domain.RepeatSessionService;
 
+import com.domain.model.RepeatSession.RepeatSessionStorage;
 import com.domain.model.Track.TrackModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class RepeatSessionService {
@@ -19,19 +19,22 @@ public class RepeatSessionService {
     private static final Logger log = LoggerFactory.getLogger(RepeatSessionService.class);
 
     private static final int POLLING_DELAY_MS = 3000;
-    private final AtomicReference<RepeatSession> activeSession = new AtomicReference<>();
+
+    private final RepeatSessionStorage storage;
+
     private final PlayerControlPort playerControl;
 
-    public RepeatSessionService(PlayerControlPort playerControl)
+    public RepeatSessionService(PlayerControlPort playerControl, RepeatSessionStorage storage)
     {
         this.playerControl = playerControl;
+        this.storage = storage;
     }
 
     public void startRepeat(RepeatSession session){
-        activeSession.set(session);
+        storage.extendSessionMap(session);
     }
-    public void stopRepeat() {
-        activeSession.set(null);
+    public void stopRepeat(String id) {
+        storage.clearSession(id);
     }
     public Optional<TrackModel> pullCurrentlyPlaying()
     {
@@ -42,11 +45,13 @@ public class RepeatSessionService {
 
     @Scheduled(fixedDelay = POLLING_DELAY_MS)
     public void poll() {
-        RepeatSession currentSession = activeSession.get();
-        if(currentSession == null) return;
+//        RepeatSession currentSession = storage.querySessionById(id);
+        var currentSession = storage.querySessionById(id);
+
+        if(currentSession.isEmpty()) return;
 
         playerControl.getCurrentState().ifPresentOrElse(
-                state -> handleState(state, currentSession),
+                state -> handleState(state, currentSession.get()),
                 () -> log.warn("No response from Spotify")
         );
     }
