@@ -42,8 +42,8 @@ export function Loopy() {
 
       <div className="grid grid-cols-2 mt-16 gap-8">
         <div
-          className={`flex flex-col items-center px-6 py-6 
-          justify-center border rounded-lg border-4 border-borderSubtle text-lg
+          className={`flex flex-col items-center p-12
+          justify-center border rounded-xl border-2 border-borderSubtle text-lg
           hover:scale-[1.02] transition-all duration-300
           ${inView ? "animate-slideCardUp": "animate-slideCardDown"}
           `}
@@ -85,11 +85,12 @@ export function Loopy() {
           </div>
         </div>
         <div
-          className={`flex flex-col rounded-lg items-center px-6 py-6 
-          justify-center border border-4 border-borderSubtle text-lg
+          className={`flex flex-col rounded-xl items-center p-12 
+          justify-center border border-2 border-borderSubtle text-lg
           hover:scale-[1.02] transition-all duration-300
           ${inView ? "animate-slideCardUp": "animate-slideCardDown"}`}
         >
+          <p className="mb-6 text-xl">Start Loopin'</p>
           <div className="bg-borderSubtle w-[180px] h-[130px] overflow-hidden rounded-md">
             <img
               src={SongCover5}

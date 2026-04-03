@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function ProfileSection() {
-
   const [active, setActive] = useState(false);
   const [genereActive, setGenreActive] = useState(false);
   const [totalTimeActive, setTotalTimeActive] = useState(false);
@@ -30,42 +29,82 @@ export function ProfileSection() {
       <div className="grid grid-cols-3 gap-12">
         <div className="flex flex-col p-6 rounded-lg border-2 border-borderSubtle">
           <h2 className="text-2xl underline">Profile</h2>
-          <div className=""></div>
+          <div>
+            <div className="flex justify-between">
+              <div className="mt-4 rounded-full bg-bg3 w-16 h-16" />
+            </div>
+            <div className="mt-4 flex flex-col gap-2">
+              <p>My username: </p>
+              <p>Account created at:</p>
+              <p>something else ? idk</p>
+              <p></p>
+            </div>
+          </div>
         </div>
         <div className=" flex flex-col gap-4 p-6 rounded-lg border-2 border-borderSubtle">
+          {/* On like click it should flip and show like the loop range for like 5 seconds maybe more maybe less */}
           <h2 className="text-2xl underline">Loops</h2>
-            <div>
-                <ul className="flex flex-col gap-4">
-                    <li><i className="fa-solid fa-music pr-2"></i>Best part of Fade</li>
-                    <li><i className="fa-solid fa-music pr-2"></i>Absolute fire🔥</li>
-                    <li><i className="fa-solid fa-music pr-2"></i>Solemn</li>
-                </ul>
-            </div>
+          <div>
+            <ul className="flex flex-col gap-2">
+              <li className="hover:bg-emerald rounded-full transition-all duration-400 p-2 cursor-pointer flex gap-2 items-center">
+                <div className="w-1 h-1 bg-mutedText rounded-full" />
+                <i className="fa-solid fa-music pr-2"></i>Best part of Fade
+              </li>
+              <div className="w-full border-b border-mutedText" />
+              <li className="hover:bg-emerald rounded-full transition-all duration-400 p-2 cursor-pointer flex gap-2 items-center">
+                <div className="w-1 h-1 bg-mutedText rounded-full" />
+                <i className="fa-solid fa-music pr-2"></i>Absolute fire🔥
+              </li>
+              <div className="w-full border-b border-mutedText" />
+              <li className="hover:bg-emerald rounded-full transition-all duration-400 p-2 cursor-pointer flex gap-2 items-center">
+                <div className="w-1 h-1 bg-mutedText rounded-full" />
+                <i className="fa-solid fa-music pr-2"></i>Solemn
+              </li>
+              <div className="w-full border-b border-mutedText" />
+            </ul>
+          </div>
         </div>
         <div className=" flex flex-col p-6 rounded-lg border-2 border-borderSubtle">
           <h2 className="text-2xl mb-2 underline">Statistics</h2>
-            <div className="grid grid-cols-3 gap-4 justify-center items-center">
-              <div onMouseEnter={() => setActive(true)}
+          <p className="text-lg text-mutedText mb-2">
+            Hover to check out your stats!
+          </p>
+          <div className="grid grid-cols-3 gap-4 justify-center items-center">
+            <div
+              onMouseEnter={() => setActive(true)}
               onMouseLeave={() => setActive(false)}
               className={`aspect-square p-4 bg-bg3 text-center rounded-xl flex items-center justify-center
                 transition-all duration-300
-              ${active ? "bg-emerald text-black": ""}`}>
-                {active ? <p className="text-xl">9</p> : (<p>Total Loops</p>)}
-              </div>
-              <div onMouseEnter={() => setGenreActive(true)}
+              ${active ? "bg-emerald text-black" : ""}`}
+            >
+              {active ? <p className="text-xl">9</p> : <p>Total Loops</p>}
+            </div>
+            <div
+              onMouseEnter={() => setGenreActive(true)}
               onMouseLeave={() => setGenreActive(false)}
               className={`aspect-square p-4 bg-bg3 text-center rounded-xl flex items-center justify-center
                 transition-all duration-300
-                ${genereActive ? "bg-emerald text-black": ""}`}>
-                  {genereActive ? (<p className="text-xl">Metal</p>) : (<p>Favourite Genre</p>)}
-              </div>
-              <div onMouseEnter={() => setTotalTimeActive(true)}
+                ${genereActive ? "bg-emerald text-black" : ""}`}
+            >
+              {genereActive ? (
+                <p className="text-xl">Metal</p>
+              ) : (
+                <p>Favourite Genre</p>
+              )}
+            </div>
+            <div
+              onMouseEnter={() => setTotalTimeActive(true)}
               onMouseLeave={() => setTotalTimeActive(false)}
               className={`aspect-square p-4 text-center bg-bg3 rounded-xl flex items-center justify-center
                 transition-all duration-300 
-                ${totalTimeActive ? "bg-emerald text-black": ""}`}>
-                {/* Listening time */}
-                {totalTimeActive ? (<p className="text-xl">48.6 hours</p>) : (<p>Listening time</p>)}
+                ${totalTimeActive ? "bg-emerald text-black" : ""}`}
+            >
+              {/* Listening time */}
+              {totalTimeActive ? (
+                <p className="text-xl">48.6 hours</p>
+              ) : (
+                <p>Listening time</p>
+              )}
             </div>
           </div>
         </div>
