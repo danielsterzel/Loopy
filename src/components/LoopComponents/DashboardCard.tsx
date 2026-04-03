@@ -20,8 +20,7 @@ const TRANSITION = 1200;
 const INTERVAL = 3000;
 
 export function DashboardCard() {
-
-const { user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayIndex, setDisplayIndex] = useState(0);
@@ -36,8 +35,7 @@ const { user, loading } = useAuth();
 
   useEffect(() => {
     const interval = setInterval(() => {
-
-    const next = (displayIndex + 1) % images.length;
+      const next = (displayIndex + 1) % images.length;
       setNextDisplayIndex(next);
       setIsTransitioning(true);
 
@@ -102,8 +100,10 @@ const { user, loading } = useAuth();
         >
           <div className="flex items-center justify-center gap-4">
             <div className="mr-6 h-[200px] border border-r border-white" />
-            <div className="relative w-[250px] h-[350px] rounded-md overflow-hidden
-            hover:scale-[1.02] transition-all duration-200 border-2 border-white">
+            <div
+              className="relative w-[250px] h-[350px] rounded-md overflow-hidden
+            hover:scale-[1.02] transition-all duration-200 border-2 border-white"
+            >
               <img
                 src={images[displayIndex]}
                 className={`
@@ -127,10 +127,19 @@ const { user, loading } = useAuth();
           <div className="py-6">
             <AudioWave />
           </div>
+          {/* refactor make it clickable to pause then the audio
+           wave will stop and change icon to play */}
+          <div className="flex gap-4 items-center">
+            <i className="fa-solid fa-shuffle text-lg"></i>
+            <i className="fa-solid fa-backward-step text-lg"></i>
+            <i className="fa-solid fa-circle-pause text-4xl"></i>
+            <i className="fa-solid fa-forward-step text-lg"></i>
+            <i className="fa-solid fa-repeat text-lg"></i>
+          </div>
           <div className="mt-2">
             <div className="flex gap-2 justify-center items-center">
               <VolumeBar />
-            <ProgressingBar beginning={20} end={60} width={300} />
+              <ProgressingBar beginning={20} end={60} width={300} />
             </div>
             <div className="mt-4 flex justify-center gap-2 items-center">
               <div className="flex flex-col justify-center items-center gap-1">

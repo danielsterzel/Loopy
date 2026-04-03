@@ -3,6 +3,10 @@ import { DashboardCard } from "./DashboardCard";
 import { Loopy } from "./Loopy";
 import { License } from "./License";
 import { ProfileSection } from "./ProfileSection";
+import { AuthorSection } from "./AuthorSection";
+import { SupportSection } from "./SupportSection";
+import { UsedToolsBar } from "./UsedToolsBar";
+
 export function MainPage() {
   
   return (
@@ -11,7 +15,10 @@ export function MainPage() {
         <Navbar />
         <DashboardCard />
         <Loopy />
+        <UsedToolsBar/>
         <ProfileSection />
+        <SupportSection />
+        <AuthorSection />
         <License />
       </div>
     </div>

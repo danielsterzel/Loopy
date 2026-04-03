@@ -9,7 +9,6 @@ import SongCover5 from "../../assets/fabrice-villard-Jrl_UQcZqOc-unsplash.jpg";
 const SECTION_ID = "loopy";
 
 export function Loopy() {
-
   // const inView = useActiveSection(SECTION_ID);
   const inView = false;
 
@@ -40,12 +39,12 @@ export function Loopy() {
       </div>
       <i className="fa-solid fa-arrow-down"></i>
 
-      <div className="grid grid-cols-2 mt-16 gap-8">
+      <div className="grid grid-cols-2 mt-8 gap-8">
         <div
           className={`flex flex-col items-center p-12
           justify-center border rounded-xl border-2 border-borderSubtle text-lg
           hover:scale-[1.02] transition-all duration-300
-          ${inView ? "animate-slideCardUp": "animate-slideCardDown"}
+          ${inView ? "animate-slideCardUp" : "animate-slideCardDown"}
           `}
         >
           <p className="text-xl">Choose your song</p>
@@ -65,10 +64,12 @@ export function Loopy() {
                 />
                 <div className="absolute rounded-full left-[30%] -translate-y-[2px] h-3 w-3 bg-white" />
               </div>
-              <div className="flex gap-4">
-                <i className="fa-solid fa-backward-step text-sm"></i>
-                <i className="fa-solid fa-circle-pause"></i>
-                <i className="fa-solid fa-forward-step text-sm"></i>
+              <div className="flex gap-1 items-center">
+                <i className="fa-solid fa-shuffle text-xs"></i>
+                <i className="fa-solid fa-backward-step text-xs"></i>
+                <i className="fa-solid fa-circle-pause text-lg"></i>
+                <i className="fa-solid fa-forward-step text-xs"></i>
+                <i className="fa-solid fa-repeat text-xs"></i>
               </div>
             </div>
             <div className="flex flex-col gap-1 items-start">
@@ -85,10 +86,10 @@ export function Loopy() {
           </div>
         </div>
         <div
-          className={`flex flex-col rounded-xl items-center p-12 
+          className={`relative flex flex-col rounded-xl items-center p-12 
           justify-center border border-2 border-borderSubtle text-lg
           hover:scale-[1.02] transition-all duration-300
-          ${inView ? "animate-slideCardUp": "animate-slideCardDown"}`}
+          ${inView ? "animate-slideCardUp" : "animate-slideCardDown"}`}
         >
           <p className="mb-6 text-xl">Start Loopin'</p>
           <div className="bg-borderSubtle w-[180px] h-[130px] overflow-hidden rounded-md">
@@ -98,10 +99,12 @@ export function Loopy() {
             ></img>
           </div>
           <div className="w-full max-w-[250px] border border-bottom mt-6"></div>
-          <div className="mt-6  flex gap-4 text-2xl items-center">
-            <i className="fa-solid fa-backward-step"></i>
-            <i className="fa-solid fa-circle-pause text-3xl"></i>
-            <i className="fa-solid fa-forward-step"></i>
+          <div className="mt-6  flex gap-2 text-2xl items-center">
+            <i className="fa-solid fa-shuffle text-lg"></i>
+            <i className="fa-solid fa-backward-step text-lg"></i>
+            <i className="fa-solid fa-circle-pause text-4xl"></i>
+            <i className="fa-solid fa-forward-step text-lg"></i>
+            <i className="fa-solid fa-repeat text-lg"></i>
           </div>
           <ProgressingBar beginning={10} end={30} width={300} />
         </div>

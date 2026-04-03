@@ -1,4 +1,4 @@
-import { useState, useEffect, act } from "react";
+import { useState, useEffect} from "react";
 import { useActiveSectionGlobal } from "../../hooks/UseActiveSectionGlobal";
 import { useAuth } from "../../auth/useAuth";
 import { Loading } from "../UtilComponents/Loading";
