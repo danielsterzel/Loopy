@@ -54,6 +54,8 @@ public class UserController {
 
         return user.getAttributes();
     }
+    @GetMapping("/api/csrf")
+    public void csrf(CsrfToken token) {}
     @GetMapping("/user")
     public ResponseEntity<Map<String, String>> getUserDetails(@AuthenticationPrincipal OAuth2User user)
     {

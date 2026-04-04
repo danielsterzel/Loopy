@@ -1,31 +1,37 @@
 package com.security.TokenStore;
 
 
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class TokenStore {
-    private final AtomicReference<String> accessToken = new AtomicReference<>();
+    private final ConcurrentMap<String, String> accessTokenMap = new ConcurrentHashMap<>() {
+    };
 
-    public void store(String token)
+
+    public void store(String springSecurityId, String token)
     {
-        accessToken.set(token);
+        accessTokenMap.put(springSecurityId, token);
     }
 
-    public String get()
+    public String get(String id)
     {
-        String token = accessToken.get();
+        String token = accessTokenMap.get(id);
 
         if(token == null)
         {
-            throw new IllegalStateException("No Spotify token stored yet.");
+            throw new IllegalStateException("No Spotify token stored yet for user: " + id);
         }
         return token;
     }
 
-    public boolean hasToken()
+    public boolean hasToken(String id)
     {
-        return accessToken.get() != null;
+        return accessTokenMap.containsKey(id);
     }
 }

@@ -3,9 +3,11 @@ package com.spotify.SpotifyPlayerAdapter;
 import com.domain.model.PlayerState.PlayerState;
 import com.domain.model.PlayerState.PlayerStateMapper;
 import com.domain.port.PlayerControlPort;
+import com.security.TokenStore.TokenStore;
 import com.spotify.model.PlayerState.DTO.PlayerResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -14,20 +16,25 @@ import java.util.Optional;
 @Component
 public class SpotifyPlayerAdapter implements PlayerControlPort{
 
-    private final WebClient spotifyWebClient;
+    private final WebClient schedulerSpotifyWebClient;
     private final static Logger log = LoggerFactory.getLogger(SpotifyPlayerAdapter.class);
+    private final TokenStore tokenStore;
 
-    public SpotifyPlayerAdapter(WebClient spotifyWebClient)
+    public SpotifyPlayerAdapter(@Qualifier("schedulerSpotifyWebClient") WebClient schedulerSpotifyWebClient, TokenStore tokenStore)
     {
-        this.spotifyWebClient = spotifyWebClient;
+        this.tokenStore = tokenStore;
+        this.schedulerSpotifyWebClient = schedulerSpotifyWebClient;
     }
 
     @Override
-    public Optional<PlayerState> getCurrentState() {
+    public Optional<PlayerState> getCurrentState(String id) {
 
-        PlayerResponseDto dto = spotifyWebClient
+        String token = tokenStore.get(id);
+
+        PlayerResponseDto dto = schedulerSpotifyWebClient
                 .get()
                 .uri("/me/player")
+                .headers(headers -> headers.setBearerAuth(token))
                 .retrieve()
                 .bodyToMono(PlayerResponseDto.class)
                 .block();
@@ -36,15 +43,17 @@ public class SpotifyPlayerAdapter implements PlayerControlPort{
         return PlayerStateMapper.from(dto);
     }
     @Override
-    public void seekToPosition(int positionMs)
+    public void seekToPosition(String id, int positionMs)
     {
-        spotifyWebClient
+        String token = tokenStore.get(id);
+        schedulerSpotifyWebClient
                 .put()
                 .uri(uriBuilder -> uriBuilder
                         .path("/me/player/seek")
                         .queryParam("position_ms", positionMs)
                         .build()
                 )
+                .headers(headers -> headers.setBearerAuth(token))
                 .retrieve()
                 .toBodilessEntity()
                 .subscribe(
@@ -53,11 +62,13 @@ public class SpotifyPlayerAdapter implements PlayerControlPort{
                 );
     }
     @Override
-    public void play()
+    public void play(String id)
     {
-        spotifyWebClient
+        String token = tokenStore.get(id);
+        schedulerSpotifyWebClient
                 .put()
                 .uri("/me/player/play")
+                .headers(header -> header.setBearerAuth(token))
                 .retrieve()
                 .toBodilessEntity()
                 .subscribe(result -> log.debug("Play successfull"),
@@ -66,25 +77,23 @@ public class SpotifyPlayerAdapter implements PlayerControlPort{
     }
 
     @Override
-    public void repeatTrack(int positionMs){
-        spotifyWebClient
+    public void repeatTrack(String id, int positionMs){
+
+        String token = tokenStore.get(id);
+
+        schedulerSpotifyWebClient
                 .put()
                 .uri(uriBuilder -> uriBuilder
                                 .path("/me/player/seek")
                                 .queryParam("position_ms", positionMs)
                                 .build()
                         )
+                .headers(headers -> headers.setBearerAuth(token))
                 .retrieve()
                 .toBodilessEntity()
-                .then(
-                        spotifyWebClient
-                                .put()
-                                .uri("/me/player/play")
-                                .retrieve()
-                                .toBodilessEntity()
-                )
+
                 .subscribe(
-                        result -> log.debug("Song repeat successfull!"),
+                        result -> log.debug("Song repeat successful!"),
                         error -> log.error("Repeating song failed: {}", error.getMessage())
                 );
 

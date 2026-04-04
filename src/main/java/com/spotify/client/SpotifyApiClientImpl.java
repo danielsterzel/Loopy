@@ -11,6 +11,7 @@ import com.spotify.model.PlaylistResponse.DTO.PlaylistResponse;
 import com.domain.model.Track.TrackModel;
 import com.spotify.model.PlaylistTrackItem.DTO.PlaylistTrackItem;
 import com.spotify.model.PlaylistTrackResponse.DTO.PlaylistTracksResponse;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -24,7 +25,7 @@ public class SpotifyApiClientImpl implements SpotifyApiClient {
 
     private final WebClient webClient;
 
-    public SpotifyApiClientImpl(WebClient webClient) {
+    public SpotifyApiClientImpl(@Qualifier("authSpotifyWebClient")WebClient webClient) {
         this.webClient = webClient;
     }
 

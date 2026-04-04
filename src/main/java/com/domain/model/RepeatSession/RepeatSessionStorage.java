@@ -1,5 +1,6 @@
 package com.domain.model.RepeatSession;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -81,5 +82,10 @@ public class RepeatSessionStorage {
                 curr -> repeatSessionMap.remove(curr.userId(), curr),
                 () -> log.error("Cannot clear a session that does not exist!")
         );
+    }
+
+    public Collection<RepeatSession> getAllSessions()
+    {
+        return repeatSessionMap.values();
     }
 }

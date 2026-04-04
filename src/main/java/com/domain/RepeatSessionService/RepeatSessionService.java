@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class RepeatSessionService {
@@ -36,24 +37,35 @@ public class RepeatSessionService {
     public void stopRepeat(String id) {
         storage.clearSession(id);
     }
-    public Optional<TrackModel> pullCurrentlyPlaying()
+    public Optional<TrackModel> pullCurrentlyPlaying(String id)
     {
-        return  playerControl.getCurrentState().map(
+        return  playerControl.getCurrentState(id).map(
                 PlayerState::item
         );
     }
 
     @Scheduled(fixedDelay = POLLING_DELAY_MS)
     public void poll() {
-//        RepeatSession currentSession = storage.querySessionById(id);
-        var currentSession = storage.querySessionById(id);
 
-        if(currentSession.isEmpty()) return;
+        var sessions = storage.getAllSessions();
 
-        playerControl.getCurrentState().ifPresentOrElse(
-                state -> handleState(state, currentSession.get()),
-                () -> log.warn("No response from Spotify")
-        );
+        if(sessions == null || sessions.isEmpty())
+        {
+            return;
+        }
+
+        for(var session : sessions)
+        {
+            //error prone
+            playerControl.getCurrentState(session.userId()).ifPresentOrElse(
+                    state -> handleState(state, session),
+                    () -> log.warn("No response from Spotify for user {}", session.userId())
+            );
+        }
+//        playerControl.getCurrentState().ifPresentOrElse(
+//                state -> handleState(state, currentSession.get()),
+//                () -> log.warn("No response from Spotify")
+//        );
     }
 
     private void handleState(PlayerState state, RepeatSession repeatSession)
@@ -65,12 +77,12 @@ public class RepeatSessionService {
         if(!state.isPlaying()) return;
         if(!state.item().id().equals(repeatSession.trackId()))
         {
-            stopRepeat();
+            stopRepeat(repeatSession.userId());
             return;
         }
         if(state.progressInMs() < repeatSession.startMs() || state.progressInMs() > repeatSession.endMs())
         {
-            playerControl.repeatTrack(repeatSession.startMs());
+            playerControl.repeatTrack(repeatSession.userId(),repeatSession.startMs());
         }
 
 
