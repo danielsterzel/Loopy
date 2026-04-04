@@ -12,6 +12,7 @@ function getCsrfToken()
 export async function apiFetch<T>(
   path: string,
   options?: RequestInit,
+  retry = true,
 ): Promise<T | null> {
   const csrfToken = getCsrfToken();
 
@@ -25,7 +26,11 @@ export async function apiFetch<T>(
     ...options,
   });
   if (res.status === 204) return null;
-  if (!res.ok) throw new Error(`API error ${res.status}`);
+  if(res.status === 403 && retry){   
+    await fetch("/api/csrf", { credentials: "include" }); 
+    return apiFetch(path, options, false);
+  }
+  else if (!res.ok) throw new Error(`API error ${res.status}`);
 
   return res.json();
 }

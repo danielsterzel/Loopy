@@ -4,42 +4,27 @@ import { apiPost } from "../../api/spotifyApi";
 
 export function TestLoop() {
   const [response, setResponse] = useState<any>(null);
-  const [endResponse, setEndResponse] = useState(null);
+  const [endResponse, setEndResponse] = useState<any>(null);
 
   const startRepeat = async () => {
-    // const res = await fetch(`${BASE_URL}/api/player/repeat/start`, {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-type": "application/json"
-    //     },
-    //     body: JSON.stringify({startMs: 125_000, endMs: 150_000}),
-    //     credentials: "include"
-    // });
-    // const data = await res.json();
-    // setResponse(data);
-
     try {
       const res = await apiPost<any>(`${BASE_URL}/api/player/repeat/start`, {
         startMs: 125_000,
         endMs: 150_000
       });
 
-      const data = res.json();
+      const data = res.json;
       setResponse(data ?? "");
-    } finally {
-    }
+    } finally {}
   };
   const stopRepeat = async () => {
-    const res = await fetch(`${BASE_URL}/api/player/repeat/end`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      credentials: "include",
-    });
+    try{
+      const res = await apiPost<any>(`${BASE_URL}/api/player/repeat/end`, {});
 
-    const data = await res.json();
-    setEndResponse(data);
+      const data = res.json;
+      setEndResponse(data ?? "");
+    }finally{}
+
   };
 
   return (

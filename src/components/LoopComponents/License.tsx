@@ -2,7 +2,7 @@ import { SpotifyLogo } from "../UtilComponents/SpotifyLogo";
 
 export function License() {
   return (
-    <div id="license" className="py-16 mb-64 w-full scroll-mt-24">
+    <div id="license" className="py-64 mb-64 w-full scroll-mt-12">
       <div className="flex flex-col items-center  p-8 rounded-lg">
         <div className="flex gap-2 text-4xl justify-center items-center">
           {<SpotifyLogo width={200} />}

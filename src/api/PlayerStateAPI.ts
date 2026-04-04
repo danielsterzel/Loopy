@@ -1,12 +1,9 @@
 import type {PlayerState} from "../types/PlayerState";
 import { apiGet } from "./spotifyApi";
 
-export function rawJson(path: string)
-{
-    return apiGet<any>(path);
-}
+import { BASE_URL } from "../common/APIBase";
 
-export function getPlayer(path: string)
+export function getPlayer()
 {
-    return apiGet<PlayerState>(path);
+    return apiGet<PlayerState>(`${BASE_URL}/api/player/currently/playing`);
 }

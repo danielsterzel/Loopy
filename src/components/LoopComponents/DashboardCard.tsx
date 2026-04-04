@@ -74,20 +74,27 @@ export function DashboardCard() {
           <span className="text-spotifyGreen"> favorite moments </span>
           on Spotify
         </div>
-        <div className="pt-4 text-mutedText">
+        <div className="pt-4 text-xl text-mutedText">
           Set and replay your favorite parts from any song found on Spotify.
           Choose which interval you'd like to listen again and again and enjoy!
         </div>
         <div className="pt-6">
           <button
             onClick={redirectToSpotify}
-            className="m-2 flex items-center justify-center gap-4 lg:w-[90%]
-               bg-white text-black text-sm px-2 py-[4px] rounded-md
-               sm:w-[150px] sm:text-sm"
+            className="m-2 flex items-center justify-center gap-2
+            lg:w-[400px] sm:w-[150px]
+               bg-white text-black text-sm px-2 py-[4px] rounded-md sm:text-sm"
           >
             <NoTextBlackSpotifyLogo width={25} />
             Login with Spotify
           </button>
+        </div>
+        <div className="">
+
+          <p className="mt-16 text-md text-mutedText">
+            Loopy works in the background allowing you to enjoy listeninig to
+            your song without any additional windows!
+          </p>
         </div>
       </div>
       <div className="">
@@ -138,7 +145,7 @@ export function DashboardCard() {
           </div>
           <div className="mt-2">
             <div className="flex gap-2 justify-center items-center">
-              <VolumeBar />
+              {/* <VolumeBar /> */}
               <ProgressingBar beginning={20} end={60} width={300} />
             </div>
             <div className="mt-4 flex justify-center gap-2 items-center">

@@ -61,7 +61,11 @@ export function ProgressingBar({ beginning, end, width }: Props) {
 
   return (
     <div className="w-full flex justify-center py-6">
+
       <div className="relative" style={{ width: `${width}px` }}>
+      <div className="absolute h-[12px] select-none top-full left-0 translate-y-2">{formatTime(start)}</div>
+
+
         {dragging === "start" && (
           <div
             className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-borderSubtle"
@@ -113,7 +117,10 @@ export function ProgressingBar({ beginning, end, width }: Props) {
             <i className="fa-solid fa-caret-down text-xs text-spotifyGreen"></i>
           </div>
         </div>
+      <div className="absolute  h-[12px] translate-y-2 top-full right-0 select-none">{formatTime(finish)}</div>
+
       </div>
+
     </div>
   );
 }
