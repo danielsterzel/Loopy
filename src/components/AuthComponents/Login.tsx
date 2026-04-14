@@ -1,7 +1,15 @@
+import { useAuth } from "../../auth/useAuth";
+import { Navigate } from "react-router-dom";
+
 import { NoTextBlackSpotifyLogo } from "../UtilComponents/SpotifyLogo";
 import { redirectToSpotify } from "../../common/RedirectToSpotify";
 
 export function Login() {
+  const { user } = useAuth();
+  if(user)
+  {
+    return <Navigate to="/" replace />
+  }
 
   return (
     <div className="w-screen h-screen flex flex-col gap-4 justify-center items-center">

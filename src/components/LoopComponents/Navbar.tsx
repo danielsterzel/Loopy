@@ -1,12 +1,14 @@
 import { useState, useEffect} from "react";
 import { useActiveSectionGlobal } from "../../hooks/UseActiveSectionGlobal";
 import { useAuth } from "../../auth/useAuth";
+import { logout } from "../../api/AuthApi";
+import { redirectToSpotify } from "../../common/RedirectToSpotify";
 import { Loading } from "../UtilComponents/Loading";
 
 const HARDEN_MENU_THRESHOLD = 100;
 
 export function Navbar() {
-  const { user, loading } = useAuth();
+  const { user, loading, setUser } = useAuth();
 
   const [hardenMenu, setHardenMenu] = useState(false);
 
@@ -34,6 +36,12 @@ export function Navbar() {
   }, []);
 
   if (loading) return <Loading />;
+
+  const handleLogout = () => {
+    logout();
+    setUser(null);
+  };
+
   return (
     <div
       className={`fixed top-5 z-10
@@ -106,12 +114,12 @@ export function Navbar() {
               {user.display_name}
             </li>
             <li>
-              <button className="">Logout</button>
+              <button className="" onClick={handleLogout}>Logout</button>
             </li>
           </>
         ) : (
           <li>
-            <button className="text-sm opacity-70">Login </button>
+            <button className="text-sm opacity-70" onClick={redirectToSpotify}>Login </button>
           </li>
         )}
       </ul>

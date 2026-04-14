@@ -20,5 +20,5 @@ export function useAuth() {
     loadUser();
   }, []);
 
-  return {user, loading};
+  return {user, loading, setUser};
 }

@@ -21,8 +21,6 @@ export async function getUser()
 }
 
 export async function logout(){
-    await fetch(`${BASE_URL}/logout`, {
-        method: "POST",
-        credentials: "include"
-    });
+    await apiPost<void>(`${BASE_URL}/logout`, {});
+    console.log("logging out");
 }

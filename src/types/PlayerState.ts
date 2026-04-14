@@ -2,10 +2,10 @@ import type { Track } from "./Track";
 
 
 export interface PlayerState {
-    track: Track;
+    item: Track;
     repeatState: string;
     timestamp: number;
-    progressInMs: string;
+    progressInMs: number;
     isPlaying: boolean;
     shuffleStateOn: boolean;
 };

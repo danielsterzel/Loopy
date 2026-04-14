@@ -1,6 +1,6 @@
 import { useAuth } from "../../auth/useAuth";
 import { Loading } from "../UtilComponents/Loading";
-
+import { useNavigate } from "react-router-dom";
 import { ProgressingBar } from "../UtilComponents/ProgressingBar";
 import { HorizontalDottedLine } from "../UtilComponents/HorizontalDottedLine";
 import { VerticalDottedLine } from "../UtilComponents/VerticalDottedLine";
@@ -12,13 +12,21 @@ const BIG_IMG_INDEX = 0;
 const SMALL_IMG_INDEX = 1;
 
 export function ProfilePage() {
+  
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   const [loopCount, setLoopCount] = useState(0);
+
   if (loading) return <Loading />;
 
+  const goBack = () => {
+    navigate(-1);
+  }
+
   return (
-    <div className="flex flex-col w-screen h-screen py-16 px-12">
+    <div className="flex flex-col w-screen h-screen py-8 px-12">
+      <button className="self-start mb-4" onClick={goBack}><i className="text-4xl fa-solid fa-arrow-left"></i></button>
       <div className="border border-borderSubtle rounded-lg bg-cardBackground p-8">
         <div className="grid grid-cols-2 gap-32">
           {/* Col 1 */}

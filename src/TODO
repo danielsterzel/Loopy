@@ -1,0 +1,44 @@
+/**
+ * TODO: GLOBAL AUTH STATE (AuthContext)
+ *
+ * Problem:
+ * - user state jest lokalny (useAuth)
+ * - po logout backend działa, ale UI się nie aktualizuje
+ *
+ * Cel:
+ * - jeden globalny auth storage
+ * - wszystkie komponenty korzystają z tego samego usera
+ *
+ * Kroki:
+ *
+ * 1. Stworzyć AuthContext:
+ *    - user: User | null
+ *    - loading: boolean
+ *    - setUser: (user) => void
+ *
+ * 2. Stworzyć AuthProvider:
+ *    - useState(user, loading)
+ *    - useEffect -> getUser() przy starcie
+ *    - przekazać { user, loading, setUser } w Provider
+ *
+ * 3. Owinąć App:
+ *    <AuthProvider>
+ *      <BrowserRouter>...</BrowserRouter>
+ *    </AuthProvider>
+ *
+ * 4. Zmienić useAuth:
+ *    - zamiast lokalnego useState -> useContext(AuthContext)
+ *
+ * 5. Logout:
+ *    - await logout()
+ *    - setUser(null)
+ *
+ * Efekt:
+ * - logout od razu aktualizuje UI
+ * - brak duplikacji state
+ * - jeden source of truth dla usera
+
+
+
+ Find out about websockets with regard to polling
+ */

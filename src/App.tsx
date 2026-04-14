@@ -1,25 +1,26 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 import { MainPage } from "./components/LoopComponents/MainPage";
 
 import { MacroMainPage } from "./components/MacroComponents/MacroMainPage";
 import { ChoosePlaylistPage } from "./components/MacroComponents/ChoosePlaylistPage";
 import { Login } from "./components/AuthComponents/Login";
-import { TrackListModal } from "./components/MacroComponents/TrackListModal";
 import { LoopyPage } from "./components/LoopComponents/LoopyPage";
 import { CreateMacroPage } from "./components/MacroComponents/CreateMacroPage";
 import { TestLoop } from "./components/LoopComponents/TestLoop";
 import { ProtectedRoute } from "./route/ProtectedRoute";
 
 import { ProfilePage } from "./components/LoopComponents/ProfilePage";
+import { InternalRouter } from "./components/AuthComponents/InternalRouter";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={"/"} element={<MainPage />}/>
+        <Route path={"/login"} element={<Login />} />
+        <Route path={"/callback"} element={<InternalRouter />} />
         <Route element={<ProtectedRoute />}>
-          <Route path={"/login"} element={<Login />} />
           <Route path={"/profile"} element={<ProfilePage />}/>
           <Route path={"/Loopy"} element={<LoopyPage />} />
           <Route path={"/test"} element={<TestLoop/>}/>
