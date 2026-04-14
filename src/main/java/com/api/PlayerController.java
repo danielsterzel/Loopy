@@ -66,11 +66,13 @@ public class PlayerController {
         String id = user.getName();
         Optional<PlayerState> playerState = playerControl.getCurrentState(id);
 
+        System.out.println("playerstate present: " + playerState.isPresent());
+
+
         return playerState.map(
                 ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
-
 }
 
 

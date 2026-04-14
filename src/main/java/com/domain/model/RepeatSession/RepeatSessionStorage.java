@@ -80,7 +80,7 @@ public class RepeatSessionStorage {
 
         current.ifPresentOrElse(
                 curr -> repeatSessionMap.remove(curr.userId(), curr),
-                () -> log.error("Cannot clear a session that does not exist!")
+                () -> log.info("Cannot clear a session that does not exist!")
         );
     }
 

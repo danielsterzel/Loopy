@@ -47,7 +47,6 @@ public class SecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
 
-//                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
@@ -82,7 +81,7 @@ public class SecurityConfig {
                         response.sendRedirect("/oauth2/authorization/spotify");
                     });
 
-                        login.defaultSuccessUrl("http://127.0.0.1:5173", true);
+                        login.defaultSuccessUrl("http://127.0.0.1:5173/callback", true);
                 });
 
         return http.build();

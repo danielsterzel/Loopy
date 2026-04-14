@@ -13,7 +13,6 @@ public class TokenStore {
     private final ConcurrentMap<String, String> accessTokenMap = new ConcurrentHashMap<>() {
     };
 
-
     public void store(String springSecurityId, String token)
     {
         accessTokenMap.put(springSecurityId, token);
@@ -29,7 +28,10 @@ public class TokenStore {
         }
         return token;
     }
-
+    public void remove(String springSecurityId)
+    {
+        accessTokenMap.remove(springSecurityId);
+    }
     public boolean hasToken(String id)
     {
         return accessTokenMap.containsKey(id);

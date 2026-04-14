@@ -24,6 +24,8 @@
 
 package com.api;
 
+import com.domain.model.RepeatSession.RepeatSessionStorage;
+import com.security.TokenStore.TokenStore;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,7 +42,12 @@ import java.util.stream.Collectors;
 public class UserController {
 
 
-    public UserController() {
+    private final TokenStore tokenStore;
+    private final RepeatSessionStorage repeatSessionStorage;
+
+    public UserController(TokenStore tokenStore, RepeatSessionStorage repeatSessionStorage) {
+        this.tokenStore = tokenStore;
+        this.repeatSessionStorage = repeatSessionStorage;
     }
 
     @GetMapping("/ping")
@@ -61,7 +68,12 @@ public class UserController {
     {
         return ResponseEntity.ok(Map.of("name", (String) user.getAttributes().get("display_name")));
     }
-//    @PostMapping("/logout")
-//    public ResponseEntity<Map<String, String>> logout(){
-//    }
+    @PostMapping("/logout")
+    public void logout(@AuthenticationPrincipal OAuth2User user){
+
+        String userId = user.getName();
+
+        repeatSessionStorage.clearSession(userId);
+        tokenStore.remove(userId);
+    }
 }
