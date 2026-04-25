@@ -9,7 +9,6 @@ import { NoTextBlackSpotifyLogo } from "../UtilComponents/SpotifyLogo";
 
 import { AudioWave } from "../UtilComponents/AudioWave";
 import { ProgressingBar } from "../UtilComponents/ProgressingBar";
-import { VolumeBar } from "./VolumeBar";
 
 import SongCover1 from "../../assets/laura-vinck-Hyu76loQLdk-unsplash.jpg";
 import SongCover2 from "../../assets/1millikarat-KQ_DwS1225o-unsplash.jpg";
@@ -20,7 +19,7 @@ const TRANSITION = 1200;
 const INTERVAL = 3000;
 
 export function DashboardCard() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [displayIndex, setDisplayIndex] = useState(0);
@@ -143,10 +142,12 @@ export function DashboardCard() {
             <i className="fa-solid fa-forward-step text-lg"></i>
             <i className="fa-solid fa-repeat text-lg"></i>
           </div>
-          <div className="mt-2">
+          <div className="w-full mt-2">
             <div className="flex gap-2 justify-center items-center">
               {/* <VolumeBar /> */}
-              <ProgressingBar beginning={20} end={60} width={300} />
+              <div className="w-full">
+              <ProgressingBar beginning={20} end={60} duration={300_000} />
+              </div>
             </div>
             <div className="mt-4 flex justify-center gap-2 items-center">
               <div className="flex flex-col justify-center items-center gap-1">

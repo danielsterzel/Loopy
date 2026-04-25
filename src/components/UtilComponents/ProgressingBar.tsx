@@ -3,22 +3,24 @@ import { useState, useEffect, useCallback, useRef } from "react";
 type Props = {
   beginning: number;
   end: number;
-  width: number;
+  duration: number;
 };
 
-function formatTime(percent: number) {
-  const duration = 180;
-  const totalSeconds = Math.floor((percent / 100) * duration);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
 
-export function ProgressingBar({ beginning, end, width }: Props) {
+
+export function ProgressingBar({ beginning, end, duration }: Props) {
   
   const [start, setStart] = useState(beginning);
   const [finish, setFinish] = useState(end);
   const [dragging, setDragging] = useState<"start" | "end" | null>(null);
+
+
+function formatTime(percent: number) {
+    const totalSeconds = Math.floor((percent / 100) * (duration / 1000));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
 
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -60,9 +62,9 @@ export function ProgressingBar({ beginning, end, width }: Props) {
   }, [dragging, start, finish]);
 
   return (
-    <div className="w-full flex justify-center py-6">
+    <div className="w-full max-w-2xl flex justify-center py-6">
 
-      <div className="relative" style={{ width: `${width}px` }}>
+      <div className="relative w-full">
       <div className="absolute h-[12px] select-none top-full left-0 translate-y-2">{formatTime(start)}</div>
 
 
@@ -86,8 +88,7 @@ export function ProgressingBar({ beginning, end, width }: Props) {
 
         <div
           ref={barRef}
-          className="relative bg-borderSubtle h-[12px] rounded-full"
-          style={{ width: `${width}px` }}
+          className="relative w-full max-w-2xl bg-borderSubtle h-[12px] rounded-full"
         >
           <div
             className="absolute top-0 h-full rounded-full bg-spotifyGreen"
@@ -99,22 +100,26 @@ export function ProgressingBar({ beginning, end, width }: Props) {
 
           <div
             onMouseDown={startDrag}
-            className="absolute flex items-center justify-center cursor-pointer hover:scale-110 aspect-square w-5 h-5 bg-black border-2 border-spotifyGreen rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className="absolute flex items-center justify-center cursor-pointer 
+            hover:scale-125 hover:shadow-[0_0_4px_rgba(34,197,94,0.8)]
+            aspect-square w-5 h-5 bg-spotifyGreen  
+             rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2"
             style={{
               left: `${start}%`,
             }}
           >
-            <i className="fa-solid fa-caret-down text-xs text-spotifyGreen"></i>
           </div>
 
           <div
             onMouseDown={endDrag}
-            className="absolute flex items-center justify-center cursor-pointer hover:scale-110 aspect-square w-5 h-5 bg-black border-2 border-spotifyGreen rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className="absolute flex items-center justify-center cursor-pointer
+             hover:scale-125 hover:shadow-[0_0_8px_rgba(34,197,94,0.8)]
+             aspect-square w-5 h-5 bg-spotifyGreen  
+             rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2"
             style={{
               left: `${finish}%`,
             }}
           >
-            <i className="fa-solid fa-caret-down text-xs text-spotifyGreen"></i>
           </div>
         </div>
       <div className="absolute  h-[12px] translate-y-2 top-full right-0 select-none">{formatTime(finish)}</div>

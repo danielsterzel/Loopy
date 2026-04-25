@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
+import { AuthProvider } from "./providers/AuthProvider";
+
 import { MainPage } from "./components/LoopComponents/MainPage";
 
 import { MacroMainPage } from "./components/MacroComponents/MacroMainPage";
@@ -15,6 +17,7 @@ import { InternalRouter } from "./components/AuthComponents/InternalRouter";
 
 function App() {
   return (
+    <AuthProvider >
     <BrowserRouter>
       <Routes>
         <Route path={"/"} element={<MainPage />}/>
@@ -30,7 +33,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-
+    </AuthProvider>
   );
 }
 

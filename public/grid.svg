@@ -1,0 +1,26 @@
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="smallGrid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path
+        d="M 80 0 L 0 0 0 80"
+        fill="none"
+        stroke="white"
+        stroke-opacity="0.06"
+        stroke-width="1"
+      />
+    </pattern>
+  </defs>
+
+  <rect width="240" height="240" fill="url(#smallGrid)" />
+
+  <g stroke="white" stroke-opacity="0.14" stroke-width="1.2">
+    <line x1="80" y1="70" x2="80" y2="90" />
+    <line x1="70" y1="80" x2="90" y2="80" />
+
+    <line x1="160" y1="150" x2="160" y2="170" />
+    <line x1="150" y1="160" x2="170" y2="160" />
+  </g>
+
+  <circle cx="40" cy="200" r="1.5" fill="white" opacity="0.16" />
+  <circle cx="200" cy="40" r="1.5" fill="white" opacity="0.16" />
+</svg>

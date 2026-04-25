@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { motion } from "motion/react";
+
 export function ProfileSection() {
   const [active, setActive] = useState(false);
   const [genereActive, setGenreActive] = useState(false);
@@ -16,9 +18,13 @@ export function ProfileSection() {
           className="w-fit border border-2 border-borderSubtle px-2 py-4
                 rounded-lg hover:border-spotifyGreen transition-all duration-200"
         >
-          <Link to="/profile">
-            <i className="fa-solid fa-user text-6xl"></i>
-          </Link>
+          <motion.button 
+          whileHover={{scale:1.05, y:-2}}
+          whileTap={{scale:0.9, y:1}}>
+            <Link to="/profile">
+              <i className="fa-solid fa-user text-6xl"></i>
+            </Link>
+          </motion.button>
         </div>
         <h1 className="text-5xl">Your profile page</h1>
       </div>
