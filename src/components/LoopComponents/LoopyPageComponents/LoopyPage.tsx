@@ -1,8 +1,8 @@
 
-import { PlayerProvider } from "../../providers/PlayerProvider";
-import { CreateLoop } from "./LoopyPageComponents/CreateLoop";
+import { PlayerProvider } from "../../../providers/PlayerProvider";
+import { CreateLoop } from "./CreateLoop";
 
-import { LiveLoopSection } from "./LoopyPageComponents/LiveLoopSection";
+import { LiveLoopSection } from "./LiveLoopSection";
 
 
 export function LoopyPage() {

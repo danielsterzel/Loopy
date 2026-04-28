@@ -7,7 +7,7 @@ import { MainPage } from "./components/LoopComponents/MainPage";
 import { MacroMainPage } from "./components/MacroComponents/MacroMainPage";
 import { ChoosePlaylistPage } from "./components/MacroComponents/ChoosePlaylistPage";
 import { Login } from "./components/AuthComponents/Login";
-import { LoopyPage } from "./components/LoopComponents/LoopyPage";
+import { LoopyPage } from "./components/LoopComponents/LoopyPageComponents/LoopyPage";
 import { CreateMacroPage } from "./components/MacroComponents/CreateMacroPage";
 import { TestLoop } from "./components/LoopComponents/TestLoop";
 import { ProtectedRoute } from "./route/ProtectedRoute";

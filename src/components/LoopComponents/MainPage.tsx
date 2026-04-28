@@ -1,6 +1,6 @@
 import { Navbar } from "./Navbar";
 import { DashboardCard } from "./DashboardCard";
-import { Loopy } from "./Loopy";
+import { Loopy } from "../LoopySectionComponents/Loopy";
 import { License } from "./License";
 import { ProfileSection } from "./ProfileSection";
 import { AuthorSection } from "./AuthorSection";
