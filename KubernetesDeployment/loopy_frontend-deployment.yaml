@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loopy-frontend
+  labels:
+    app: loopy-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loopy-frontend
+  template:
+    metadata:
+      labels:
+        app: loopy-frontend
+    spec:
+      containers:
+        - name: loopy-frontend
+          image: loopy-frontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80

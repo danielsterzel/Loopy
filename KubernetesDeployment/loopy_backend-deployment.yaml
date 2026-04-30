@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loopy-backend
+  labels:
+    app: loopy-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loopy-backend
+  template:
+    metadata:
+      labels:
+        app: loopy-backend
+    spec:
+      containers:
+        - name: loopy-backend
+          image: loopy-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: loopy-config
