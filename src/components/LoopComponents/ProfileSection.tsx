@@ -3,6 +3,17 @@ import { Link } from "react-router-dom";
 
 import { motion } from "motion/react";
 
+
+/* REFACTOR using this:
+<div className="aspect-square p-4 bg-bg3 text-center rounded-xl flex items-center justify-center
+  transition-colors duration-300 group hover:bg-emerald hover:text-black">
+
+  <p className="group-hover:hidden">Total Loops</p>
+  <p className="hidden group-hover:block text-xl">9</p>
+
+</div>
+*/ 
+
 export function ProfileSection() {
   const [active, setActive] = useState(false);
   const [genereActive, setGenreActive] = useState(false);

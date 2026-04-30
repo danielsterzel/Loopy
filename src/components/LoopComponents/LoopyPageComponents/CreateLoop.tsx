@@ -3,8 +3,6 @@ import { usePlayer } from "../../../hooks/usePlayer";
 
 import { ProgressingBar } from "../../UtilComponents/ProgressingBar";
 
-import { msToSeconds } from "../../../common/UXUtils";
-
 export function CreateLoop() {
 
   const {playerState} = usePlayer();

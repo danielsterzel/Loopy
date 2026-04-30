@@ -1,22 +1,15 @@
 import { useAuth } from "../../auth/useAuth";
 import { Loading } from "../UtilComponents/Loading";
 import { useNavigate } from "react-router-dom";
-import { ProgressingBar } from "../UtilComponents/ProgressingBar";
-import { HorizontalDottedLine } from "../UtilComponents/HorizontalDottedLine";
-import { VerticalDottedLine } from "../UtilComponents/VerticalDottedLine";
-
-import type { User } from "../../types/User";
-import { useState } from "react";
 
 const BIG_IMG_INDEX = 0;
-const SMALL_IMG_INDEX = 1;
 
 export function ProfilePage() {
   
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  const [loopCount, setLoopCount] = useState(0);
+  // const [loopCount, setLoopCount] = useState(0);
 
   if (loading) return <Loading />;
 
