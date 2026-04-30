@@ -1,10 +1,9 @@
 
 type Props = {
-    height: number; // percent
     numDots?: number;
 }
 
-export function VerticalDottedLine({height, numDots=50} : Props)
+export function VerticalDottedLine({numDots=50} : Props)
 {
     return (
         <div className="flex flex-col items-center justify-between ">

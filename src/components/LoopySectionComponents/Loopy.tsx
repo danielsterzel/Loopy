@@ -1,5 +1,5 @@
 import { useScroll, useTransform } from "motion/react";
-import { useEffect, useRef } from "react";
+import {useRef } from "react";
 
 import { motion } from "motion/react";
 import { StartLoopingCard } from "./StartLoopingCard";

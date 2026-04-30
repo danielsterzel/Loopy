@@ -1,4 +1,3 @@
-import type { SearchResult } from "../types/SearchResult";
 
 import Cookies from "js-cookie";
 
@@ -47,10 +46,4 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T | null>
 }
 export async function apiDelete<T>(path: string) {
   return apiFetch<T>(path, {method: "DELETE"});
-}
-
-export function searchTrack(query: string) {
-  return apiGet<SearchResult>(
-    `/api/spotify/search?q=${encodeURIComponent(query)}`,
-  );
 }

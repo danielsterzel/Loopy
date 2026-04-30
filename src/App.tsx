@@ -4,11 +4,8 @@ import { AuthProvider } from "./providers/AuthProvider";
 
 import { MainPage } from "./components/LoopComponents/MainPage";
 
-import { MacroMainPage } from "./components/_MacroComponents/MacroMainPage";
-import { ChoosePlaylistPage } from "./components/_MacroComponents/ChoosePlaylistPage";
 import { Login } from "./components/AuthComponents/Login";
 import { LoopyPage } from "./components/LoopComponents/LoopyPageComponents/LoopyPage";
-import { CreateMacroPage } from "./components/_MacroComponents/CreateMacroPage";
 import { TestLoop } from "./components/LoopComponents/TestLoop";
 import { ProtectedRoute } from "./route/ProtectedRoute";
 
@@ -27,9 +24,6 @@ function App() {
           <Route path={"/profile"} element={<ProfilePage />}/>
           <Route path={"/Loopy"} element={<LoopyPage />} />
           <Route path={"/test"} element={<TestLoop/>}/>
-          <Route path={"/macros/create"} element={<CreateMacroPage />} />
-          <Route path={"/macros"} element={<MacroMainPage />} />
-          <Route path={"/macros/create/playlists"} element={<ChoosePlaylistPage />}/>
         </Route>
       </Routes>
     </BrowserRouter>
