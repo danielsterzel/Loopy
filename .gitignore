@@ -1,6 +1,8 @@
 HELP.md
 target/
 
+.env
+
 mvnw
 pom.xml
 mvnw.cmd
