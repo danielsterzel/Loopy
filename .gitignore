@@ -32,8 +32,8 @@ target/
 mvnw
 pom.xml
 mvnw.cmd
-src/main/resources/application-local.yml
-.mvn/wrapper/maven-wrapper.jar
+backend/src/main/resources/application-local.yml
+backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 

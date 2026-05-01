@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: spotify-macros
+
+  profiles:
+    active: local
+logging:
+  level:
+    org.springframework.security: TRACE
+
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true

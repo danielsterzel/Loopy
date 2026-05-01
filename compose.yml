@@ -13,7 +13,7 @@ services:
     loopy:
         build:
             context: .
-            dockerfile: dockerfile-backend
+            dockerfile: backend/dockerfile-backend
         environment:
             SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
             SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
