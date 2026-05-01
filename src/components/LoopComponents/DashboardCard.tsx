@@ -5,7 +5,6 @@ import { redirectToSpotify } from "../../common/RedirectToSpotify";
 import { Loading } from "../UtilComponents/Loading";
 
 import { SpotifyLogo } from "../UtilComponents/SpotifyLogo";
-import { NoTextBlackSpotifyLogo } from "../UtilComponents/SpotifyLogo";
 
 import { AudioWave } from "../UtilComponents/AudioWave";
 import { ProgressingBar } from "../UtilComponents/ProgressingBar";
@@ -52,21 +51,13 @@ export function DashboardCard() {
   return (
     <div
       id="dashboard"
-      className="relative grid grid-cols-1 lg:grid-cols-2 border-0 lg:border lg:border-borderSubtle 
+      className="
+      bg-cardBackground
+      relative grid grid-cols-1 lg:grid-cols-2 border-0 lg:border lg:border-border 
             rounded-lg py-12 px32 mt-48 w-full max-w-6xl h-[80%] scroll-mt-24
-            shadow-md shadow-white/10"
+            shadow-lg"
     >
       <div className="px-16">
-        {/* <div className="absolute bottom-5 left-50 border-l border-t border-r border-borderSubtle">
-                      Loopy
-                    </div> */}
-        <div
-          className="flex items-center gap-2 border border-spotifyGreen 
-                        bg-cardBackground w-fit rounded-lg px-6 py-4"
-        >
-          <em>Integrated with</em>
-          <div>{<SpotifyLogo width={100} />}</div>
-        </div>
 
         <div className="pt-16 font-semibold lg:text-5xl text-pretty leading-snug">
           Loop your{" "}
@@ -82,10 +73,11 @@ export function DashboardCard() {
             onClick={redirectToSpotify}
             className="m-2 flex items-center justify-center gap-2
             lg:w-[400px] sm:w-[150px]
-               bg-white text-black text-sm px-2 py-[4px] rounded-md sm:text-sm"
+               text-white text-sm px-2 py-2 rounded-md sm:text-sm bg-buttonBg
+               hover:scale-[1.05] transition-all duration-300 will-transition"
           >
-            <NoTextBlackSpotifyLogo width={25} />
-            Login with Spotify
+            Login with 
+            <SpotifyLogo width={75} />
           </button>
         </div>
         <div className="">
@@ -100,7 +92,7 @@ export function DashboardCard() {
         <div
           className="
                     relative
-                    border border-borderSubtle
+                    border border-border
                     rounded-xl p-6 w-full max-w-md mx-auto
                     flex flex-col justify-center items-center"
         >

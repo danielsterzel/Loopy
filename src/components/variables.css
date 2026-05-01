@@ -4,24 +4,31 @@
     /* Brand */
     --color-brand-primary: #1ED760;
 
+    --color-brand-emerald: #19C879;
+    --color-emerald-hover: #16B870;
+
     /* Backgrounds */
-    --color-bg-main: #121212;
-    --color-bg-surface: #181818;
-    --color-bg-elevated: #282828;
+    --color-bg-main: #F4F4F4;
+    --color-bg-surface: #ffffff;
+    --color-bg-elevated: ;
 
     /* Text */
-    --color-text-primary: #FFFFFF;
-    --color-text-secondary: #B3B3B3;
-    --color-text-disabled: #6A6A6A;
+    --color-text-primary: #1f2937;
+    --color-text-secondary:#6A6A6A;
+    --color-text-disabled:#B3B3B3;
 
     /* border */
     --color-border-subtle: #2A2A2A;
+
+    /* buttons */
+    --color-button-background: #242424;
 
     /* danger color */
     --danger: #C94848;;
 
     /* warning */
     --warning: #eab308;
+
 
     --bg-app: var(--color-bg-main);
     --bg-card: var(--color-bg-surface);
@@ -34,5 +41,9 @@
     --accent-main: var(--color-brand-primary);
 
     --border-default: var(--color-border-subtle);
+
+    --color-emerald: var(--color-brand-emerald);
+
+    --button-background: var(--color-button-background);
 
 }

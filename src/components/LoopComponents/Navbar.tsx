@@ -50,17 +50,17 @@ export function Navbar() {
             flex justify-center items-center gap-8
             transition-all
             duration-500
-            ${hardenMenu ? "bg-cardBackground border border-white/70" : "border border-transparent"}`}
+            ${hardenMenu ? "bg-cardBackground border border-border" : "border border-transparent"}`}
     >
       <div className="text-3xl font-semibold whitespace-nowrap">
         L<i className="fa-solid fa-infinity text-spotifyGreen"></i>py
       </div>
-      <ul className="flex gap-12 ">
+      <ul className="flex gap-12 items-center ">
         <li>
           <a
             href="#dashboard"
             className={`
-              ${active === "dashboard" ? "border rounded-xl p-2" : "0"}`}
+              ${active === "dashboard" ? "border border-border rounded-xl p-2" : "0"}`}
           >
             Dashboard
           </a>
@@ -68,7 +68,7 @@ export function Navbar() {
         <li>
           <a
             href="#loopy"
-            className={`${active === "loopy" ? "border rounded-xl p-2" : ""}`}
+            className={`${active === "loopy" ? "border border-border rounded-xl p-2" : ""}`}
           >
             Loopy
           </a>
@@ -77,7 +77,7 @@ export function Navbar() {
         <li>
           <a
             href="#profile"
-            className={`${active === "profile" ? "border rounded-xl p-2" : ""}`}
+            className={`${active === "profile" ? "border border-border rounded-xl p-2" : ""}`}
           >
             Profile
           </a>
@@ -85,7 +85,7 @@ export function Navbar() {
           <li>
           <a
             href="#support"
-            className={`${active} === "support" ? "border rounded-xl p-2" : ""`}
+            className={`${active} === "support" ? "border border-border rounded-xl p-2" : ""`}
           >
             Support
           </a>
@@ -93,7 +93,7 @@ export function Navbar() {
         <li>
           <a
             href="#author"
-            className={`${active === "author" ? "border rounded-xl p-2" : ""}`}
+            className={`${active === "author" ? "border border-border rounded-xl p-2" : ""}`}
           >
             Author
           </a>
@@ -102,7 +102,7 @@ export function Navbar() {
         <li>
           <a
             href="#license"
-            className={`${active === "license" ? "border rounded-xl px-2 py-2" : "0"}`}
+            className={`${active === "license" ? "border border-border rounded-xl px-2 py-2" : "0"}`}
           >
             License
           </a>
@@ -119,7 +119,7 @@ export function Navbar() {
           </>
         ) : (
           <li>
-            <button className="text-sm opacity-70" onClick={redirectToSpotify}>Login </button>
+            <button className="text-white text-sm bg-buttonBg p-2 rounded-full" onClick={redirectToSpotify}>Login </button>
           </li>
         )}
       </ul>

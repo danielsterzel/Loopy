@@ -1,30 +1,39 @@
-import { useState, useEffect } from "react";
+import { motion, useAnimationControls } from "framer-motion";
+import { useMemo, useEffect } from "react";
 
-export function VerticalAudioWave()
+type Props = {
+    color?: string;
+    isPlaying: boolean;
+}
+
+export function VerticalAudioWave({color, isPlaying} : Props)
 {
-    const [barLengths, setBarLengths] = useState([15, 60, 50, 20, 20, 10, 35, 50, 60])
+    const barsData = useMemo(() => {
+        return Array.from({ length: 9 }, () => ({
+        heights: Array.from({ length: 6 }, () => `${Math.floor(Math.random() * 80) + 15}%`),
+        duration: Math.random() * 1.0 + 1.8,
+        }));
+    }, []); 
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setBarLengths(prev => 
-                prev.map(len => {
-                    const randomFactor = 0.5 + Math.random();
-                    return Math.max(5, Math.min(80, len * randomFactor));
-                })
-            )
-        }, 5)
-        return () => clearInterval(interval);
-    })
+    const componentColor = color ? `bg-${color}` : "bg-spotifyGreen";
 
-    return(
-        <div className="flex justify-center items-end gap-1 h-full">
-            {barLengths.map((h, i) => (
-            <div
+    return (
+
+        <div className="flex justify-center items-end gap-1 h-full w-full overflow-hidden">
+        {barsData.map((bar, i)=> (
+            <motion.div 
             key={i}
-            className="w-[4px] bg-spotifyGreen rounded-full transition-all duration-5"
-            style={{
-                height: `${h}px`,
-                animationDelay: `${i * 0.1}s`
+            className={`w-1 ${componentColor} rounded-full`}
+            initial={{height: "15%"}}
+            animate={{height: bar.heights}}
+            transition={{
+                height:{
+                    repeat: Infinity,
+                    repeatType:"mirror",
+                    duration: bar.duration,
+                    ease: "linear",
+                    delay: i * 0.1
+                },
             }}/>
         ))}
         </div>

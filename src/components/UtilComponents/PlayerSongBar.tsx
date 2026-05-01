@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 
 type Props = {
     progressSeconds: number;
@@ -13,8 +12,8 @@ export function PlayerSongBar({progressSeconds, songLengthSeconds} : Props)
 
     return (
         <div className="relative flex justify-center">
-            <div className="relative min-w-[100px] max-w-[80%] w-full h-1 bg-white/10 rounded-full">
-            <div className="absolute left-0 h-1 bg-white rounded-full"
+            <div className="relative min-w-[100px] max-w-[100%]  w-full h-1 bg-neutral-700 rounded-full">
+            <div className="absolute left-0 h-1 bg-emerald rounded-full"
              style={{width: `${progressPercent}%`}}/>
             </div>
 

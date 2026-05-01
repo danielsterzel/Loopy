@@ -15,14 +15,14 @@ export function ProfileSection() {
     >
       <div className="flex flex-col gap-4 items-center">
         <div
-          className="w-fit border border-2 border-borderSubtle px-2 py-4
-                rounded-lg hover:border-spotifyGreen transition-all duration-200"
+          className="w-fit border border-2 border-border px-2 py-4
+                rounded-lg  transition-all duration-200"
         >
           <motion.button 
           whileHover={{scale:1.05, y:-2}}
           whileTap={{scale:0.9, y:1}}>
             <Link to="/profile">
-              <i className="fa-solid fa-user text-6xl"></i>
+              <i className="fa-solid fa-user text-6xl will-transition"></i>
             </Link>
           </motion.button>
         </div>
@@ -33,11 +33,11 @@ export function ProfileSection() {
         Setup you profile, create your loops, view your stats and many more
       </p>
       <div className="grid grid-cols-3 gap-12">
-        <div className="flex flex-col p-6 rounded-lg border-2 border-borderSubtle">
+        <div className="flex flex-col p-6 rounded-lg border-2 border-border">
           <h2 className="text-2xl underline">Profile</h2>
           <div>
             <div className="flex justify-between">
-              <div className="mt-4 rounded-full bg-bg3 w-16 h-16" />
+              <div className="mt-4 bg-cardBackground border border-border rounded-full w-16 h-16" />
             </div>
             <div className="mt-4 flex flex-col gap-2">
               <p>My username: </p>
@@ -47,7 +47,7 @@ export function ProfileSection() {
             </div>
           </div>
         </div>
-        <div className=" flex flex-col gap-4 p-6 rounded-lg border-2 border-borderSubtle">
+        <div className=" flex flex-col gap-4 p-6 rounded-lg border-2 border-border">
           {/* On like click it should flip and show like the loop range for like 5 seconds maybe more maybe less */}
           <h2 className="text-2xl underline">Loops</h2>
           <div>
@@ -70,7 +70,7 @@ export function ProfileSection() {
             </ul>
           </div>
         </div>
-        <div className=" flex flex-col p-6 rounded-lg border-2 border-borderSubtle">
+        <div className=" flex flex-col p-6 rounded-lg border-2 border-border">
           <h2 className="text-2xl mb-2 underline">Statistics</h2>
           <p className="text-lg text-mutedText mb-2">
             Hover to check out your stats!
@@ -79,21 +79,21 @@ export function ProfileSection() {
             <div
               onMouseEnter={() => setActive(true)}
               onMouseLeave={() => setActive(false)}
-              className={`aspect-square p-4 bg-bg3 text-center rounded-xl flex items-center justify-center
+              className={`aspect-square p-4 text-center rounded-xl flex items-center justify-center
                 transition-all duration-300
               ${active ? "bg-emerald text-black" : ""}`}
             >
-              {active ? <p className="text-xl">9</p> : <p>Total Loops</p>}
+              {active ? <p className="">9</p> : <p>Total Loops</p>}
             </div>
             <div
               onMouseEnter={() => setGenreActive(true)}
               onMouseLeave={() => setGenreActive(false)}
-              className={`aspect-square p-4 bg-bg3 text-center rounded-xl flex items-center justify-center
+              className={`aspect-square p-4  text-center rounded-xl flex items-center justify-center
                 transition-all duration-300
                 ${genereActive ? "bg-emerald text-black" : ""}`}
             >
               {genereActive ? (
-                <p className="text-xl">Metal</p>
+                <p className="">Metal</p>
               ) : (
                 <p>Favourite Genre</p>
               )}
@@ -101,13 +101,13 @@ export function ProfileSection() {
             <div
               onMouseEnter={() => setTotalTimeActive(true)}
               onMouseLeave={() => setTotalTimeActive(false)}
-              className={`aspect-square p-4 text-center bg-bg3 rounded-xl flex items-center justify-center
+              className={`aspect-square p-4 text-center rounded-xl flex items-center justify-center
                 transition-all duration-300 
                 ${totalTimeActive ? "bg-emerald text-black" : ""}`}
             >
               {/* Listening time */}
               {totalTimeActive ? (
-                <p className="text-xl">48.6 hours</p>
+                <p className="">48.6 hours</p>
               ) : (
                 <p>Listening time</p>
               )}
@@ -118,7 +118,7 @@ export function ProfileSection() {
       {/* here will be a screenshot of a profile page how it looks etc at least I think so*/}
       <button
         className="bg-white mt-8 text-xl  text-black p-4 rounded-lg hover:bg-white/90 hover:scale-[1.02] 
-            transition-all duration-200"
+            transition-all duration-200 shadow-lg"
       >
         <Link to="/profile">Go to your profile page</Link>
       </button>

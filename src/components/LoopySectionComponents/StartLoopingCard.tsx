@@ -15,11 +15,12 @@ return (
               variants={variant}
               style={{opacity: opacity}}
               className={`relative flex flex-col rounded-xl items-center p-12 
-            justify-center border border-2 border-borderSubtle text-lg
+            justify-center border border-2 border-border text-lg
+            bg-cardBackground shadow-md
             hover:scale-[1.02]`}
             >
               <p className="mb-6 text-xl">Start Loopin'</p>
-              <div className="bg-borderSubtle w-[180px] h-[130px] overflow-hidden rounded-md">
+              <div className="bg-border w-[180px] h-[130px] overflow-hidden rounded-md">
                 <img
                   src={SongCover}
                   className="w-full h-full object-cover object-bottom"

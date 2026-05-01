@@ -4,11 +4,12 @@ type Props = {
   beginning: number;
   end: number;
   duration: number;
+  color?: string; 
 };
 
 
 
-export function ProgressingBar({ beginning, end, duration }: Props) {
+export function ProgressingBar({ beginning, end, duration, color }: Props) {
   
   const [start, setStart] = useState(beginning);
   const [finish, setFinish] = useState(end);
@@ -61,6 +62,8 @@ function formatTime(percent: number) {
     };
   }, [dragging, start, finish]);
 
+  const barColor = color ? `bg-${color}` : "bg-spotifyGreen";
+
   return (
     <div className="w-full max-w-2xl flex justify-center py-6">
 
@@ -70,7 +73,7 @@ function formatTime(percent: number) {
 
         {dragging === "start" && (
           <div
-            className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-borderSubtle"
+            className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-border"
             style={{ left: `${start}%` }}
           >
             {formatTime(start)}
@@ -79,7 +82,7 @@ function formatTime(percent: number) {
 
         {dragging === "end" && (
           <div
-            className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-borderSubtle"
+            className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-border"
             style={{ left: `${finish}%` }}
           >
             {formatTime(finish)}
@@ -88,10 +91,10 @@ function formatTime(percent: number) {
 
         <div
           ref={barRef}
-          className="relative w-full max-w-2xl bg-borderSubtle h-[12px] rounded-full"
+          className="relative w-full max-w-2xl bg-border h-[12px] rounded-full"
         >
           <div
-            className="absolute top-0 h-full rounded-full bg-spotifyGreen"
+            className={`absolute top-0 h-full rounded-full ${barColor} `}
             style={{
               left: `${start}%`,
               width: `${finish - start}%`,
@@ -100,10 +103,11 @@ function formatTime(percent: number) {
 
           <div
             onMouseDown={startDrag}
-            className="absolute flex items-center justify-center cursor-pointer 
-            hover:scale-125 hover:shadow-[0_0_4px_rgba(34,197,94,0.8)]
-            aspect-square w-5 h-5 bg-spotifyGreen  
-             rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className={`absolute flex items-center justify-center cursor-pointer 
+            hover:scale-125 hover:shadow-xl
+            aspect-square w-5 h-5 
+            ${barColor} 
+             rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2`}
             style={{
               left: `${start}%`,
             }}
@@ -112,10 +116,11 @@ function formatTime(percent: number) {
 
           <div
             onMouseDown={endDrag}
-            className="absolute flex items-center justify-center cursor-pointer
-             hover:scale-125 hover:shadow-[0_0_8px_rgba(34,197,94,0.8)]
-             aspect-square w-5 h-5 bg-spotifyGreen  
-             rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2"
+            className={`absolute flex items-center justify-center cursor-pointer
+             hover:scale-125 hover:shadow-xl
+             aspect-square w-5 h-5  
+             ${barColor} 
+             rounded-full -translate-x-1/2 -translate-y-1/2 top-1/2`}
             style={{
               left: `${finish}%`,
             }}
