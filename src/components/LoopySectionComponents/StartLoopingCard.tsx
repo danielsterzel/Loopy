@@ -1,7 +1,7 @@
 import {motion, useTransform} from "motion/react";
 import type { CardProps } from "./PropsTypes";
 
-import { ProgressingBar } from "../UtilComponents/ProgressingBar";
+import { ProgressingBar } from "../UtilComponents/SliderBarView";
 import SongCover from "../../assets/fabrice-villard-Jrl_UQcZqOc-unsplash.jpg"
 
 

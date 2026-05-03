@@ -4,6 +4,7 @@ import { useAuth } from "../../auth/useAuth";
 import { logout } from "../../api/AuthApi";
 import { redirectToSpotify } from "../../common/RedirectToSpotify";
 import { Loading } from "../UtilComponents/Loading";
+import { LoopyIcon } from "../UtilComponents/LoopyIcon";
 
 const HARDEN_MENU_THRESHOLD = 100;
 
@@ -52,9 +53,10 @@ export function Navbar() {
             duration-500
             ${hardenMenu ? "bg-cardBackground border border-border" : "border border-transparent"}`}
     >
-      <div className="text-3xl font-semibold whitespace-nowrap">
+      {/* <div className="text-3xl font-semibold whitespace-nowrap">
         L<i className="fa-solid fa-infinity text-spotifyGreen"></i>py
-      </div>
+      </div> */}
+      <LoopyIcon/>
       <ul className="flex gap-12 items-center ">
         <li>
           <a

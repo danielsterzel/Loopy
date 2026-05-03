@@ -7,7 +7,7 @@ import { Loading } from "../UtilComponents/Loading";
 import { SpotifyLogo } from "../UtilComponents/SpotifyLogo";
 
 import { AudioWave } from "../UtilComponents/AudioWave";
-import { ProgressingBar } from "../UtilComponents/ProgressingBar";
+import { ProgressingBar } from "../UtilComponents/SliderBarView";
 
 import SongCover1 from "../../assets/laura-vinck-Hyu76loQLdk-unsplash.jpg";
 import SongCover2 from "../../assets/1millikarat-KQ_DwS1225o-unsplash.jpg";

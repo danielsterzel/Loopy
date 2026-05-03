@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-
+import { formatTimeInPercent } from "../../common/UXUtils";
 type Props = {
   beginning: number;
   end: number;
@@ -16,12 +16,7 @@ export function ProgressingBar({ beginning, end, duration, color }: Props) {
   const [dragging, setDragging] = useState<"start" | "end" | null>(null);
 
 
-function formatTime(percent: number) {
-    const totalSeconds = Math.floor((percent / 100) * (duration / 1000));
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
+
 
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -65,10 +60,10 @@ function formatTime(percent: number) {
   const barColor = color ? `bg-${color}` : "bg-spotifyGreen";
 
   return (
-    <div className="w-full max-w-2xl flex justify-center py-6">
+    <div className="w-full max-w-2xl flex justify-center">
 
       <div className="relative w-full">
-      <div className="absolute h-[12px] select-none top-full left-0 translate-y-2">{formatTime(start)}</div>
+      <div className="absolute h-[12px] select-none top-full left-0 translate-y-2">{formatTimeInPercent(start, duration)}</div>
 
 
         {dragging === "start" && (
@@ -76,7 +71,7 @@ function formatTime(percent: number) {
             className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-border"
             style={{ left: `${start}%` }}
           >
-            {formatTime(start)}
+            {formatTimeInPercent(start, duration)}
           </div>
         )}
 
@@ -85,7 +80,7 @@ function formatTime(percent: number) {
             className="absolute -top-10 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-xs text-white whitespace-nowrap border border-border"
             style={{ left: `${finish}%` }}
           >
-            {formatTime(finish)}
+            {formatTimeInPercent(finish, duration)}
           </div>
         )}
 
@@ -127,7 +122,7 @@ function formatTime(percent: number) {
           >
           </div>
         </div>
-      <div className="absolute  h-[12px] translate-y-2 top-full right-0 select-none">{formatTime(finish)}</div>
+      <div className="absolute  h-[12px] translate-y-2 top-full right-0 select-none">{formatTimeInPercent(finish, duration)}</div>
 
       </div>
 

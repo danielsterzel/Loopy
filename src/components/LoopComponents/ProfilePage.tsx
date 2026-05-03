@@ -1,7 +1,7 @@
 import { useAuth } from "../../auth/useAuth";
 import { Loading } from "../UtilComponents/Loading";
 import { useNavigate } from "react-router-dom";
-import { ProgressingBar } from "../UtilComponents/ProgressingBar";
+import { ProgressingBar } from "../UtilComponents/SliderBarView";
 import { HorizontalDottedLine } from "../UtilComponents/HorizontalDottedLine";
 import { VerticalDottedLine } from "../UtilComponents/VerticalDottedLine";
 
