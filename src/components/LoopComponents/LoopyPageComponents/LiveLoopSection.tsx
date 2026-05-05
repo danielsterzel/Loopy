@@ -1,23 +1,28 @@
 import { useState, useEffect } from "react";
 
-import { PlayerSongBar } from "../../UtilComponents/PlayerSongBar";
-
 import { usePlayer } from "../../../hooks/usePlayer";
-import { Toggle } from "./Toggle";
-import { msToSeconds } from "../../../common/UXUtils";
+
+import { StartRepeat } from "../../../api/PlayerStateAPI";
+import { StopRepeat } from "../../../api/PlayerStateAPI";
 
 import { motion } from "framer-motion";
-import { percentToMs } from "../../../common/UXUtils";
 
+import { percentToMs } from "../../../common/UXUtils";
+import { msToSeconds } from "../../../common/UXUtils";
+
+import { Toggle } from "./Toggle";
+import { PlayerSongBar } from "../../UtilComponents/PlayerSongBar";
 import { VerticalAudioWave } from "../../UtilComponents/VerticalAudioWave";
 import { SliderBar } from "./SliderBar";
-import { LoopyIcon } from "../../UtilComponents/LoopyIcon";
+import { LoopyLogo } from "../../UtilComponents/LoopyLogo";
+import type { StartRepeatRequest } from "../../../types/StartRepeatRequest";
 
 const initialProgress = 0;
 const currentTrackIndex = 0;
 
 const initialStart = 0;
 const initialEnd = 10;
+const defaultLoop : StartRepeatRequest = {startMs: initialStart, endMs: initialEnd};
 
 export function LiveLoopSection() {
   const [progress, setProgress] = useState(initialProgress);
@@ -26,6 +31,7 @@ export function LiveLoopSection() {
   const [intervalEnd, setIntervalEnd] = useState(initialEnd);
 
   const [loopEnabled, setLoopEnabled] = useState(false);
+  const [loop, setLoop] = useState<StartRepeatRequest>(defaultLoop);
 
   const { playerState, lastPlayerState, hasFetchedStateOnce } = usePlayer();
 
@@ -46,14 +52,23 @@ export function LiveLoopSection() {
 
   const displayState = playerState ?? lastPlayerState;
 
+  const toggleLoop = () => {
+    if(loopEnabled){StartRepeat(loop)}
+    else {StopRepeat()}
+  }
+  useEffect(() => {
+    console.log("LOOP", loop);
+    toggleLoop();
+    console.log("");
+  },[loopEnabled]);
   if (!playerState && !hasFetchedStateOnce) {
     return (
-      <div className="mt-24 w-[60%] flex flex-col gap-8 justify-center items-center text-2xl text-center text-pretty ">
+      <div id="liveloop" className="mt-24 w-[60%] flex flex-col gap-8 justify-center items-center text-2xl text-center text-pretty ">
         <div>
         <p>You are not currently listening to anything. <br/>
           Couldn't find any song data <i className="fa-regular fa-face-frown"></i></p>
         </div>
-        <p>Visit Spotify and play something to make </p> <LoopyIcon /> do its magic!
+        <p>Visit Spotify and play something to make </p> <LoopyLogo /> do its magic!
         <a 
         href="https://open.spotify.com/"
         target="_blank"
@@ -83,7 +98,7 @@ export function LiveLoopSection() {
   const songId = displayState.item.uri;
 
   return (
-    <div className="flex-col mt-8 w-[70%] bg-white shadow-lg border border-disabledText rounded-xl p-4">
+    <div id="liveloop" className="flex-col mt-8 w-[70%] bg-white shadow-lg border border-disabledText rounded-xl p-4">
       <div
         className="grid grid-cols-[auto_1fr] gap-8 items-center  
           "
@@ -172,7 +187,10 @@ export function LiveLoopSection() {
               onClick={() => {
                 const start = percentToMs(intervalStart, songDurationInMs);
                 const end = percentToMs(intervalEnd, songDurationInMs);
-                console.log("Start | End ", start, end);
+                setLoop({startMs: start, endMs: end});
+                console.log("Saved");
+                console.log("START", start);
+                console.log("END", end);
               }}
               initial={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}

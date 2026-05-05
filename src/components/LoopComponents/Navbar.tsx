@@ -4,7 +4,7 @@ import { useAuth } from "../../auth/useAuth";
 import { logout } from "../../api/AuthApi";
 import { redirectToSpotify } from "../../common/RedirectToSpotify";
 import { Loading } from "../UtilComponents/Loading";
-import { LoopyIcon } from "../UtilComponents/LoopyIcon";
+import { LoopyLogo } from "../UtilComponents/LoopyLogo";
 
 const HARDEN_MENU_THRESHOLD = 100;
 
@@ -56,7 +56,7 @@ export function Navbar() {
       {/* <div className="text-3xl font-semibold whitespace-nowrap">
         L<i className="fa-solid fa-infinity text-spotifyGreen"></i>py
       </div> */}
-      <LoopyIcon/>
+      <LoopyLogo/>
       <ul className="flex gap-12 items-center ">
         <li>
           <a
