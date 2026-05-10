@@ -18,7 +18,7 @@ export function formatTimeInPercent(percent: number, duration: number) {
 
 export function percentToMs(percent: number, duration: number)
 {
-    return Math.floor(percent * duration);
+    return Math.floor((percent / 100) * duration);
 }
 
 export function useModalExitViaEscape( onCancel: () => void){
