@@ -55,16 +55,11 @@ public class RepeatSessionService {
 
         for(var session : sessions)
         {
-            //error prone
             playerControl.getCurrentState(session.userId()).ifPresentOrElse(
                     state -> handleState(state, session),
                     () -> log.warn("No response from Spotify for user {}", session.userId())
             );
         }
-//        playerControl.getCurrentState().ifPresentOrElse(
-//                state -> handleState(state, currentSession.get()),
-//                () -> log.warn("No response from Spotify")
-//        );
     }
 
     private void handleState(PlayerState state, RepeatSession repeatSession)
@@ -72,7 +67,6 @@ public class RepeatSessionService {
         log.info("handleState: progress={}ms, start={}ms, end={}ms, isPlaying={}, trackId={}, sessionTrackId={}",
                 state.progressInMs(), repeatSession.startMs(), repeatSession.endMs(),
                 state.isPlaying(), state.item().id(), repeatSession.trackId());
-        // definitely refactor this
         if(!state.isPlaying()) return;
         if(!state.item().id().equals(repeatSession.trackId()))
         {

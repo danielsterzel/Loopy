@@ -3,20 +3,17 @@ services:
         image: postgres:15
         ports:
         - "5500:5432"
-        environment:
-            POSTGRES_USER: danielsterzel
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: loopy
+        env_file:
+            - .env
 
         volumes:
             - pgdata:/var/lib/postgresql/data
     loopy:
         build:
-            context: .
-            dockerfile: backend/dockerfile-backend
-        environment:
-            SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
-            SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+            context: ./backend
+            dockerfile: Dockerfile
+        env_file:
+            -   .env
         ports:
             - "8080:8080"
         depends_on:

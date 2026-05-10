@@ -21,8 +21,8 @@ import org.slf4j.LoggerFactory;
 public class SecurityConfig {
     private final static Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Value("${FRONTEND_URL}")
-    private String frontendUrl;
+//    @Value("${FRONTEND_URL}")
+//    private String frontendUrl;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl(frontendUrl)
+                        .logoutSuccessUrl("http://127.0.0.1:5173")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 .requestCache(cache -> cache
@@ -66,7 +66,7 @@ public class SecurityConfig {
                         response.sendRedirect("/oauth2/authorization/spotify");
                     });
 
-                        login.defaultSuccessUrl(frontendUrl + "/callback", true);
+                        login.defaultSuccessUrl("http://127.0.0.1:5173/callback", true);
                 });
 
         return http.build();
