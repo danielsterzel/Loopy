@@ -14,7 +14,8 @@ return (
             variants={variant}
             style={{opacity: opacity}}
             className={`flex flex-col items-center p-12
-            justify-center border rounded-xl border-2 border-borderSubtle text-lg
+            justify-center border rounded-xl border-2 border-border text-lg
+            bg-cardBackground shadow-md
             hover:scale-[1.02]}
             `}
             >
@@ -22,13 +23,13 @@ return (
               <div className="mt-6 flex items-center gap-4">
                 <div
                   className="flex flex-col justify-center items-center 
-                  gap-4 px-4 py-4 rounded-md border-2 border-borderSubtle"
+                  gap-4 px-4 py-4 rounded-md border-2 border-border"
                 >
                   <img src={SongCover} width="80" className="rounded-md"></img>
                   <div className="w-full max-w-[100px] border-b border-gray" />
                   <div className="w-full max-w-[120px]"></div>
 
-                  <div className="bg-borderSubtle w-24 h-2 rounded-full relative">
+                  <div className="bg-border w-24 h-2 rounded-full relative">
                     <div
                       className="absolute left-[0%] w-[40%]
                                         h-full bg-spotifyGreen rounded-full"

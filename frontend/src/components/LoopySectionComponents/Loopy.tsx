@@ -52,11 +52,11 @@ export function Loopy() {
         <motion.button
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.9, y: 1 }}
-          transition={{ type: "keyframes" }}
+          transition={{ type: "spring" }}
         >
           <Link
             to="/Loopy"
-            className="text-lg border border-b orderSubtle
+            className="text-lg border border-border shadow-md
             hover:scale-[1.02] hover:bg-spotifyGreen hover:text-black transition-all duration-[400ms] rounded-md px-4 py-2"
           >
             Try out Loopy
@@ -80,7 +80,7 @@ export function Loopy() {
           <div 
           style={{height: "clamp(200px, 65vh, 600px)"}}
           className="relative w-2">
-            <div className="absolute inset-0 rounded-full bg-borderSubtle" />
+            <div className="absolute inset-0 rounded-full bg-border" />
             <motion.div
               style={{ scaleY: scrollbarProgres }}
               className="absolute inset-0 rounded-full origin-top bg-spotifyGreen will-change-transform"

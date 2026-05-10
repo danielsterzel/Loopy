@@ -1,8 +1,8 @@
-import { useAuth } from "../../auth/useAuth.ts";
+import { useAuth } from "../../auth/useAuth";
 import { Navigate } from "react-router-dom";
-
-import { NoTextBlackSpotifyLogo } from "../UtilComponents/SpotifyLogo.tsx";
-import { redirectToSpotify } from "../../common/RedirectToSpotify.ts";
+import { motion, spring } from "framer-motion";
+import { NoTextBlackSpotifyLogo } from "../UtilComponents/SpotifyLogo";
+import { redirectToSpotify } from "../../common/RedirectToSpotify";
 
 export function Login() {
   const { user } = useAuth();
@@ -20,20 +20,21 @@ export function Login() {
         profile
       </p>
 
-      <button
+      <motion.button
+        whileHover={{scale: 1.02}}
+        whileTap={{scale: 0.9}}
+        transition={{type: spring}}
         onClick={redirectToSpotify}
         className="w-max-[100px] h-max-[100px] 
         rounded-xl
         text-black bg-white
         flex items-center justify-center gap-2 p-4
-        hover:bg-white/90 transition-color
-        hover:scale-[1.02] transition-transform 
-        duration-200
+        border border-border
         text-2xl"
       >
         <NoTextBlackSpotifyLogo width={40} />
         <p>Login with Spotify</p>
-      </button>
+      </motion.button>
     </div>
   );
 }
