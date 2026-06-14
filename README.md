@@ -3,6 +3,20 @@
 Loopy is a full-stack application integrated with the Spotify Web API that allows users to seamlessly loop selected intervals of songs in real time.  
 The project was designed with scalability, maintainability, and responsive user experience in mind, while following Spotify Web API guidelines and modern cloud-native development practices.
 
+# Screenshots
+
+## Landing Page
+![Landing Page](screenshots/landing.png)
+
+## Profile section
+![Profile Page](screenshots/profile.png)
+
+## Loopy Page
+![Loopy Page](screenshots/loopy.png)
+
+## Song and Loop Panel
+![Loop Panel](screenshots/song_preview.png)
+
 # Architecture
 
 The application follows a layered full-stack architecture consisting of:
